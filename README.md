@@ -1,6 +1,6 @@
-#Uno kártyjáték projekt
+#Uno kártyjáték projekt#
 
-##Elte IK Projekt Eszközök, kliens-szerver kártya játék
+##Elte IK Projekt Eszközök, kliens-szerver kártya játék##
 
 ####**A játék szabályai**
 
@@ -19,7 +19,7 @@ Az Uno-t egyszerre 2-10 játékos játszhatja, a játékot az a játékos nyeri,
  > - 4db "Húzz négyet! Joker" kártya: fekete színűek
 
 
-####A játék menete
+####**A játék menete**
 
 Az egész pakli összekeverése után minden játékos kap 7 lapot az osztótól. Ezután a megmaradt pakli marad a talon és ennek legfelső lapját felfordítva elkezdődhet a játék.
 A kezdő játékosnak olyan lapot kell letennie, amely színében, értékében, vagy ábrájában passzol az asztalon lévő, felfordított laphoz. A játék hasonló módon folytatódik, azaz minden játékosnak ezt az elvet kell követnie a
@@ -27,7 +27,7 @@ kártyák lerakásakor. A Joker típusú (fekete) kártyák akármilyen színű 
 Ha egy játékos nem tud semmilyen lapot az asztalra helyezni, akkor lapot kell húznia a pakliból. Ha a húzott kártya lerakható, akkor azt abban a pillanatban meg is játszhatja, ellenkező esetben a lap a kezében marad, és a következő játékosra kerül a sor.
 Akinek először fogy el a kezéből az összes lap, az nyer.
 
-####Speciális lapok leírása
+####**Speciális lapok leírása**
 
  - "Húzz kettőt!" kártya: Amikor ezt a lapot lerakják, akkor a következő játékosnak két lapot kell húznia, valamint kimarad egy körből. Ezt a lapot csak akkor lehet megjátszani, ha a lap színe megegyezik az előző kártya színével, vagy egy Húzz Kettő! kártyát tett le az előző játékos is.
  - "Fordulj!" kártya: Ez a kártya megfordítja a játék irányát. Ezt a lapot csak akkor lehet megjátszani, ha a lap színe megegyezik az előző kártya színével, vagy egy Fordulj! kártyát tett le az előző játékos is.

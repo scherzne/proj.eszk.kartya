@@ -26,6 +26,7 @@ A kezdő játékosnak olyan lapot kell letennie, amely színében, értékében,
 kártyák lerakásakor. A Joker típusú (fekete) kártyák akármilyen színű és számú lapra letehetőek.
 Ha egy játékos nem tud semmilyen lapot az asztalra helyezni, akkor lapot kell húznia a pakliból. Ha a húzott kártya lerakható, akkor azt abban a pillanatban meg is játszhatja, ellenkező esetben a lap a kezében marad, és a következő játékosra kerül a sor.
 Akinek először fogy el a kezéből az összes lap, az nyer.
+Aki viszont nem mondja be az 'UNO' amikor a kezében lévő 2 kártyából, lerakja az egyiket, 3 darab kártya felhúzásával büntetik.
 
 #### **Speciális lapok leírása**
 
@@ -34,4 +35,4 @@ Akinek először fogy el a kezéből az összes lap, az nyer.
  - "Ugorj!" kártya: Ha valaki ilyen lapot rak le, a következő játékos egyszer kimarad a játékból. Ezt a lapot csak akkor lehet megjátszani, ha a lap színe megegyezik az előző kártya színével, vagy egy Ugorj! kártyát tett le az
 előző játékos is.
  - "Joker!" kártya: Aki ezt a lapot rakja le, maga határozhatja meg a következő hívó színt. A Joker bármikor lerakható. Ha a játék elején ez a kezdő lap, akkor az első játékos határozza meg a kártya színét.
- - "Húzz négyet! Joker" kártya: Aki ezt a lapot lerakja, maga határozhatja meg következő hívó színt. Ezen felül a következő játékos kimarad egy körből, valamint 4 kártyát is fel kell vennie. Ezt a kártyát azonban csak akkor lehet lerakni, ha a játékosnak nincsen a hívó színnel egyező színű kártyája.Proba
+ - "Húzz négyet! Joker" kártya: Aki ezt a lapot lerakja, maga határozhatja meg következő hívó színt. Ezen felül a következő játékos kimarad egy körből, valamint 4 kártyát is fel kell vennie. Ezt a kártyát azonban csak akkor lehet lerakni, ha a játékosnak nincsen a hívó színnel egyező színű kártyája.

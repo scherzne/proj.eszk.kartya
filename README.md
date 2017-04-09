@@ -26,7 +26,7 @@ A kezdő játékosnak olyan lapot kell letennie, amely színében, értékében,
 kártyák lerakásakor. A Joker típusú (fekete) kártyák akármilyen színű és számú lapra letehetőek.
 Ha egy játékos nem tud semmilyen lapot az asztalra helyezni, akkor lapot kell húznia a pakliból. Ha a húzott kártya lerakható, akkor azt abban a pillanatban meg is játszhatja, ellenkező esetben a lap a kezében marad, és a következő játékosra kerül a sor.
 Akinek először fogy el a kezéből az összes lap, az nyer.
-Aki viszont nem mondja be az 'UNO' amikor a kezében lévő 2 kártyából, lerakja az egyiket, 3 darab kártya felhúzásával büntetik.f
+Aki viszont nem mondja be az 'UNO' amikor a kezében lévő 2 kártyából, lerakja az egyiket, 3 darab kártya felhúzásával büntetik.
 
 #### **Speciális lapok leírása**
 

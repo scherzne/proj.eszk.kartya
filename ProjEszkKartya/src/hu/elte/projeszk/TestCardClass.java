@@ -6,12 +6,12 @@ import org.junit.Test;
 
 import  hu.elte.projeszk.Card;
 import  hu.elte.projeszk.Card.CardColor;
-import hu.elte.projeszk.Card.CardValue;
+import  hu.elte.projeszk.Card.CardValue;
 
 
 public class TestCardClass {
 	
-	 final CardColor cardColor = CardColor.F;
+	 final CardColor cardColor = CardColor.K;
 	 final CardValue cardValue = CardValue.HAROM;
 	 
 	  @Test
@@ -23,7 +23,7 @@ public class TestCardClass {
 	       // String result = myUnit.concatenate("one", "two");
 	       // assertEquals("onetwo", result);
 		  
-		  assertEquals(CardColor.F ,myCard.getCardColor());
+		  assertEquals(CardColor.K ,myCard.getCardColor());
 		  assertEquals(CardValue.HAROM ,myCard.getCardValue());
 		  
 		//  assertEquals(CardValue.NEGY ,myCard.getCardValue());

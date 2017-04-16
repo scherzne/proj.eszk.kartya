@@ -58,7 +58,7 @@ public class Card {
 		return value;
 	}
 	
-	public void CardColorSetCardColor(){
+	public void CardColorSetCardColor(  CardColor cardColor){
 		
 		//....
 		

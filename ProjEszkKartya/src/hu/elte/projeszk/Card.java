@@ -10,7 +10,7 @@ import  hu.elte.projeszk.Card.CardValue;
  *
  */
 public class Card {
-	public enum CardColor {S, K, Z, P,F;} ;
+	public enum CardColor {SARGA, KEK, ZOLD, PIROS,FEKETE;} ;
 	public enum CardValue {NULLA,EGY, KETTO, HAROM, NEGY, OT, HAT, HET, NYOLC,KILENC,FORDITTO,HUZZKETTOT,KIMARADSZ,SZINKEREO,HUZZNEGYET} ;
 	
 	CardValue cardValue;

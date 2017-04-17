@@ -1,18 +1,13 @@
 package hu.elte.projeszk.server;
 
-import java.net.Socket;
-
 public class PlayerThread extends Thread {
-	private Socket socket=null;
-	private int id=-1;
-	private String name=null;
-	
-	private String message;
-	
-	public PlayerThread(Socket socket, int id) {
-		super("Client "+id);
-		this.socket = socket;
-		this.id = id;
+	private Player player;
+	private PlayerManagerThread manager;
+
+	public PlayerThread(Player player, PlayerManagerThread manager) {
+		super("player-"+player.getId());
+		this.player = player;
+		this.manager = manager;
 	}
 	
 	

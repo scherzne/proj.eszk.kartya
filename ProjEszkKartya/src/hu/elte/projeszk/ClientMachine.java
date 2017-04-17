@@ -50,7 +50,7 @@ return selectedCard;
 }
 
 
-private Card searchNumberOfCertainColor(CardColor color) {
+protected Card searchNumberOfCertainColor(CardColor color) {
 	//Olyan számot keresünk ami azonos színű a legfelső lappal
 	
 	Card card = null;
@@ -68,7 +68,7 @@ private Card searchNumberOfCertainColor(CardColor color) {
 }
 
 
-private Card searchCertainCardAnyColor(CardValue value) {
+protected Card searchCertainCardAnyColor(CardValue value) {
 	//Olyan számot keresünk ami azonos színű a legfelső lappal
 	
 	Card card = null;
@@ -85,7 +85,7 @@ private Card searchCertainCardAnyColor(CardValue value) {
 	return card;
 }
 
-private Card searchNotNumberSameColor(CardColor color) {
+protected Card searchNotNumberSameColor(CardColor color) {
 	//Olyan számot keresünk ami azonos színű a legfelső lappal
 	
 	Card card = null;
@@ -102,7 +102,7 @@ private Card searchNotNumberSameColor(CardColor color) {
 	return card;
 }
 
-private Card searchJokerCard() {
+protected Card searchJokerCard() {
 	//Olyan számot keresünk ami azonos színű a legfelső lappal
 	
 	Card card = null;
@@ -119,7 +119,7 @@ private Card searchJokerCard() {
 	return card;
 }
 
-private Card searchDrawFourJoker() {
+protected Card searchDrawFourJoker() {
 	//Olyan számot keresünk ami azonos színű a legfelső lappal
 	
 	Card card = null;
@@ -136,7 +136,7 @@ private Card searchDrawFourJoker() {
 	return card;
 }
 
-private Card searchWhenTopNumber(Card topCard){
+protected Card searchWhenTopNumber(Card topCard){
 	// számot keresünk 0-9 ig, ugyanolyan színben
 	Card	selectedCard = searchNumberOfCertainColor(topCard.getCardColor());
 			

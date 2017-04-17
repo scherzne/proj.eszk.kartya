@@ -10,7 +10,8 @@ import java.util.HashMap;
 
 public class PlayerManagerThread extends Thread {
 	private ArrayList<Card> cardPack=new ArrayList<>();
-	private HashMap<Integer, PlayerThread> players;
+	private HashMap<Integer, PlayerThread> playerThreads;
+	private ArrayList<Player> players;//TODO: ez csak átmeneti, nem kell
 	private int id=-1;	
 	
 	private int nextPlayer=0;
@@ -22,10 +23,11 @@ public class PlayerManagerThread extends Thread {
 	 * @param id
 	 * @param players
 	 */
-	public PlayerManagerThread(int id,HashMap<Integer, PlayerThread> players) {
+	public PlayerManagerThread(int id,ArrayList<Player> players) {
 		super("manager "+id);
 		this.id=id;
 		this.players=players;
+		//TODO: szálak létrehozása és elindítása
 		
 		generatePack();
 	}	

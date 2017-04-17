@@ -26,6 +26,9 @@ public class TestCardClass {
 		  assertEquals(CardColor.F ,myCard.getCardColor());
 		  assertEquals(CardValue.HAROM ,myCard.getCardValue());
 		  
+		  myCard = new Card(cardColor,CardValue.SZINKEREO);
+		  assertEquals(CardValue.SZINKEREO ,myCard.getCardValue());
+		  
 		//  assertEquals(CardValue.NEGY ,myCard.getCardValue());
 	  }
 }

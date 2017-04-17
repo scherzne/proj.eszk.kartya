@@ -21,12 +21,15 @@ public class Card {
 	public Card(CardColor cardcolor, CardValue cardValue){
 		this.cardValue=cardValue;
 		this.cardColor=cardcolor;
-		this.cardValueInt=getCardValue(this.cardValue);
-		
-		
-
+		this.cardValueInt=cardValueToInt(this.cardValue);
 	}
 	
+	
+	/**
+	 * Integer->CardValue konverzió
+	 * @param val
+	 * @return
+	 */
 	public CardValue intToCardValue(int val){
 		switch(val){
 			case 0:return CardValue.NULLA;
@@ -48,7 +51,7 @@ public class Card {
 		}
 	}
 	
-	private int getCardValue( CardValue cardValue){
+	public int cardValueToInt( CardValue cardValue){
 		
 		int value=-1;	
 		

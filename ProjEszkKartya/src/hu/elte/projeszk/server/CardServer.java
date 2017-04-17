@@ -13,6 +13,7 @@ public class CardServer {
 
 	public static void main(String[] args) throws IOException {
 		server=new ServerSocket(Consts.PORT);
+		server.setSoTimeout(Consts.START_GAME_TIMEOUT);
 		
 		//játékos gyűjtő
 		ArrayList<Player> players=new ArrayList<>();
@@ -24,6 +25,7 @@ public class CardServer {
 		
 		while(true){
 			try {
+				//TODO: timeout-ot vizsgálni!
 				//ők már várakoznak a partnerre, ne dobódjonak el
 				if(!players.isEmpty()){
 					for(Player player:players)

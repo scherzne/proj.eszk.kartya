@@ -9,6 +9,12 @@ public class PlayerThread extends Thread {
 		this.player = player;
 		this.manager = manager;
 	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		super.run();
+	}
 	
 	
 }

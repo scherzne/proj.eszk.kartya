@@ -10,8 +10,8 @@ import  hu.elte.projeszk.Card.CardValue;
  *
  */
 public class Card {
-	public enum CardColor {SARGA, KEK, ZOLD, PIROS,FEKETE;} ;
-	public enum CardValue {NULLA,EGY, KETTO, HAROM, NEGY, OT, HAT, HET, NYOLC,KILENC,FORDITTO,HUZZKETTOT,KIMARADSZ,SZINKEREO,HUZZNEGYET} ;
+	public enum CardColor {SARGA, KEK, ZOLD, PIROS,FEKETE, INVALID} ;
+	public enum CardValue {NULLA,EGY, KETTO, HAROM, NEGY, OT, HAT, HET, NYOLC,KILENC,FORDITTO,HUZZKETTOT,KIMARADSZ,SZINKEREO,HUZZNEGYET,INVALID} ;
 	
 	CardValue cardValue;
 	CardColor cardColor;
@@ -21,13 +21,34 @@ public class Card {
 	public Card(CardColor cardcolor, CardValue cardValue){
 		this.cardValue=cardValue;
 		this.cardColor=cardcolor;
-		this.cardValueInt=setCardValue(this.cardValue);
+		this.cardValueInt=getCardValue(this.cardValue);
 		
 		
 
 	}
 	
-	private int setCardValue( CardValue cardValue){
+	private CardValue intToCardValue(int val){
+		switch(val){
+			case 0:return CardValue.NULLA;
+			case 1:return CardValue.EGY;
+			case 2:return CardValue.KETTO;
+			case 3:return CardValue.HAROM;
+			case 4:return CardValue.NEGY;
+			case 5:return CardValue.OT;
+			case 6:return CardValue.HAT;
+			case 7:return CardValue.HET;
+			case 8:return CardValue.NYOLC;
+			case 9:return CardValue.KILENC;
+			case 10:return CardValue.HUZZKETTOT;
+			case 11:return CardValue.FORDITTO;
+			case 12:return CardValue.KIMARADSZ;
+			case 13:return CardValue.SZINKEREO;
+			case 14:return CardValue.HUZZNEGYET;
+			default:return CardValue.INVALID;
+		}
+	}
+	
+	private int getCardValue( CardValue cardValue){
 		
 		int value=-1;	
 		

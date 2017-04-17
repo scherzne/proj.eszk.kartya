@@ -17,9 +17,22 @@ public class PlayerThread extends Thread {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		super.run();
+		System.out.println("playerthread started:"+player.getId());
+		String row;
+		
+		while(true){
+			row=player.read();
+			if(manager.readRow(player,row)){
+				player.updateLastAction();
+			}else break;
+		}
+		player.die();
 	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
 	
 	
 }

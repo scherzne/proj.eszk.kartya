@@ -118,6 +118,47 @@ public class Card {
 		return value;
 	}
 
+	/**
+	 * Áthelyezve StaticCardColorChar-ból ha már így beégetetten van.
+	 * Logikailag akkor is ide tartozik! Nem kell neki külön osztály!
+	 * @param c
+	 * @return
+	 */
+	public static CardColor convertCharacterToCardColor(char c){		
+		CardColor cardColor=null;
+		
+		//switch elágazással		
+		switch(c){
+			case('P'): cardColor= CardColor.PIROS;break;
+			case('K'): cardColor= CardColor.KEK;break;
+			case('Z'): cardColor= CardColor.ZOLD;break;
+			case('S'): cardColor= CardColor.SARGA;break;
+			case('F'): cardColor= CardColor.FEKETE;break;
+		}
+		
+		return cardColor;
+	}
+
+	/**
+	 * Áthelyezve StaticCardColorChar-ból ha már így beégetetten van.
+	 * Logikailag akkor is ide tartozik! Nem kell neki külön osztály!
+	 * @param cardColor
+	 * @return
+	 */
+	public static char convertCardColorToCharacter(CardColor cardColor){		
+		char c=' ';
+		
+		switch(cardColor){
+			case PIROS:  c='P';break;
+			case KEK:  c='K'; break;
+			case ZOLD: c='Z';break;
+			case SARGA:  c='S';break;
+			case FEKETE:  c='F';break;
+		}
+		//switch elágazással
+		return c;
+	}
+	
 	public CardColor getCardColor() {
 		return cardColor;
 	}

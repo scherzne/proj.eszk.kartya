@@ -28,8 +28,14 @@ public class PlayerManagerThread extends Thread {
 		this.players=players;
 		
 		generatePack();
-	}
+	}	
 	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		super.run();
+	}
+
 	/**
 	 * Kártyapakli generálása
 	 */

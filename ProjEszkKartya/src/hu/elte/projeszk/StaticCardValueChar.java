@@ -2,7 +2,12 @@ package hu.elte.projeszk;
 
 
 import hu.elte.projeszk.Card.CardValue;;
-
+/**
+ * 
+ * @deprecated áthelyezve a két metódus a Card osztályba!
+ * Logikailag nem jó itt!
+ *
+ */
 public class StaticCardValueChar {
 public static CardValue convertCharacterToCardValue(char c){
 		

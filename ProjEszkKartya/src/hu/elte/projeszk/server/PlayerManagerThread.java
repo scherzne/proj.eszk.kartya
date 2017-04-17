@@ -37,6 +37,18 @@ public class PlayerManagerThread extends Thread {
 	}
 
 	/**
+	 * Legfelső kártya húzása(és eltávolítása) a pakliból
+	 * @return vagy egy kártya vagy null ha a pakli már üres!
+	 */
+	public Card drawCardFromPack(){
+		if(cardPack.size()>0){
+			return cardPack.remove(cardPack.size()-1);
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * Kártyapakli generálása
 	 */
 	private void generatePack(){

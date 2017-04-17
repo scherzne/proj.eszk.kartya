@@ -27,7 +27,7 @@ public class Card {
 
 	}
 	
-	private CardValue intToCardValue(int val){
+	public CardValue intToCardValue(int val){
 		switch(val){
 			case 0:return CardValue.NULLA;
 			case 1:return CardValue.EGY;

@@ -24,6 +24,21 @@ public class Card {
 		this.cardValueInt=cardValueToInt(this.cardValue);
 	}
 	
+	/**
+	 * Integer->CardColor konverzió
+	 * @param val
+	 * @return
+	 */
+	public CardColor intToCardColor(int val){
+		switch(val){
+			case 0:return CardColor.SARGA;
+			case 1:return CardColor.KEK;
+			case 2:return CardColor.ZOLD;
+			case 3:return CardColor.PIROS;
+			case 4:return CardColor.FEKETE;
+			default:return CardColor.INVALID;
+		}
+	}
 	
 	/**
 	 * Integer->CardValue konverzió
@@ -81,13 +96,7 @@ public class Card {
 		
 		return value;
 	}
-	
-	public void CardColorSetCardColor(  CardColor cardColor){
-		
-		//....
-		
-	}
-	
+
 	public CardColor getCardColor() {
 		return cardColor;
 	}

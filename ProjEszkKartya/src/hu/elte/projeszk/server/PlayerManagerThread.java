@@ -37,6 +37,16 @@ public class PlayerManagerThread extends Thread {
 		generatePack();
 	}	
 	
+	/**
+	 * TODO:teljes játékmenet kezelése
+	 * @param player
+	 * @param row beolvasott sor a kliens-ről
+	 * @return
+	 */
+	public boolean readRow(Player player, String row){
+		return false;
+	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

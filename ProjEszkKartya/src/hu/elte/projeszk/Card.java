@@ -25,11 +25,37 @@ public class Card {
 	}
 	
 	/**
+	 * Integerekkel is létre kell tudni hozni
+	 * @param color 
+	 * @param value
+	 */
+	public Card(int color, int value){
+		this.cardColor=intToCardColor(color);
+		this.cardValue=intToCardValue(value);
+		this.cardValueInt=value;
+	}
+	
+	/**
+	 * CardColor->Int konverzió
+	 * @param color
+	 * @return
+	 */
+	public static int cardColorToInt(CardColor color){
+		switch(color){
+			case SARGA:return 0;
+			case KEK:return 1;
+			case ZOLD:return 2;
+			case PIROS:return 3;
+			case FEKETE:return 4;
+			default:return -1;
+		}
+	}
+	/**
 	 * Integer->CardColor konverzió
 	 * @param val
 	 * @return
 	 */
-	public CardColor intToCardColor(int val){
+	public static CardColor intToCardColor(int val){
 		switch(val){
 			case 0:return CardColor.SARGA;
 			case 1:return CardColor.KEK;
@@ -45,7 +71,7 @@ public class Card {
 	 * @param val
 	 * @return
 	 */
-	public CardValue intToCardValue(int val){
+	public static CardValue intToCardValue(int val){
 		switch(val){
 			case 0:return CardValue.NULLA;
 			case 1:return CardValue.EGY;
@@ -66,7 +92,7 @@ public class Card {
 		}
 	}
 	
-	public int cardValueToInt( CardValue cardValue){
+	public static int cardValueToInt( CardValue cardValue){
 		
 		int value=-1;	
 		

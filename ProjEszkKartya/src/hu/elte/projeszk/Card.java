@@ -68,7 +68,7 @@ public class Card {
 		return cardColor;
 	}
 	
-	public void CardColorgetCardColor(){
+	public void cardColorgetCardColor(){
 		
 		
 		//....

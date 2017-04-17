@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 /**
- * Játékos tároló osztály, ő is meri a saját socketjét, nevét, id-jét
+ * Játékos tároló osztály, ő ismeri a saját socketjét, nevét, id-jét
  * élőn kell tartani 
  * @author scherzne
  *

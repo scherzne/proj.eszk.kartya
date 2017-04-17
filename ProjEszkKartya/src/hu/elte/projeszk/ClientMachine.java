@@ -10,30 +10,25 @@ import hu.elte.projeszk.Card.CardValue;
 
 public class ClientMachine {
 
+protected ArrayList<Card> hand = new ArrayList<Card>();	
+	
 	 public static void main(String[] args) {
-		 
-				
-		 
 		 
 
 }
 			
-public static CardValue convertCardValueFromCharacter(char c){
+public void addCardToHand(Card card){
 	
-	CardValue cardValue=null;
-		
-	//switch elágazással
-	return cardValue;
-}	
-
-public static CardColor convertCardColorFromCharacter(char c){
+	hand.add(card);
 	
-	CardColor cardColor=null;
-	
-	//switch elágazással
-	return cardColor;
 }
 
+protected void removeCardFromHand(Card card){
+	
+	hand.remove(card);
+	
+}
+	 
 public Card machineCardChooseAlgorithm(ArrayList<Card> cardInHand, boolean lastPlayerDrawed, CardColor DeclaredColor  ){
 
 	//szabályok egy kártyát ad vissza az alapján hogy mi van a kezében, az előző játékos huzott-e és van e színkötelezettség

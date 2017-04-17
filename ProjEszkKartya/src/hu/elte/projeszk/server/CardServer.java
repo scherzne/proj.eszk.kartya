@@ -8,6 +8,11 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author scherzne
+ *
+ */
 public class CardServer {
 	private static ServerSocket server=null;	
 

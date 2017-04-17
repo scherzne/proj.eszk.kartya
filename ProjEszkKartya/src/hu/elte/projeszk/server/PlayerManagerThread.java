@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+/**
+ * 
+ * @author scherzne
+ *
+ */
 public class PlayerManagerThread extends Thread {
 	private ArrayList<Card> cardPack=new ArrayList<>();
 	private HashMap<Integer, PlayerThread> playerThreads;

@@ -1,5 +1,10 @@
 package hu.elte.projeszk.server;
 
+/**
+ * 
+ * @author scherzne
+ *
+ */
 public class PlayerThread extends Thread {
 	private Player player;
 	private PlayerManagerThread manager;

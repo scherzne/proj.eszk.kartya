@@ -2,6 +2,12 @@ package hu.elte.projeszk;
 
 import  hu.elte.projeszk.Card.CardColor;
 
+/**
+ * 
+ * @deprecated Logikailag nem ide tartozik! ENm kell külön osztály.
+ * Két metódus áthelyezve a Card osztályba
+ *
+ */
 public class StaticCardColorChar {
 	
 	public static CardColor convertCharacterToCardColor(char c){

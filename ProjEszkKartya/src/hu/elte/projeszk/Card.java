@@ -1,13 +1,8 @@
 package hu.elte.projeszk;
 
-import  hu.elte.projeszk.Card.CardColor;
-import  hu.elte.projeszk.Card.CardValue;
-
 /**
- * Kártya objektum, adat küldés egyszerűsítése miatt csak int-ek határozzák meg
- * a fajtáját.
- * @author betti-laptop
- *
+ * Sajnos enumok a színek és a számok, ezért nehezebb kezelni!
+ * 
  */
 public class Card {
 	public enum CardColor {SARGA, KEK, ZOLD, PIROS,FEKETE, INVALID} ;
@@ -127,17 +122,9 @@ public class Card {
 		return cardColor;
 	}
 	
-	public void cardColorgetCardColor(){
-		
-		
-		//....
-		
-	}
-	
 	public CardValue getCardValue() {
 		return cardValue;
 	}
-
 
 	public int getValue() {
 		return cardValueInt;

@@ -3,7 +3,7 @@ package hu.elte.projeszk;
 /**
  * Konstansok a kártyákhoz
  * @author betti-laptop
- *
+ * @deprecated megegyezés hiányában nem ez van használva, Kártya típusokat lásd Card osztályban enumként.
  */
 public class CardDefs {
 	public static final int colorGreen=0;

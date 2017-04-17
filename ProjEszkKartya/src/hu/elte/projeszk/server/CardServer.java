@@ -21,20 +21,38 @@ public class CardServer {
 		ArrayList<PlayerManagerThread> managers=new ArrayList<>();
 		PlayerManagerThread manager;
 		//player egyedi azonosító számlálója
-		int id=-1;
+		int id=-1;//ez mindegy, csak a számláló növelése most az accept után van, ami blokkol
+		int managerId=0;//ez nulláról kezdve is jó, mert nem fut át rajta a kód
+		long lastConnected=System.currentTimeMillis();
 		
-		while(true){
+		//TODO: leállás esetén a szálakat ki kell irtani amennyire csak lehet (amennyi hozzáférhető
+		//és nem lóg a levegőben)
+		//(előfordulhat hogy valaki beragad, azokat le kell időzíteni!)
+		while(true){			
+			//várakozási idő lejárt és már megvan a minimum játékos vagy megvan a max játékos szám
+			if((System.currentTimeMillis()-lastConnected>Consts.START_GAME_TIMEOUT*1000 
+					&& players.size()>=Consts.MIN_PLAYERS)
+					|| players.size()>=Consts.MAX_PLAYERS
+					){
+				//létrejött egy játékos csoport
+				manager=new PlayerManagerThread(managerId, players);
+				managerId++;
+				managers.add(manager);
+				manager.start();//elindítjuk a manager-t, innen ő kezeli a játékos csoportot
+			}
 			try {
-				//TODO: timeout-ot vizsgálni!
 				//ők már várakoznak a partnerre, ne dobódjonak el
 				if(!players.isEmpty()){
 					for(Player player:players)
 						player.updateLastAction();
 				}
 				
-				//valaki jött
+				//valaki jött, eddig blokkol
 				Socket socket=server.accept();
+				//innen a kód csak akkor fut le, ha nem időzített le!
 				id++;
+				lastConnected=System.currentTimeMillis();
+				
 				Player player=new Player(socket, id);				
 				players.add(player);//átmeneti gyűjtőbe tesszük
 

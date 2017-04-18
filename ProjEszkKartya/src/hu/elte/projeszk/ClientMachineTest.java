@@ -62,10 +62,46 @@ public class ClientMachineTest {
 		
 		assertEquals("The first KEK numbered card in the hand is KEK  NULLA ",card1, clientMachineTester.searchAnyNumberOfCertainColor(CardColor.PIROS));
 		
-		assertEquals("Thehere is no SARGA numbered cards",null, clientMachineTester.searchAnyNumberOfCertainColor(CardColor.SARGA));
+		assertEquals("There is no SARGA numbered cards",null, clientMachineTester.searchAnyNumberOfCertainColor(CardColor.SARGA));
 		
 	}
 	
+	@Test
+    public void clientMachineHandTestsearchCertainCardAnyColor() {
+		
+		
+		ClientMachine clientMachineTester = new ClientMachine(); // MyClass is tested
+		   
 	
+	
+	    Card card1= new Card(CardColor.KEK,CardValue.FORDITTO);
+
+	    
+	    clientMachineTester.addCardToHand(new Card(CardColor.PIROS,CardValue.HAT));
+	    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.KETTO));
+	    clientMachineTester.addCardToHand(new Card(CardColor.SARGA,CardValue.NYOLC));
+	    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.HAROM));
+	    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.NULLA));
+	    clientMachineTester.addCardToHand(new Card(CardColor.SARGA,CardValue.HUZZKETTOT));
+	    clientMachineTester.addCardToHand(new Card(CardColor.KEK,CardValue.NULLA));
+	    clientMachineTester.addCardToHand(card1);
+	    clientMachineTester.addCardToHand(new Card(CardColor.PIROS,CardValue.HUZZKETTOT));
+	    
+	    assertEquals("The first FORDITO  card in the hand is KEK FORDITO ",card1, clientMachineTester.searchCertainCardAnyColor(CardValue.FORDITTO));
+		
+		assertEquals("The first NULLA numbered card in the hand is ZOLD  NULLA ",CardColor.ZOLD, clientMachineTester.searchCertainCardAnyColor(CardValue.NULLA).getCardColor());
+		
+		assertEquals("The first HUZZKETTOT card in the hand is SARGA  HUZZKETTOT ",CardColor.SARGA, clientMachineTester.searchCertainCardAnyColor(CardValue.HUZZKETTOT).getCardColor());
+		
+		assertEquals("There is no KIMARADSZ card in the hand ",null, clientMachineTester.searchCertainCardAnyColor(CardValue.KIMARADSZ));
+		
+	    clientMachineTester.addCardToHand(new Card(CardColor.PIROS,CardValue.KIMARADSZ));
+		
+		assertNotEquals("There is now a KIMARADSZ card in the hand ",null, clientMachineTester.searchCertainCardAnyColor(CardValue.KIMARADSZ));
+		
+		assertEquals("The KIMARADSZ card is the PIROS KIMARADSZ ",CardColor.PIROS, clientMachineTester.searchCertainCardAnyColor(CardValue.KIMARADSZ).getCardColor());
+		
+	    
+	}
 	
 }

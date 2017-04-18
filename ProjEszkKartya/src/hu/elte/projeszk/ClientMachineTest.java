@@ -11,13 +11,13 @@ import org.junit.runners.Parameterized.Parameters;
 
 public class ClientMachineTest {
 
-
+	ClientMachine clientMachineTester = new ClientMachine();
 	
 	  
 	@Test
     public void clientMachineHandTestAddAndRemoveCardMethods() {
 		
-	    ClientMachine clientMachineTester = new ClientMachine(); 
+	  
 	   
 	    clientMachineTester.addCardToHand(new Card (CardColor.PIROS,CardValue.HAT));
 	    clientMachineTester.addCardToHand(new Card (CardColor.SARGA,CardValue.KILENC));
@@ -44,7 +44,7 @@ public class ClientMachineTest {
 	@Test
     public void clientMachineHandTestSearchSameColor0_9_Number() {
 		
-	    ClientMachine clientMachineTester = new ClientMachine(); 
+	   
 	   
 	    Card card1= new Card(CardColor.PIROS,CardValue.HAT);
 	    Card card2= new Card(CardColor.KEK,CardValue.NULLA);
@@ -69,7 +69,7 @@ public class ClientMachineTest {
     public void clientMachineHandTestsearchCertainCardAnyColor() {
 		
 		
-		ClientMachine clientMachineTester = new ClientMachine();
+		
 	
 	    Card card1= new Card(CardColor.KEK,CardValue.FORDITTO);
 	    
@@ -103,7 +103,7 @@ public class ClientMachineTest {
 	@Test
     public void clientMachineHandTestsearchSameColorNotNumber() {
 		
-		ClientMachine clientMachineTester = new ClientMachine();
+		
 		
 	    Card card1= new Card(CardColor.KEK,CardValue.FORDITTO);
 	    Card card2= new Card(CardColor.KEK,CardValue.HUZZKETTOT);
@@ -133,7 +133,12 @@ public class ClientMachineTest {
 		
 	}
 	
+	@Test
+    public void clientMachineHandTestSearchJokerCard() {
+		 
 	
+		
+	}
 	
 	
 }

@@ -10,15 +10,14 @@ import  hu.elte.projeszk.Card;
 import org.junit.runners.Parameterized.Parameters; 
 
 public class ClientMachineTest {
-	  Card card1= new Card(CardColor.PIROS,CardValue.HAT);
-	  Card card2=new Card(CardColor.PIROS,CardValue.HAT);
+
 
 	
 	  
 	@Test
     public void clientMachineHandTestAddAndRemoveCardMethods() {
 		
-	    ClientMachine clientMachineTester = new ClientMachine(); // MyClass is tested
+	    ClientMachine clientMachineTester = new ClientMachine(); 
 	   
 	    clientMachineTester.addCardToHand(new Card (CardColor.PIROS,CardValue.HAT));
 	    clientMachineTester.addCardToHand(new Card (CardColor.SARGA,CardValue.KILENC));
@@ -45,7 +44,7 @@ public class ClientMachineTest {
 	@Test
     public void clientMachineHandTestSearchSameColor0_9_Number() {
 		
-	    ClientMachine clientMachineTester = new ClientMachine(); // MyClass is tested
+	    ClientMachine clientMachineTester = new ClientMachine(); 
 	   
 	    Card card1= new Card(CardColor.PIROS,CardValue.HAT);
 	    Card card2= new Card(CardColor.KEK,CardValue.NULLA);
@@ -70,12 +69,9 @@ public class ClientMachineTest {
     public void clientMachineHandTestsearchCertainCardAnyColor() {
 		
 		
-		ClientMachine clientMachineTester = new ClientMachine(); // MyClass is tested
-		   
-	
+		ClientMachine clientMachineTester = new ClientMachine();
 	
 	    Card card1= new Card(CardColor.KEK,CardValue.FORDITTO);
-
 	    
 	    clientMachineTester.addCardToHand(new Card(CardColor.PIROS,CardValue.HAT));
 	    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.KETTO));
@@ -103,5 +99,18 @@ public class ClientMachineTest {
 		
 	    
 	}
+	
+	@Test
+    public void clientMachineHandTestsearchSameColorNotNumber() {
+		
+		
+
+		
+		
+		
+	}
+	
+	
+	
 	
 }

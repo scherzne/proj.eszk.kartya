@@ -50,16 +50,16 @@ return selectedCard;
 }
 
 
-protected Card searchNumberOfCertainColor(CardColor color) {
-	//Olyan számot keresünk ami azonos színű a legfelső lappal
-	
+protected Card searchAnyNumberOfCertainColor(CardColor color) {
+	//kártyát keresünk adott szín alapján (sima számmal ellátott lapot)
 	Card card = null;
 	for (Card h: hand ){
 
 		
 		if (h.getCardColor().equals(color) && h.getValue() <10){
+			
 			return h;
-	
+			
 		}
 
 	}
@@ -69,7 +69,7 @@ protected Card searchNumberOfCertainColor(CardColor color) {
 
 
 protected Card searchCertainCardAnyColor(CardValue value) {
-	//Olyan számot keresünk ami azonos színű a legfelső lappal
+	//kártyát keresünk azonos érték alapján
 	
 	Card card = null;
 	for (Card h: hand ){
@@ -85,8 +85,8 @@ protected Card searchCertainCardAnyColor(CardValue value) {
 	return card;
 }
 
-protected Card searchNotNumberSameColor(CardColor color) {
-	//Olyan számot keresünk ami azonos színű a legfelső lappal
+protected Card searchSameColorNotNumber(CardColor color) {
+	//kártyát keresünk adott szín alapján (csak "szivató kártyát")
 	
 	Card card = null;
 	for (Card h: hand ){
@@ -103,7 +103,7 @@ protected Card searchNotNumberSameColor(CardColor color) {
 }
 
 protected Card searchJokerCard() {
-	//Olyan számot keresünk ami azonos színű a legfelső lappal
+	//Szinkérőt azaza Jokert keresünk
 	
 	Card card = null;
 	for (Card h: hand ){
@@ -120,7 +120,7 @@ protected Card searchJokerCard() {
 }
 
 protected Card searchDrawFourJoker() {
-	//Olyan számot keresünk ami azonos színű a legfelső lappal
+	//plusz 4-est keresünk
 	
 	Card card = null;
 	for (Card h: hand ){
@@ -138,7 +138,7 @@ protected Card searchDrawFourJoker() {
 
 protected Card searchWhenTopNumber(Card topCard){
 	// számot keresünk 0-9 ig, ugyanolyan színben
-	Card	selectedCard = searchNumberOfCertainColor(topCard.getCardColor());
+	Card	selectedCard = searchAnyNumberOfCertainColor(topCard.getCardColor());
 			
 	if (selectedCard == null){
 		
@@ -150,7 +150,7 @@ protected Card searchWhenTopNumber(Card topCard){
 	if (selectedCard == null){
 		
 		// "szivató kártyát" ugyanolyan színben
-		selectedCard = searchNotNumberSameColor(topCard.getCardColor());
+		selectedCard = searchSameColorNotNumber(topCard.getCardColor());
 		
 	}
 	

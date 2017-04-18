@@ -136,8 +136,25 @@ public class ClientMachineTest {
 	@Test
     public void clientMachineHandTestSearchJokerCard() {
 		 
-		 clientMachineTester = new ClientMachine();
-		
+		    clientMachineTester = new ClientMachine();
+		 
+		    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.HAT));
+		    clientMachineTester.addCardToHand(new Card(CardColor.KEK,CardValue.KILENC));
+		    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.FORDITTO));
+		    clientMachineTester.addCardToHand(new Card(CardColor.FEKETE,CardValue.HUZZNEGYET));
+		   
+		    assertEquals("There is no SZINKERO ",null, clientMachineTester.searchJokerCard());
+		   
+		    clientMachineTester.addCardToHand(new Card(CardColor.FEKETE,CardValue.SZINKEREO));
+		    
+		    assertEquals("There is now one SZINKERO ",CardValue.SZINKEREO, clientMachineTester.searchJokerCard().getCardValue());
+			 
+		    clientMachineTester.removeCardFromHand(clientMachineTester.searchJokerCard());
+			  
+		   
+		    assertEquals("There is no SZINKERO again ",null, clientMachineTester.searchJokerCard());
+			  
+		    
 	}
 	
 	

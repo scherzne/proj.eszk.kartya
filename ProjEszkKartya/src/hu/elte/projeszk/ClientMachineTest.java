@@ -103,10 +103,33 @@ public class ClientMachineTest {
 	@Test
     public void clientMachineHandTestsearchSameColorNotNumber() {
 		
+		ClientMachine clientMachineTester = new ClientMachine();
 		
-
+	    Card card1= new Card(CardColor.KEK,CardValue.FORDITTO);
+	    Card card2= new Card(CardColor.KEK,CardValue.HUZZKETTOT);
+	  
+	    clientMachineTester.addCardToHand(new Card(CardColor.KEK,CardValue.HAT));
+	    clientMachineTester.addCardToHand(new Card(CardColor.KEK,CardValue.NULLA));
+	    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.KETTO));
+	    clientMachineTester.addCardToHand(new Card(CardColor.SARGA,CardValue.NYOLC));
+	    clientMachineTester.addCardToHand(card1);
+	    clientMachineTester.addCardToHand(new Card(CardColor.KEK,CardValue.KIMARADSZ));
+	    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.NULLA));
+	    clientMachineTester.addCardToHand(card2);
+	
+	    assertEquals("The KEK FORDITO card is the first not numbered KEK colored card ",card1, clientMachineTester.searchSameColorNotNumber(CardColor.KEK));
+	    
+	    clientMachineTester.removeCardFromHand(card1);
+	    
+	    assertEquals("The KEK KIMARADSZ card is the first not numbered KEK colored card ",CardValue.KIMARADSZ, clientMachineTester.searchSameColorNotNumber(CardColor.KEK).getCardValue());
 		
+	    clientMachineTester.removeCardFromHand(clientMachineTester.searchSameColorNotNumber(CardColor.KEK));
+	    
+	    assertEquals("The KEK HUZZKETTOT card is the first not numbered KEK colored card ",CardValue.HUZZKETTOT, clientMachineTester.searchSameColorNotNumber(CardColor.KEK).getCardValue());
 		
+	    clientMachineTester.removeCardFromHand(clientMachineTester.searchSameColorNotNumber(CardColor.KEK));
+	     
+	    assertEquals("There is no more KEK not-numbered card ",null, clientMachineTester.searchSameColorNotNumber(CardColor.KEK));
 		
 	}
 	

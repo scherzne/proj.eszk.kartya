@@ -38,11 +38,17 @@ public Card machineCardChooseAlgorithm(Card topCard, boolean lastPlayerDrawed, C
 	Card selectedCard= null;
 	
 	//szabályok egy kártyát ad vissza az alapján hogy mi van a kezében, az előző játékos huzott-e és van e színkötelezettség
+	//ELSO ESET
 	if (!lastPlayerDrawed && declaredColor.equals(CardColor.FEKETE)){
 		// nincs színkérés és az utolsó ember nem húzott  kártyát
 		if(topCard.getValue()<10){
 			
 			selectedCard = searchWhenTopNumber(topCard);
+		}else{
+			//legfelso kartya nem szam!
+			
+			
+			
 		}
 		
 	}

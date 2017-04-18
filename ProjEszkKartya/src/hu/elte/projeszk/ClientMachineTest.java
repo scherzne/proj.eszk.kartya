@@ -17,7 +17,7 @@ public class ClientMachineTest {
 	@Test
     public void clientMachineHandTestAddAndRemoveCardMethods() {
 		
-		 clientMachineTester = new ClientMachine();
+		clientMachineTester = new ClientMachine();
 	   
 	    clientMachineTester.addCardToHand(new Card (CardColor.PIROS,CardValue.HAT));
 	    clientMachineTester.addCardToHand(new Card (CardColor.SARGA,CardValue.KILENC));
@@ -176,4 +176,49 @@ public class ClientMachineTest {
 			  
 		    
 	}
+	
+	@Test
+    public void clientMachineHandTestMachineCardChooseAlgorithm_First_Case() {
+		//Az elso eset amikor a legfelso eldobott lap (top card) csak szam
+		
+		    clientMachineTester = new ClientMachine();
+	
+		    Card  expectCard1 = new Card(CardColor.ZOLD,CardValue.HAT);
+		    Card  expectCard2 = new Card(CardColor.KEK,CardValue.KILENC);
+		    
+		    clientMachineTester.addCardToHand(expectCard1);
+		    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.FORDITTO));
+		    clientMachineTester.addCardToHand(expectCard2);
+		    clientMachineTester.addCardToHand(new Card(CardColor.FEKETE,CardValue.HUZZNEGYET));
+		    clientMachineTester.addCardToHand(new Card(CardColor.PIROS,CardValue.FORDITTO));
+		    
+	
+		    Card topCard =  new Card(CardColor.ZOLD,CardValue.KILENC);
+		    assertEquals("If top card is ZOLD KILENC the return card should be ZOLD HAT", expectCard1,  clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE));
+	
+		    topCard =   new Card(CardColor.SARGA,CardValue.HAT);
+		    assertEquals("If top card is SARGA HAT the return card should be ZOLD HAT", expectCard1,  clientMachineTester.machineCardChooseAlgorithm(topCard,false,CardColor.FEKETE));
+			
+		    topCard =  new Card(CardColor.PIROS,CardValue.KILENC);
+		    assertEquals("If top card is PIROS KILENC the return card should be KEK KILENC", expectCard2,clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE));
+		    
+		    clientMachineTester.removeCardFromHand(expectCard2);
+		    assertEquals("If top card is PIROS KILENC and after removed is KEK KILENC the return card should be PIROS FORDITTO", CardValue.FORDITTO, clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE).getCardValue());
+			 
+		    
+		    clientMachineTester.removeCardFromHand(clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE));
+		    assertEquals("If top card is PIROS KILENC and after removed is PIROS FORDITTO the return card should be FEKETE HUZZNEGYET", CardValue.HUZZNEGYET, clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE).getCardValue());
+			
+		    clientMachineTester.removeCardFromHand(clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE));
+		    clientMachineTester.addCardToHand(new Card(CardColor.PIROS,CardValue.SZINKEREO));
+		    assertEquals("If top card is PIROS KILENC and after removed is HUZZNEGYET  the return card should be FEKETE SZINKERO", CardValue.SZINKEREO, clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE).getCardValue());
+			
+		    clientMachineTester.removeCardFromHand(clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE));
+		    assertEquals("If top card is PIROS KILENC and after removed is HUZZNEGYET  the return card should be null", null, clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE));
+			 
+		    
+		    
+	}
+	
+	
 }

@@ -158,4 +158,22 @@ public class ClientMachineTest {
 	}
 	
 	
+	@Test
+    public void clientMachineHandTestSearchDrawFourJoker() {
+		 
+		    clientMachineTester = new ClientMachine();
+		 
+		    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.HAT));
+		    clientMachineTester.addCardToHand(new Card(CardColor.KEK,CardValue.KILENC));
+		    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.FORDITTO));
+		    clientMachineTester.addCardToHand(new Card(CardColor.FEKETE,CardValue.HUZZNEGYET));
+		   
+		    assertEquals("There is one HUZZNEGYET ",CardValue.HUZZNEGYET, clientMachineTester.searchDrawFourJoker().getCardValue());
+		   
+		    clientMachineTester.removeCardFromHand(clientMachineTester.searchDrawFourJoker());
+			     
+		    assertEquals("The  HUZZNEGYET is removed from hand ",null, clientMachineTester.searchDrawFourJoker());
+			  
+		    
+	}
 }

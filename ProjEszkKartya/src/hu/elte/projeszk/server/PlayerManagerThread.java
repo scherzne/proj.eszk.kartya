@@ -17,7 +17,7 @@ import java.util.HashMap;
 public class PlayerManagerThread extends Thread {
 	private ArrayList<Card> cardPack;
 	private HashMap<Integer, PlayerThread> playerThreads;
-	//private ArrayList<Player> players;//TODO: ez csak átmeneti, nem kell
+	private ArrayList<Player> players;//mégis kell, mert különben nem ismert a játékosok sorrendje, úgyis csak referenciákat tartalmaz, nem túl nagy
 	private int managerId=-1;	
 	
 	private int nextPlayer=0;
@@ -32,7 +32,7 @@ public class PlayerManagerThread extends Thread {
 	public PlayerManagerThread(int id,ArrayList<Player> players) {
 		super("manager "+id);
 		this.managerId=id;
-		//this.players=players;
+		this.players=players;
 		
 		cardPack=new ArrayList<>();
 		playerThreads=new HashMap<>();

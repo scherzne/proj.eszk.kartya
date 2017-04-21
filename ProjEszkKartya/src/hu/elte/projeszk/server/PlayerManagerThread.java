@@ -62,9 +62,9 @@ public class PlayerManagerThread extends Thread {
 			thread.start();
 			//első üzenet: add meg a neved, egy sima szöveges és egy névbekérő
 			serverMessage(thread.getPlayer(), "Add meg a neved:");
-			serverMessage(thread.getPlayer(), Consts.REQUEST_NAME, new String[]{});
+			serverMessage(thread.getPlayer(), Consts.REQUEST_NAME, null);
 		}
-		//TODO:nevek bekérése
+
 		super.run();
 	}
 	/**
@@ -94,10 +94,12 @@ public class PlayerManagerThread extends Thread {
 		StringBuilder builder=new StringBuilder();
 		
 		builder.append(messageType).append(Consts.MESSAGE_SEPARATOR);
-		for(int i=0;i<messageParts.length;i++){
-			builder.append(messageParts[i]);
-			if(i<messageParts.length-1)
-				builder.append(Consts.MESSAGE_SEPARATOR);
+		if(messageParts!=null){
+			for(int i=0;i<messageParts.length;i++){
+				builder.append(messageParts[i]);
+				if(i<messageParts.length-1)
+					builder.append(Consts.MESSAGE_SEPARATOR);
+			}
 		}
 		
 		to.write(builder.toString());

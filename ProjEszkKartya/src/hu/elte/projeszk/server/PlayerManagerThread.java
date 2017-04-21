@@ -121,4 +121,14 @@ public class PlayerManagerThread extends Thread {
 		//pakli megkeverése
 		Collections.shuffle(cardPack);
 	}
+
+	/**
+	 * Manager azonosító visszaadása, amit a konstruktornak kell átadni
+	 * @return nem az örökölt thread id-t, hanem a manager azonosító
+	 */
+	public int getManagerId() {
+		return this.id;
+	}
+	
+	
 }

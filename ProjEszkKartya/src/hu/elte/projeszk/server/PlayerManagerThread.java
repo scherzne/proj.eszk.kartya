@@ -58,6 +58,9 @@ public class PlayerManagerThread extends Thread {
 	public void run() {
 		logToConsole("Player Manager "+this.managerId+" started");
 		//TODO:szálak indítása
+		for(PlayerThread thread:playerThreads.values()){
+			thread.start();
+		}
 		//TODO:nevek bekérése
 		super.run();
 	}
@@ -77,6 +80,25 @@ public class PlayerManagerThread extends Thread {
 		to.write(Consts.SEND_MESSAGE+Consts.MESSAGE_SEPARATOR+"Szerver: "+mess);
 	}
 
+	/**
+	 * Szerver nem sima üzenet típusú, hanem egyéb funkciójú üzenete a játékosnak
+	 * @param to a játékos
+	 * @param messageType az üzenet típusa, ez egy konstans karakter
+	 * @param messageParts az ebben lévő darabokat vesszővel elválasztva összeilleszti és 
+	 * hozzáfűzi az üzenet típust meghatározó karakterhez
+	 */
+	protected void serverMessage(Player to, char messageType, String[] messageParts){
+		StringBuilder builder=new StringBuilder();
+		
+		builder.append(messageType).append(Consts.MESSAGE_SEPARATOR);
+		for(int i=0;i<messageParts.length;i++){
+			builder.append(messageParts[i]);
+			if(i<messageParts.length-1)
+				builder.append(Consts.MESSAGE_SEPARATOR);
+		}
+		
+		to.write(builder.toString());
+	}
 	/**
 	 * Legfelső kártya húzása(és eltávolítása) a pakliból
 	 * @return vagy egy kártya vagy null ha a pakli már üres!

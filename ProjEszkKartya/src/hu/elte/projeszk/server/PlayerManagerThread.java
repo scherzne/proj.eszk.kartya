@@ -57,9 +57,12 @@ public class PlayerManagerThread extends Thread {
 	@Override
 	public void run() {
 		logToConsole("Player Manager "+this.managerId+" started");
-		//TODO:szálak indítása
+
 		for(PlayerThread thread:playerThreads.values()){
 			thread.start();
+			//első üzenet: add meg a neved, egy sima szöveges és egy névbekérő
+			serverMessage(thread.getPlayer(), "Add meg a neved:");
+			serverMessage(thread.getPlayer(), Consts.REQUEST_NAME, new String[]{});
 		}
 		//TODO:nevek bekérése
 		super.run();

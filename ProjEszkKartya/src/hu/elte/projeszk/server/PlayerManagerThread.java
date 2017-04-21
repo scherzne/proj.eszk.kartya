@@ -18,7 +18,7 @@ public class PlayerManagerThread extends Thread {
 	private ArrayList<Card> cardPack;
 	private HashMap<Integer, PlayerThread> playerThreads;
 	//private ArrayList<Player> players;//TODO: ez csak átmeneti, nem kell
-	private int id=-1;	
+	private int managerId=-1;	
 	
 	private int nextPlayer=0;
 	private boolean isRunning=false; 
@@ -31,7 +31,7 @@ public class PlayerManagerThread extends Thread {
 	 */
 	public PlayerManagerThread(int id,ArrayList<Player> players) {
 		super("manager "+id);
-		this.id=id;
+		this.managerId=id;
 		//this.players=players;
 		
 		cardPack=new ArrayList<>();
@@ -56,11 +56,18 @@ public class PlayerManagerThread extends Thread {
 	
 	@Override
 	public void run() {
+		logToConsole("Player Manager "+this.managerId+" started");
 		//TODO:szálak indítása
 		//TODO:nevek bekérése
 		super.run();
 	}
-
+	/**
+	 * Üzenet a standard outputra, mindenféle loghoz
+	 * @param message
+	 */
+	protected void logToConsole(String message){
+		System.out.println(message);
+	}
 	/**
 	 * Szerver üzenete a játékosnak
 	 * @param to
@@ -127,7 +134,7 @@ public class PlayerManagerThread extends Thread {
 	 * @return nem az örökölt thread id-t, hanem a manager azonosító
 	 */
 	public int getManagerId() {
-		return this.id;
+		return this.managerId;
 	}
 	
 	

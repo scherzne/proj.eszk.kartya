@@ -15,9 +15,9 @@ import java.util.HashMap;
  *
  */
 public class PlayerManagerThread extends Thread {
-	private ArrayList<Card> cardPack=new ArrayList<>();
+	private ArrayList<Card> cardPack;
 	private HashMap<Integer, PlayerThread> playerThreads;
-	private ArrayList<Player> players;//TODO: ez csak átmeneti, nem kell
+	//private ArrayList<Player> players;//TODO: ez csak átmeneti, nem kell
 	private int id=-1;	
 	
 	private int nextPlayer=0;
@@ -32,8 +32,14 @@ public class PlayerManagerThread extends Thread {
 	public PlayerManagerThread(int id,ArrayList<Player> players) {
 		super("manager "+id);
 		this.id=id;
-		this.players=players;
-		//TODO: szálak létrehozása és elindítása
+		//this.players=players;
+		
+		cardPack=new ArrayList<>();
+		playerThreads=new HashMap<>();
+		for(Player player:players){
+			PlayerThread thread=new PlayerThread(player, this);
+			playerThreads.put(player.getId(), thread);
+		}
 		
 		generatePack();
 	}	
@@ -50,7 +56,8 @@ public class PlayerManagerThread extends Thread {
 	
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		//TODO:szálak indítása
+		//TODO:nevek bekérése
 		super.run();
 	}
 

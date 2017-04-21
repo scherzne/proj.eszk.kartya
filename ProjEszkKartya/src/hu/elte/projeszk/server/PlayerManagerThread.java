@@ -3,6 +3,7 @@ package hu.elte.projeszk.server;
 import hu.elte.projeszk.Card;
 import hu.elte.projeszk.Card.CardColor;
 import hu.elte.projeszk.Card.CardValue;
+import hu.elte.projeszk.Consts;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,7 +44,7 @@ public class PlayerManagerThread extends Thread {
 	 * @param row beolvasott sor a kliens-ről
 	 * @return
 	 */
-	public boolean readRow(Player player, String row){
+	public synchronized boolean readRow(Player player, String row){
 		return false;
 	}
 	
@@ -51,6 +52,15 @@ public class PlayerManagerThread extends Thread {
 	public void run() {
 		// TODO Auto-generated method stub
 		super.run();
+	}
+
+	/**
+	 * Szerver üzenete a játékosnak
+	 * @param to
+	 * @param mess
+	 */
+	protected void serverMessage(Player to,String mess){
+		to.write(Consts.SEND_MESSAGE+"Szerver: "+mess);
 	}
 
 	/**

@@ -60,7 +60,7 @@ public class PlayerManagerThread extends Thread {
 	 * @param mess
 	 */
 	protected void serverMessage(Player to,String mess){
-		to.write(Consts.SEND_MESSAGE+"Szerver: "+mess);
+		to.write(Consts.SEND_MESSAGE+Consts.MESSAGE_SEPARATOR+"Szerver: "+mess);
 	}
 
 	/**

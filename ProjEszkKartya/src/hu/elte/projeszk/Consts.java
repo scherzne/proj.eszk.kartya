@@ -54,4 +54,8 @@ public class Consts {
 	 * Szerver küld egy 'M'essage-t
 	 */
 	public static final char SEND_MESSAGE='M';
+	/**
+	 * Üzenet részei közti elválasztó karakter
+	 */
+	public static final char MESSAGE_SEPARATOR=',';
 }

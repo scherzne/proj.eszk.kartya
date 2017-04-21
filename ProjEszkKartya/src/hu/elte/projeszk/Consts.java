@@ -25,4 +25,33 @@ public class Consts {
 	 * Másodpercben. Ha valaki ennyi inaktivitás után nem csinál semmit le kell dobni.
 	 */
 	public static final int INACTIVE_TIMEOUT=60*5;
+	
+	/**
+	 * Megegyezés alapján a kliens-szerver üzenetek kezdő karakterének konstansai
+	 */
+	
+	/**
+	 * Lapot 'A'd a szerver
+	 */
+	public static final char SEND_CARD='A';
+	/**
+	 * 'L'apot kér a kliens
+	 */
+	public static final char REQUEST_CARD='L';
+	/**
+	 * 'S'zín kérésre válaszolunk
+	 */
+	public static final char SEND_COLOR='S';
+	/**
+	 * 'N'em tudunk lapot rakni
+	 */
+	public static final char NO_CARD='N';
+	/**
+	 * Játékos nevének 'B'ekérése
+	 */
+	public static final char REQUEST_NAME='B';
+	/**
+	 * Szerver küld egy 'M'essage-t
+	 */
+	public static final char SEND_MESSAGE='M';
 }

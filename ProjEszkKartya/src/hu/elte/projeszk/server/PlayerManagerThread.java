@@ -64,7 +64,18 @@ public class PlayerManagerThread extends Thread {
 			serverMessage(thread.getPlayer(), "Add meg a neved:");
 			serverMessage(thread.getPlayer(), Consts.REQUEST_NAME, null);
 		}
-
+		isRunning=true;
+		
+		//ő csak egy szál, ami tud a többiről, nem kell túl gyorsan pörögjön, 
+		while(isRunning){
+			try {
+				sleep(300);
+			} catch (InterruptedException e) {
+				isRunning=false;
+			}
+			//TODO: checkPlayersAreLiving, ellenőrzés hogy van-e még élő játékos, ne maradjon a szál a levegőben
+		}
+				
 		super.run();
 	}
 	/**

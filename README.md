@@ -1,4 +1,4 @@
-# Uno kártyjáték projekt
+# Uno kártyajáték projekt
 
 ## Elte IK Projekt Eszközök, kliens-szerver kártya játék
 

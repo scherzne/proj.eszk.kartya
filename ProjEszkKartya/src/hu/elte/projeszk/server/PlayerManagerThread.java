@@ -15,7 +15,14 @@ import java.util.HashMap;
  *
  */
 public class PlayerManagerThread extends Thread {
+	/**
+	 * Aktív pakli tárolása
+	 */
 	private ArrayList<Card> cardPack;
+	/**
+	 * Bedobott és az első felforgatott kártyalap is ebbe kerül, hogy újra lehessen keverni
+	 */
+	private ArrayList<Card> droppedCards;
 	private HashMap<Integer, PlayerThread> playerThreads;
 	private ArrayList<Player> players;//mégis kell, mert különben nem ismert a játékosok sorrendje, úgyis csak referenciákat tartalmaz, nem túl nagy
 	private int managerId=-1;	
@@ -39,14 +46,16 @@ public class PlayerManagerThread extends Thread {
 		super("manager "+id);
 		this.managerId=id;
 		this.players=players;
-		
+		//init
 		cardPack=new ArrayList<>();
+		droppedCards=new ArrayList<>();
 		playerThreads=new HashMap<>();
+		//thread létrehozása és indítása
 		for(Player player:players){
 			PlayerThread thread=new PlayerThread(player, this);
 			playerThreads.put(player.getId(), thread);
 		}
-		
+		//pakli generálás
 		generatePack();
 	}	
 	
@@ -57,48 +66,54 @@ public class PlayerManagerThread extends Thread {
 	 * @return
 	 */
 	public synchronized boolean readRow(Player player, String row){
-		//első lépés: a játékos meg kell adja a nevét, addig nem mehet tovább a játék
-		//(nem kezdődhet el) amíg nincs mindenkinek neve
-		//ezt legegyszerűbb úgy megállapítani, hogy a neve még null-e vagy sem
-		//erre válasz a 7 leosztott lap neki
-		if(player.getName()==null){
-			player.setName(row.trim());
-			nameCount++;
-			if(nameCount>=players.size())canPlay=true;
-			//osztás
-			Card card;
-			String mess1=Consts.SEND_CARD+"7";//7 lapot adunk
-			String arr[]=new String[7];//itt lesznek a lapok
-			for(int i=0;i<7;i++){
-				card=drawCardFromPack();
-				arr[i]=""+Card.convertCardColorToCharacter(card.getCardColor())+
-						Card.convertCardValueToCharacter(card.getCardValue());
-			}
-			serverMessage(player, mess1, arr);//lapok küldése a játékosnak
-			
-			//ha ő az utolsó aki megadta a nevét, mindenkinek küldjük ki hogy kezdődik
-			//illetve az első játékosnak aki jön, hogy ő jön
-			if(canPlay && nextPlayer<0){//ez akkor teljesül, ha már játszhatunk, de még nincs köv. játékos
-				//kezdő játékos (0.) nevét közöljük mindenkivel, meg persze saját magával is
-				String pName=players.get(0).getName();//pl:jenő
-				serverMessage(players.get(0), "Kedves "+pName+"! Te kezdesz!");
-				for(int i=1;i<players.size();i++){
-					serverMessage(players.get(i), "A játék kezdődik, "+pName+" kezd.");
+		if(row!=null){
+			//első lépés: a játékos meg kell adja a nevét, addig nem mehet tovább a játék
+			//(nem kezdődhet el) amíg nincs mindenkinek neve
+			//ezt legegyszerűbb úgy megállapítani, hogy a neve még null-e vagy sem
+			//erre válasz a 7 leosztott lap neki
+			if(player.getName()==null){
+				player.setName(row.trim());
+				nameCount++;
+				if(nameCount>=players.size())canPlay=true;
+				//osztás
+				Card card;
+				String mess1=Consts.SEND_CARD+"7";//7 lapot adunk
+				String arr[]=new String[7];//itt lesznek a lapok
+				for(int i=0;i<7;i++){
+					card=drawCardFromPack();
+					arr[i]=""+Card.convertCardColorToCharacter(card.getCardColor())+
+							Card.convertCardValueToCharacter(card.getCardValue());
 				}
-				nextPlayer=players.get(0).getId();//a köv játékos azonosítóját tesszük most el,
-				// lehetne az indexe is, mert úgyis így jöttek sorba a körbe, mindegy majd kiderül
-				//melyik kényelmesebb
-				//TODO: egy lap felforgatás
-			}
-		}else{//nevét már megadta, de lehet, hogy nem lehet még kezdeni
-			if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön
-				//TODO:játék
-			}else{//még nem küldhet lapot
-				serverMessage(player, "Nem te jössz, még nem adta meg mindenki a nevét!");
-			}
-		}
+				serverMessage(player, mess1, arr);//lapok küldése a játékosnak
 				
-		return false;
+				//ha ő az utolsó aki megadta a nevét, mindenkinek küldjük ki hogy kezdődik
+				//illetve az első játékosnak aki jön, hogy ő jön
+				if(canPlay && nextPlayer<0){//ez akkor teljesül, ha már játszhatunk, de még nincs köv. játékos
+					//kezdő játékos (0.) nevét közöljük mindenkivel, meg persze saját magával is
+					String pName=players.get(0).getName();//pl:jenő
+					serverMessage(players.get(0), "Kedves "+pName+"! Te kezdesz!");
+					for(int i=1;i<players.size();i++){
+						serverMessage(players.get(i), "A játék kezdődik, "+pName+" kezd.");
+					}
+					nextPlayer=players.get(0).getId();//a köv játékos azonosítóját tesszük most el,
+					// lehetne az indexe is, mert úgyis így jöttek sorba a körbe, mindegy majd kiderül
+					//melyik kényelmesebb
+					//TODO: egy lap felforgatás
+				}
+			}else{//nevét már megadta, de lehet, hogy nem lehet még kezdeni
+				if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön
+					//TODO:játék
+				}else{//még nem küldhet lapot
+					serverMessage(player, "Nem te jössz, még nem adta meg mindenki a nevét!");
+				}
+			}
+		}else{//gáz van, kilépett vagy leszakadt. jó esetben a streamen ekkor jön a null
+			return false;
+			//TODO:valamit kezdeni a többiekkel, vagy mindenkit ledobni, mert nem
+			//lehet tudni milyen lapjai voltak
+		}
+		
+		return true;
 	}
 	
 	@Override

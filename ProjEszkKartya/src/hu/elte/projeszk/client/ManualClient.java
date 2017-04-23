@@ -1,8 +1,6 @@
-package hu.elte.projekteszk.client;
+package hu.elte.projeszk.client;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -10,14 +8,13 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-import hu.elte.projekteszk.Card;
-import hu.elte.projekteszk.Card.CardColor;
-import hu.elte.projekteszk.Card.CardValue;
-import hu.elte.projekteszk.Consts;
+import hu.elte.projeszk.Card;
+import hu.elte.projeszk.Card.CardColor;
+import hu.elte.projeszk.Card.CardValue;
+import hu.elte.projeszk.Consts;
 
 public class ManualClient {
 	private BufferedReader br;

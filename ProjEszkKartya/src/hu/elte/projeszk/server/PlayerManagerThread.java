@@ -108,11 +108,22 @@ public class PlayerManagerThread extends Thread {
 			}else{//nevét már megadta, de lehet, hogy nem lehet még kezdeni
 				if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön
 					//TODO:játék
+					if(player.getId()==nextPlayer){//ha ő jön
+						char firstChar=row.charAt(0);//na mit küld-kér
+						switch(firstChar){
+						case Consts.REQUEST_CARD:break;
+						case Consts.SEND_COLOR:break;
+						case Consts.NO_CARD:break;
+						}
+					}else{//nem ő jön
+						serverMessage(player, "Nem te következel, várj egy kicsit!");
+					}					
 				}else{//még nem küldhet lapot
 					serverMessage(player, "Nem te jössz, még nem adta meg mindenki a nevét!");
 				}
 			}
-		}else{//gáz van, kilépett vagy leszakadt. jó esetben a streamen ekkor jön a null
+		}else{//gáz van, kilépett vagy leszakadt. jó esetben a streamen ekkor jön a null,
+			//rossz esetben semmi, csak nincs köv. játékos
 			return false;
 			//TODO:valamit kezdeni a többiekkel, vagy mindenkit ledobni, mert nem
 			//lehet tudni milyen lapjai voltak

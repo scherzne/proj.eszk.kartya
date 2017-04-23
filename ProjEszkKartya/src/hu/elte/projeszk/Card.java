@@ -223,6 +223,22 @@ public class Card {
 		return c;
 	}
 
+	/**
+	 * Rendkívül kényelmetlen a folytonos konverzió, erre kis segítség
+	 * @return a kártya színe karakterként, pl: P,K,S...
+	 */
+	public char getCardColorAsChar(){
+		return convertCardColorToCharacter(cardColor);
+	}
+	
+	/**
+	 * Rendkívül kényelmetlen a folytonos konverzió, erre kis segítség
+	 * @return kártya értéke karakterként, pl: 0,1,...
+	 */
+	public char getCardValueAsChar(){
+		return convertCardValueToCharacter(cardValue);
+	}
+	
 	public CardColor getCardColor() {
 		return cardColor;
 	}

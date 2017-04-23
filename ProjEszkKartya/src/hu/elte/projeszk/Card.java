@@ -248,6 +248,13 @@ public class Card {
 	}
 	
 	/**
+	 * Kártya értéke stringként is kell, úgy tűnik :)
+	 * @return
+	 */
+	public String getCardAsString(){
+		return ""+getCardColorAsChar()+getCardValueAsChar();
+	}
+	/**
 	 * Rendkívül kényelmetlen a folytonos konverzió, erre kis segítség
 	 * @return a kártya színe karakterként, pl: P,K,S...
 	 */

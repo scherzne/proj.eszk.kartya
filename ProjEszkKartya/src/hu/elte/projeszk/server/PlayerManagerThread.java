@@ -20,7 +20,7 @@ public class PlayerManagerThread extends Thread {
 	private ArrayList<Player> players;//mégis kell, mert különben nem ismert a játékosok sorrendje, úgyis csak referenciákat tartalmaz, nem túl nagy
 	private int managerId=-1;	
 	
-	private int nextPlayer=0;
+	private int nextPlayer=-1;//még senki
 	private boolean isRunning=false; 
 	
 	private String lastMessage;
@@ -75,6 +75,21 @@ public class PlayerManagerThread extends Thread {
 						Card.convertCardValueToCharacter(card.getCardValue());
 			}
 			serverMessage(player, mess1, arr);//lapok küldése a játékosnak
+			
+			//ha ő az utolsó aki megadta a nevét, mindenkinek küldjük ki hogy kezdődik
+			//illetve az első játékosnak aki jön, hogy ő jön
+			if(canPlay && nextPlayer<0){//ez akkor teljesül, ha már játszhatunk, de még nincs köv. játékos
+				//kezdő játékos (0.) nevét közöljük mindenkivel, meg persze saját magával is
+				String pName=players.get(0).getName();//pl:jenő
+				serverMessage(players.get(0), "Kedves "+pName+"! Te kezdesz!");
+				for(int i=1;i<players.size();i++){
+					serverMessage(players.get(i), "A játék kezdődik, "+pName+" kezd.");
+				}
+				nextPlayer=players.get(0).getId();//a köv játékos azonosítóját tesszük most el,
+				// lehetne az indexe is, mert úgyis így jöttek sorba a körbe, mindegy majd kiderül
+				//melyik kényelmesebb
+				//TODO: egy lap felforgatás
+			}
 		}else{//nevét már megadta, de lehet, hogy nem lehet még kezdeni
 			if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön
 				//TODO:játék

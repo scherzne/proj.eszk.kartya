@@ -81,8 +81,7 @@ public class PlayerManagerThread extends Thread {
 				String arr[]=new String[7];//itt lesznek a lapok
 				for(int i=0;i<7;i++){
 					card=drawCardFromPack();
-					arr[i]=""+Card.convertCardColorToCharacter(card.getCardColor())+
-							Card.convertCardValueToCharacter(card.getCardValue());
+					arr[i]=card.getCardAsString();
 				}
 				serverMessage(player, mess1, arr);//lapok küldése a játékosnak
 				
@@ -98,7 +97,10 @@ public class PlayerManagerThread extends Thread {
 					nextPlayer=players.get(0).getId();//a köv játékos azonosítóját tesszük most el,
 					// lehetne az indexe is, mert úgyis így jöttek sorba a körbe, mindegy majd kiderül
 					//melyik kényelmesebb
-					//TODO: egy lap felforgatás
+					
+					//egy lap felforgatás, ezt el is tesszük a gyűjtőbe, mert senki nem kapja meg
+					card=drawCardFromPack();
+					
 				}
 			}else{//nevét már megadta, de lehet, hogy nem lehet még kezdeni
 				if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön

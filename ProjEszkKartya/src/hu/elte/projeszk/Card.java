@@ -224,6 +224,30 @@ public class Card {
 	}
 
 	/**
+	 * Egy elméletileg kártya string üzenet feldolgozása
+	 * @param str pl: P4 , ami piros 4-est jelent
+	 * @return egy kártyával vagy null-al ha nem tudta parsolni
+	 */
+	public static Card parseCardFromString(String str){
+		if(str!=null){
+			str=str.trim();
+			if(str.length()==2){//ha már nem két karakter, tuti nem jó
+				char c=str.charAt(0);
+				char v=str.charAt(1);
+				
+				CardColor color=convertCharacterToCardColor(c);
+				CardValue val=convertCharacterToCardValue(v);
+				
+				if(color!=null && val!=null){
+					return new Card(color, val);
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * Rendkívül kényelmetlen a folytonos konverzió, erre kis segítség
 	 * @return a kártya színe karakterként, pl: P,K,S...
 	 */

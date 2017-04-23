@@ -23,6 +23,12 @@ public class PlayerManagerThread extends Thread {
 	private int nextPlayer=0;
 	private boolean isRunning=false; 
 	
+	private String lastMessage;
+	private boolean canPlay=false;//mindenki megadta-e a nevét, addig nincs kezdés
+	private int nameCount=0;//segéd, amiben számláljuk hányan adták meg a nevük
+	//ez már nem fog kelleni ha mindenki, átbeszi a helyét a canPlay, ekkor már nem 
+	//számlálgatunk arraylist-et
+	
 	/**
 	 * A szerver begyűjtötte a játszani óhajtott csoportot, a manager innen átveheti az irányítást
 	 * A szerver várhat a köv. adag játékosra
@@ -51,6 +57,25 @@ public class PlayerManagerThread extends Thread {
 	 * @return
 	 */
 	public synchronized boolean readRow(Player player, String row){
+		//első lépés: a játékos meg kell adja a nevét, addig nem mehet tovább a játék
+		//(nem kezdődhet el) amíg nincs mindenkinek neve
+		//ezt legegyszerűbb úgy megállapítani, hogy a neve még null-e vagy sem
+		//erre válasz a 7 leosztott lap neki
+		if(player.getName()==null){
+			player.setName(row.trim());
+			//TODO:osztás
+			Card card;
+			for(int i=0;i<7;i++){
+				card=drawCardFromPack();
+			}
+		}else{//nevét már megadta, de lehet, hogy nem lehet még kezdeni
+			if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön
+				//TODO:játék
+			}else{//még nem küldhet lapot
+				serverMessage(player, "Nem te jössz, még nem adta meg mindenki a nevét!");
+			}
+		}
+				
 		return false;
 	}
 	
@@ -62,7 +87,7 @@ public class PlayerManagerThread extends Thread {
 			thread.start();
 			//első üzenet: add meg a neved, egy sima szöveges és egy névbekérő
 			serverMessage(thread.getPlayer(), "Add meg a neved:");
-			serverMessage(thread.getPlayer(), Consts.REQUEST_NAME, null);
+			serverMessage(thread.getPlayer(), Consts.REQUEST_NAME+"", null);
 		}
 		isRunning=true;
 		
@@ -97,11 +122,11 @@ public class PlayerManagerThread extends Thread {
 	/**
 	 * Szerver nem sima üzenet típusú, hanem egyéb funkciójú üzenete a játékosnak
 	 * @param to a játékos
-	 * @param messageType az üzenet típusa, ez egy konstans karakter
+	 * @param messageType az üzenet típusa, ez egy String
 	 * @param messageParts az ebben lévő darabokat vesszővel elválasztva összeilleszti és 
 	 * hozzáfűzi az üzenet típust meghatározó karakterhez
 	 */
-	protected void serverMessage(Player to, char messageType, String[] messageParts){
+	protected void serverMessage(Player to, String messageType, String[] messageParts){
 		StringBuilder builder=new StringBuilder();
 		
 		builder.append(messageType).append(Consts.MESSAGE_SEPARATOR);
@@ -119,7 +144,7 @@ public class PlayerManagerThread extends Thread {
 	 * Legfelső kártya húzása(és eltávolítása) a pakliból
 	 * @return vagy egy kártya vagy null ha a pakli már üres!
 	 */
-	public Card drawCardFromPack(){
+	public synchronized Card drawCardFromPack(){
 		if(cardPack.size()>0){
 			return cardPack.remove(cardPack.size()-1);
 		}

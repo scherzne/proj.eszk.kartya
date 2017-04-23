@@ -99,8 +99,11 @@ public class PlayerManagerThread extends Thread {
 					//melyik kényelmesebb
 					
 					//egy lap felforgatás, ezt el is tesszük a gyűjtőbe, mert senki nem kapja meg
+					//valamint mindenkinek elküldjük, hogy erről kell indulni
 					card=drawCardFromPack();
-					
+					for(int i=0;i<players.size();i++){
+						serverMessage(players.get(i), Consts.SEND_CARD+"1", new String[]{card.getCardAsString()});
+					}
 				}
 			}else{//nevét már megadta, de lehet, hogy nem lehet még kezdeni
 				if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön

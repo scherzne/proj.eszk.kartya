@@ -63,11 +63,18 @@ public class PlayerManagerThread extends Thread {
 		//erre válasz a 7 leosztott lap neki
 		if(player.getName()==null){
 			player.setName(row.trim());
-			//TODO:osztás
+			nameCount++;
+			if(nameCount>=players.size())canPlay=true;
+			//osztás
 			Card card;
+			String mess1=Consts.SEND_CARD+"7";//7 lapot adunk
+			String arr[]=new String[7];//itt lesznek a lapok
 			for(int i=0;i<7;i++){
 				card=drawCardFromPack();
+				arr[i]=""+Card.convertCardColorToCharacter(card.getCardColor())+
+						Card.convertCardValueToCharacter(card.getCardValue());
 			}
+			serverMessage(player, mess1, arr);//lapok küldése a játékosnak
 		}else{//nevét már megadta, de lehet, hogy nem lehet még kezdeni
 			if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön
 				//TODO:játék

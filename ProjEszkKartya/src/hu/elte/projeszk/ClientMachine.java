@@ -40,13 +40,16 @@ public Card machineCardChooseAlgorithm(Card topCard, boolean lastPlayerDrawed, C
 	//szabályok egy kártyát ad vissza az alapján hogy mi van a kezében, az előző játékos huzott-e és van e színkötelezettség
 	//ELSO ESET
 	if (!lastPlayerDrawed && declaredColor.equals(CardColor.FEKETE)){
-		// nincs színkérés és az utolsó ember nem húzott  kártyát
+		// nincs színkérés és az utolsó ember nem húzott  kártyát azaz az előző játékos rakta
 		if(topCard.getValue()<10){
 			
 			selectedCard = searchWhenTopNumber(topCard);
 		}else{
 			//legfelso kartya nem szam!
+			// ha az előző játékos rakta akkor a sziveatósok közül nem lehet se fordító
+			// csak plussz 2 es plussz 4 es és szinkérő
 			
+			selectedCard = searchWhenTopNotNumber(topCard);
 			
 			
 		}
@@ -140,6 +143,24 @@ protected Card searchDrawFourJoker() {
 	}
 	
 	return card;
+}
+
+protected Card searchWhenTopNotNumber(Card topCard){
+	
+	
+	
+	Card selectedCard = searchCertainCardAnyColor(topCard.getCardValue());
+	
+	
+	if (selectedCard == null){
+	
+		
+		selectedCard = searchDrawFourJoker();
+	
+	}
+	
+	
+	return selectedCard;
 }
 
 protected Card searchWhenTopNumber(Card topCard){

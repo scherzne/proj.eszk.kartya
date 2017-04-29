@@ -179,7 +179,7 @@ public class ClientMachineTest {
 	
 	@Test
     public void clientMachineHandTestMachineCardChooseAlgorithm_First_Case() {
-		//Az elso eset amikor a legfelso eldobott lap (top card) csak szam
+		//Az elso eset amikor a legfelso eldobott lap (top card) csak szam, elöttünk lévő játékos rakta, és nincs színkényszer
 		
 		    clientMachineTester = new ClientMachine();
 	
@@ -220,5 +220,51 @@ public class ClientMachineTest {
 		    
 	}
 	
+	
+	@Test
+    public void clientMachineHandTestMachineCardChooseAlgorithm_Second_Case() {
+		//Az elso eset amikor a legfelso eldobott lap szivatos kártya, elöttünk lévő játékos rakta, és nincs színkényszer
+	    clientMachineTester = new ClientMachine();
+		
+	    Card  expectCard1 = new Card(CardColor.FEKETE,CardValue.SZINKEREO);
+	    Card  expectCard2 = new Card(CardColor.KEK,CardValue.HUZZKETTOT);
+	    Card  expectCard3 = new Card(CardColor.FEKETE,CardValue.HUZZNEGYET);
+	   
+	    
+	    //clientMachineTester.addCardToHand(expectCard1);
+	    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.FORDITTO));
+	 //   clientMachineTester.addCardToHand(expectCard2);
+	    clientMachineTester.addCardToHand(new Card(CardColor.KEK,CardValue.HAROM));
+	    clientMachineTester.addCardToHand(new Card(CardColor.PIROS,CardValue.KILENC));
+	    clientMachineTester.addCardToHand(new Card(CardColor.SARGA,CardValue.KIMARADSZ));
+	    clientMachineTester.addCardToHand(new Card(CardColor.KEK,CardValue.NULLA));
+	    clientMachineTester.addCardToHand(expectCard1);
+		
+	    
+	     Card topCard =   new Card(CardColor.SARGA,CardValue.HUZZKETTOT); 
+	     assertEquals("If top card is KEK HUZZKETTOT  the return card should be null", null, clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE));
+	     topCard =   new Card(CardColor.FEKETE,CardValue.HUZZNEGYET);
+	     assertEquals("If top card is FEKETE HUZZNEGYET  the return card should be null", null, clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE));
+		
+		
+	     topCard =   new Card(CardColor.FEKETE,CardValue.SZINKEREO);
+	     assertEquals("If top card is FEKETE SZINKERO   the return card should be FEKETE SZINKERO  ", expectCard1, clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE));
+		
+	     topCard =   new Card(CardColor.SARGA,CardValue.HUZZKETTOT);
+	     clientMachineTester.addCardToHand(expectCard3);
+	     clientMachineTester.addCardToHand(expectCard2);
+	     assertEquals("If top card is SARGA HUZZKETTOT   the return card should be KEK HUZZKETTO  ", expectCard2, clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE));
+	    
+	     clientMachineTester.removeCardFromHand(expectCard2);
+	     assertEquals("If top card is SARGA HUZZKETTOT   the return card should be FEKETE  HUZZNEGYET  ", expectCard3, clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE));
+		   
+	     
+	     topCard =   new Card(CardColor.FEKETE,CardValue.HUZZNEGYET);
+	     assertEquals("If top card is FEKETE HUZZNEGYET   the return card should be FEKETE HUZZNEGYET  ", expectCard3, clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE));
+			
+	     
+	     
+	    
+	}
 	
 }

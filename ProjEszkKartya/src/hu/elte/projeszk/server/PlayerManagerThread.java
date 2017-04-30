@@ -109,11 +109,17 @@ public class PlayerManagerThread extends Thread {
 				if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön
 					//TODO:játék
 					if(player.getId()==nextPlayer){//ha ő jön
-						char firstChar=row.charAt(0);//na mit küld-kér
+						char firstChar=row.charAt(0);//na mit küld-kér.
+						//ez nem lesz jó, rosszul vannak az üzenet típusok definiálva!
 						switch(firstChar){
-						case Consts.REQUEST_CARD:break;
-						case Consts.SEND_COLOR:break;
-						case Consts.NO_CARD:break;
+							case Consts.REQUEST_CARD:
+								break;
+							case Consts.SEND_COLOR:
+								break;
+							case Consts.NO_CARD://a pakliból leveszünk egyet
+								Card card=drawCardFromPack();
+								serverMessage(player, Consts.SEND_CARD+"1", new String[]{card.getCardAsString()});
+								break;
 						}
 					}else{//nem ő jön
 						serverMessage(player, "Nem te következel, várj egy kicsit!");

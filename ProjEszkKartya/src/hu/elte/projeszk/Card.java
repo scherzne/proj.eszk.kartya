@@ -29,7 +29,15 @@ public class Card {
 		this.cardValue=intToCardValue(value);
 		this.cardValueInt=value;
 	}
-	
+	/**
+	 * Stringből kártya előállítása konstruktor
+	 * @param cardString
+	 */
+	public Card(String cardString){
+		this.cardColor=convertCharacterToCardColor(cardString.charAt(0));
+		this.cardValue=convertCharacterToCardValue(cardString.charAt(1));
+		this.cardValueInt=cardValueToInt(this.cardValue);
+	}
 	/**
 	 * CardColor->Int konverzió
 	 * @param color

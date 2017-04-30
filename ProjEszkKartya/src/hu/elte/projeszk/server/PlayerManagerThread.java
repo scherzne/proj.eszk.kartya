@@ -24,13 +24,25 @@ public class PlayerManagerThread extends Thread {
 	 */
 	private ArrayList<Card> droppedCards;
 	private HashMap<Integer, PlayerThread> playerThreads;
+	private Card lastCard;
+	
 	private ArrayList<Player> players;//mégis kell, mert különben nem ismert a játékosok sorrendje, úgyis csak referenciákat tartalmaz, nem túl nagy
 	private int managerId=-1;	
 	
+	/**
+	 * a következő játékos playerId-je
+	 */
 	private int nextPlayer=-1;//még senki
 	private boolean isRunning=false; 
 	
 	private String lastMessage;
+	private boolean lastPlayerDrawed=false;
+	private Card.CardColor lastColorRequest;
+	/**
+	 * Előre irány true, visszafelé irány a false
+	 */
+	private boolean playingDirection=true;
+	
 	private boolean canPlay=false;//mindenki megadta-e a nevét, addig nincs kezdés
 	private int nameCount=0;//segéd, amiben számláljuk hányan adták meg a nevük
 	//ez már nem fog kelleni ha mindenki, átbeszi a helyét a canPlay, ekkor már nem 
@@ -101,6 +113,9 @@ public class PlayerManagerThread extends Thread {
 					//egy lap felforgatás, ezt el is tesszük a gyűjtőbe, mert senki nem kapja meg
 					//valamint mindenkinek elküldjük, hogy erről kell indulni
 					card=drawCardFromPack();
+					droppedCards.add(card);
+					lastCard=card;
+					
 					for(int i=0;i<players.size();i++){
 						//módosítva, egy újabb üzenet típussal kiegészítve
 						serverMessage(players.get(i), Consts.CARD_INFORMATION+"", new String[]{card.getCardAsString()});						
@@ -113,15 +128,30 @@ public class PlayerManagerThread extends Thread {
 						char firstChar=row.charAt(0);//na mit küld-kér.
 						//ez nem lesz jó, rosszul vannak az üzenet típusok definiálva!
 						switch(firstChar){
-							case Consts.REQUEST_CARD:
+							//a kliens valamilyen lapot küld. ez a módosítási javaslatom, 
+							//az egyik nem egyértelmű üzenet megoldására 
+							case Consts.SEND_CARD://dolgozzuk fel, amit küldött
+								
+								lastPlayerDrawed=false;
 								break;
-							case Consts.SEND_COLOR:
+							case Consts.SEND_COLOR://ha színt kért, ezt a színt kell a köv-nek rakni
+								//ekkor lehet léptetni a kört a köv játékosra
+								String temp[]=row.split(",");
+								nextPlayer=getNextPlayerId();
+								lastColorRequest=Card.convertCharacterToCardColor(temp[1].charAt(0));
+								serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
+										Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
+											((lastPlayerDrawed)?"H":"N"),lastColorRequest+""});
+								lastPlayerDrawed=false;
 								break;
-							case Consts.NO_CARD://a pakliból leveszünk egyet és elküldjük
+							case Consts.NO_CARD://nem tud rakni a játékos,
+								//a pakliból leveszünk egyet és elküldjük								
 								Card card=drawCardFromPack();
 								serverMessage(player, Consts.SEND_CARD+"1", new String[]{card.getCardAsString()});
+								lastPlayerDrawed=true;
 								break;
 						}
+						lastMessage=row;
 					}else{//nem ő jön
 						serverMessage(player, "Nem te következel, várj egy kicsit!");
 					}					
@@ -252,6 +282,51 @@ public class PlayerManagerThread extends Thread {
 		Collections.shuffle(cardPack);
 	}
 
+	
+	/**
+	 * Nulla számú játékos kihagyással a következő játékos id-je  
+	 * @return
+	 */
+	private synchronized int getNextPlayerId(){
+		return getNextPlayerId(0);
+	}
+	/**
+	 * Meghatározható számú játékos kihagyással a következő játékos id-je  
+	 * @param skippedPlayerNum hány játékost hagyjunk ki a következőhöz
+	 * @return
+	 */
+	private synchronized int getNextPlayerId(int skippedPlayerNum){
+		int currentInd=0;
+		int nextPlayerId;
+		
+		//léptetéshez megkeressük most hanyas !indexű! a tömbben a játékos
+		for(int i=0;i<players.size();i++){
+			if(nextPlayer==players.get(i).getId()){
+				currentInd=i;
+				break;
+			}
+		}
+		//az indexeket nem szabad túllépni, ezt ellenőrizni kell
+		if(playingDirection){//előre
+			if(currentInd+skippedPlayerNum+1>=players.size()){
+				nextPlayerId=players.get(0).getId();
+			}else{
+				nextPlayerId=players.get(currentInd+skippedPlayerNum+1).getId();
+			}
+		}else{//hátrafelé megy a játék
+			if((currentInd-skippedPlayerNum-1)<0){
+				nextPlayerId=players.get(players.size()-1).getId();
+			}else{
+				nextPlayerId=players.get(currentInd-skippedPlayerNum-1).getId();
+			}
+		}
+		return nextPlayerId;
+	}
+	
+	private synchronized void switchDirection(){
+		playingDirection=!playingDirection;
+	}
+	
 	/**
 	 * Manager azonosító visszaadása, amit a konstruktornak kell átadni
 	 * @return nem az örökölt thread id-t, hanem a manager azonosító

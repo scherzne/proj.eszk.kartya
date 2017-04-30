@@ -131,12 +131,28 @@ public class PlayerManagerThread extends Thread {
 							//a kliens valamilyen lapot küld. ez a módosítási javaslatom, 
 							//az egyik nem egyértelmű üzenet megoldására 
 							case Consts.SEND_CARD://dolgozzuk fel, amit küldött
-								
+								String pars[]=row.split(Consts.MESSAGE_SEPARATOR+"");
+								//első string lesz a kártya, ezt elő kell állítani
+								//ezt el kell tenni, el lett dobva
+								Card clientCard=new Card(pars[1]);
+								droppedCards.add(clientCard);
+								//csak ezeknek van jelentősége a szerver szempontjából:
+								//HUZZKETTOT,FORDITTO,KIMARADSZ,SZINKEREO,HUZZNEGYET
+								//a többinél csak továbbítjuk a lapot, közöljük a játékosokkal
+								//hogy folyik a játszma
+								switch(clientCard.getCardValue()){
+									case HUZZKETTOT:break;
+									case FORDITTO:break;
+									case KIMARADSZ:break;
+									case SZINKEREO:break;
+									case HUZZNEGYET:break;
+									default:break;
+								}
 								lastPlayerDrawed=false;
 								break;
 							case Consts.SEND_COLOR://ha színt kért, ezt a színt kell a köv-nek rakni
 								//ekkor lehet léptetni a kört a köv játékosra
-								String temp[]=row.split(",");
+								String temp[]=row.split(Consts.MESSAGE_SEPARATOR+"");
 								nextPlayer=getNextPlayerId();
 								lastColorRequest=Card.convertCharacterToCardColor(temp[1].charAt(0));
 								serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
@@ -145,7 +161,8 @@ public class PlayerManagerThread extends Thread {
 								lastPlayerDrawed=false;
 								break;
 							case Consts.NO_CARD://nem tud rakni a játékos,
-								//a pakliból leveszünk egyet és elküldjük								
+								//a pakliból leveszünk egyet és elküldjük
+								//a következő még nem jöhet, mert lehet hogy ugyanaz lerakja
 								Card card=drawCardFromPack();
 								serverMessage(player, Consts.SEND_CARD+"1", new String[]{card.getCardAsString()});
 								lastPlayerDrawed=true;

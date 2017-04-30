@@ -47,6 +47,10 @@ public class Consts {
 	 */
 	public static final char REQUEST_CARD='L';
 	/**
+	 * Színt kérünk is kell!!!
+	 */
+	public static final char REQUEST_COLOR='C';
+	/**
 	 * 'S'zín kérésre válaszolunk
 	 */
 	public static final char SEND_COLOR='S';

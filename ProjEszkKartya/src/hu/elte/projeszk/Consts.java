@@ -31,11 +31,19 @@ public class Consts {
 	 */
 	
 	/**
+	 * Egy kártya információt küld a szerver, például arról, hogy mi a felforgatott lap!
+	 * Ezzel az információval a kliensnek is kell gazdálkodni!
+	 * Tudni a kell a következő és a többi játékosnak, mit tett le az előző,
+	 * és ezt nem csak szöveges üzenettel, hogy a kliens program is tudjon ellenőrizni! 
+	 */
+	public static final char CARD_INFORMATION='I';
+	/**
 	 * Lapot 'A'd a szerver
 	 */
 	public static final char SEND_CARD='A';
 	/**
 	 * 'L'apot kér a kliens
+	 * (ezt nem értem mire jó!)
 	 */
 	public static final char REQUEST_CARD='L';
 	/**

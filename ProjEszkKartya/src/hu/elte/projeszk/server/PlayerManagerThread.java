@@ -143,7 +143,14 @@ public class PlayerManagerThread extends Thread {
 								switch(clientCard.getCardValue()){
 									case HUZZKETTOT://köv játékos kimarad, kap két lapot is
 										nextPlayer=getNextPlayerId();//léptetés
-										
+										//2 lap húzás
+										Card cards[]=drawCardsFromPack(2);
+										String cardStrs[]=getCardStringArray(cards);
+										//közöljük vele, mi a helyzet, mit dobott az utolsó lépő
+										serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
+										//elküldjük neki a két húzott lapot
+										serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.SEND_CARD+"2", cardStrs);
+										//a többieknek pedig szintén infót
 										break;
 									case FORDITTO:break;
 									case KIMARADSZ:break;
@@ -228,7 +235,17 @@ public class PlayerManagerThread extends Thread {
 	protected void serverMessage(Player to,String mess){
 		to.write(Consts.SEND_MESSAGE+Consts.MESSAGE_SEPARATOR+"Szerver: "+mess);
 	}
-
+	/**
+	 * szerver üzenet mindenki másnak
+	 * @param notTo csak neki nem
+	 * @param mess
+	 */
+	protected void serverMessageToOthers(int notTo, String mess){
+		for(Player pl:players){
+			if(pl.getId()!=notTo)
+				pl.write(Consts.SEND_MESSAGE+Consts.MESSAGE_SEPARATOR+"Szerver: "+mess);
+		}
+	}
 	/**
 	 * Szerver nem sima üzenet típusú, hanem egyéb funkciójú üzenete a játékosnak
 	 * @param to a játékos
@@ -269,7 +286,7 @@ public class PlayerManagerThread extends Thread {
 	 * Legfelső kártya húzása(és eltávolítása) a pakliból
 	 * @return vagy egy kártya vagy null ha a pakli már üres!
 	 */
-	public synchronized Card drawCardFromPack(){
+	protected synchronized Card drawCardFromPack(){
 		if(cardPack.size()>0){
 			return cardPack.remove(cardPack.size()-1);
 		}
@@ -281,7 +298,7 @@ public class PlayerManagerThread extends Thread {
 	 * @param cardNum
 	 * @return
 	 */
-	public synchronized Card[] drawCardsFromPack(int cardNum){
+	protected synchronized Card[] drawCardsFromPack(int cardNum){
 		Card cards[]=new Card[cardNum];
 		
 		for(int i=0;i<cardNum;i++){
@@ -290,6 +307,20 @@ public class PlayerManagerThread extends Thread {
 		
 		return cards;
 	}
+	/**
+	 * String tömbben elő lehet állítani a kártyákat szövegesre 
+	 * @param cards
+	 * @return
+	 */
+	protected String[] getCardStringArray(Card cards[]){
+		String cardStrings[]=new String[cards.length];
+		
+		for(int i=0;i<cardStrings.length;i++)
+			cardStrings[i]=cards[i].getCardAsString();
+		
+		return cardStrings;
+	}
+	
 	/**
 	 * Kártyapakli generálása
 	 */

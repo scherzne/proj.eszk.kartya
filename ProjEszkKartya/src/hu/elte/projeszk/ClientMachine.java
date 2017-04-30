@@ -50,13 +50,62 @@ public Card machineCardChooseAlgorithm(Card topCard, boolean lastPlayerDrawed, C
 			// csak plussz 2 es plussz 4 es és szinkérő
 			
 			selectedCard = searchWhenTopNotNumber(topCard);
-			
-			
 		}
-		
 	}
+	
+	
+	
+		if (!lastPlayerDrawed && !declaredColor.equals(CardColor.FEKETE)){
+			// VAN színkényszer és az utolsó ember nem húzott  (kártyát azaz az előző játékos rakta)
+			if(topCard.getValue()<10){
+				
+				selectedCard = searchWhenTopNumberCertainColor(declaredColor);
+				
+			}else{
+				//legfelso kartya nem szam!
+				// ha az előző játékos rakta akkor a sziveatósok közül nem lehet se fordító
+				// csak plussz 2 es plussz 4 es és szinkérő
+				
+				//selectedCard = searchWhenTopNotNumberCertainColor(topCard);
+		}	
+		
+		}
+	
 return selectedCard;	
 }
+
+protected Card searchWhenTopNumberCertainColor(CardColor cardColor){
+	
+	
+	
+	Card selectedCard = searchAnyNumberOfCertainColor(cardColor);
+	
+	if (selectedCard == null){
+	
+		
+		selectedCard = searchSameColorNotNumber(cardColor);
+	
+	
+	
+	}
+	if (selectedCard == null){
+	
+		
+		selectedCard = searchJokerCard();
+	
+	}
+	
+	if (selectedCard == null){
+	
+		
+		selectedCard = searchDrawFourJoker();
+	
+	}
+	
+	
+	return selectedCard;
+}
+
 
 
 protected Card searchAnyNumberOfCertainColor(CardColor color) {

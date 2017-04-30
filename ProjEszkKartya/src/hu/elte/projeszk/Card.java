@@ -87,6 +87,33 @@ public class Card {
 		}
 	}
 	
+	/**
+	 * Kártya típusok szöveges reprezentációja, 
+	 * csak szöveges üzenetekhez, hogy olvashatóak legyenek emberek számára is.
+	 * @return
+	 */
+	public String cardValueToString(){
+		switch(cardValue){
+			case NULLA: return "Nulla";
+			case EGY: return "Egy";
+			case KETTO: return "Kettő";
+			case HAROM: return "Három";
+			case NEGY: return "Négy";
+			case OT: return "Öt";
+			case HAT: return "Hat";
+			case HET: return "Hét";
+			case NYOLC: return "Nyolc";
+			case KILENC: return "Kilenc";
+			
+			case HUZZKETTOT: return "Húzz kettőt!";
+			case FORDITTO: return "Fordulj!";
+			case KIMARADSZ: return "Ugorj!";
+			case SZINKEREO: return "Joker!";
+			case HUZZNEGYET: return "Húzz négyet!";
+			default: return "Érvénytelen!";
+		}
+	}
+	
 	public static int cardValueToInt( CardValue cardValue){
 		
 		int value=-1;	

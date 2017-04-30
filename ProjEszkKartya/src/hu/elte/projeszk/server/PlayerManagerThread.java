@@ -151,6 +151,10 @@ public class PlayerManagerThread extends Thread {
 										//elküldjük neki a két húzott lapot
 										serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.SEND_CARD+"2", cardStrs);
 										//a többieknek pedig szintén infót
+										String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
+												" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
+												" kártyát tett le.";
+										serverMessageToOthers(nextPlayer, mess);
 										break;
 									case FORDITTO:break;
 									case KIMARADSZ:break;

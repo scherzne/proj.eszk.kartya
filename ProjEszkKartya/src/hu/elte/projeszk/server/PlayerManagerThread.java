@@ -142,6 +142,8 @@ public class PlayerManagerThread extends Thread {
 								//hogy folyik a játszma
 								switch(clientCard.getCardValue()){
 									case HUZZKETTOT://köv játékos kimarad, kap két lapot is
+										nextPlayer=getNextPlayerId();//léptetés
+										
 										break;
 									case FORDITTO:break;
 									case KIMARADSZ:break;
@@ -263,6 +265,7 @@ public class PlayerManagerThread extends Thread {
 	}
 	
 	/**
+	 * FIXME: üres paklit megoldani!!!
 	 * Legfelső kártya húzása(és eltávolítása) a pakliból
 	 * @return vagy egy kártya vagy null ha a pakli már üres!
 	 */
@@ -273,7 +276,20 @@ public class PlayerManagerThread extends Thread {
 		
 		return null;
 	}
-	
+	/**
+	 * egyszerre több kártya húzása a pakliból
+	 * @param cardNum
+	 * @return
+	 */
+	public synchronized Card[] drawCardsFromPack(int cardNum){
+		Card cards[]=new Card[cardNum];
+		
+		for(int i=0;i<cardNum;i++){
+			cards[i]=drawCardFromPack();
+		}
+		
+		return cards;
+	}
 	/**
 	 * Kártyapakli generálása
 	 */

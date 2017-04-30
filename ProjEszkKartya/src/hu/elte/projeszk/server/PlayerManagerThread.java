@@ -102,9 +102,8 @@ public class PlayerManagerThread extends Thread {
 					//valamint mindenkinek elküldjük, hogy erről kell indulni
 					card=drawCardFromPack();
 					for(int i=0;i<players.size();i++){
-						//nem jó, ezt nem adjuk, hane csak közöljük!!!
-						//serverMessage(players.get(i), Consts.SEND_CARD+"1", new String[]{card.getCardAsString()});
-						
+						//módosítva, egy újabb üzenet típussal kiegészítve
+						serverMessage(players.get(i), Consts.CARD_INFORMATION+"", new String[]{card.getCardAsString()});						
 					}
 				}
 			}else{//nevét már megadta, de lehet, hogy nem lehet még kezdeni

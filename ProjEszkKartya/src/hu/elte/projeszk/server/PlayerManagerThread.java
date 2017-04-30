@@ -135,6 +135,7 @@ public class PlayerManagerThread extends Thread {
 								//első string lesz a kártya, ezt elő kell állítani
 								//ezt el kell tenni, el lett dobva
 								Card clientCard=new Card(pars[1]);
+								lastCard=clientCard;
 								droppedCards.add(clientCard);
 								//csak ezeknek van jelentősége a szerver szempontjából:
 								//HUZZKETTOT,FORDITTO,KIMARADSZ,SZINKEREO,HUZZNEGYET
@@ -142,7 +143,7 @@ public class PlayerManagerThread extends Thread {
 								//hogy folyik a játszma
 								switch(clientCard.getCardValue()){
 									case HUZZKETTOT://köv játékos kimarad, kap két lapot is
-										nextPlayer=getNextPlayerId();//léptetés
+										nextPlayer=getNextPlayerId();//léptetés, ő fog kimaradni
 										//2 lap húzás
 										Card cards[]=drawCardsFromPack(2);
 										String cardStrs[]=getCardStringArray(cards);
@@ -155,6 +156,11 @@ public class PlayerManagerThread extends Thread {
 												" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
 												" kártyát tett le.";
 										serverMessageToOthers(nextPlayer, mess);
+										//továbblépés a következő jáékosra, ő már kell tegyen lapot, így kérünk tőle
+										nextPlayer=getNextPlayerId();
+										serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
+												Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
+													"H",lastCard.getCardColorAsChar()+""});
 										break;
 									case FORDITTO:break;
 									case KIMARADSZ:break;

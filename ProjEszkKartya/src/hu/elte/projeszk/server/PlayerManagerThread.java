@@ -141,7 +141,8 @@ public class PlayerManagerThread extends Thread {
 								//a többinél csak továbbítjuk a lapot, közöljük a játékosokkal
 								//hogy folyik a játszma
 								switch(clientCard.getCardValue()){
-									case HUZZKETTOT:break;
+									case HUZZKETTOT://köv játékos kimarad, kap két lapot is
+										break;
 									case FORDITTO:break;
 									case KIMARADSZ:break;
 									case SZINKEREO:break;
@@ -229,7 +230,7 @@ public class PlayerManagerThread extends Thread {
 	/**
 	 * Szerver nem sima üzenet típusú, hanem egyéb funkciójú üzenete a játékosnak
 	 * @param to a játékos
-	 * @param messageType az üzenet típusa, ez egy String
+	 * @param messageType az üzenet típusa, ez egy String, pl: A3, vagy S , szín kérés vagy 3 lapot ad a szerver
 	 * @param messageParts az ebben lévő darabokat vesszővel elválasztva összeilleszti és 
 	 * hozzáfűzi az üzenet típust meghatározó karakterhez
 	 */
@@ -248,6 +249,20 @@ public class PlayerManagerThread extends Thread {
 		to.write(builder.toString());
 	}
 	/**
+	 * Üzenet a játékosoknak, kivéve a megadottat
+	 * @param notTo egyedül neki (player id-t kell megadni) nem fog menni az itt megadott üzenet
+	 * @param messageType az üzenet típusa, ez egy String, pl: A3 ami annyit jelent, hoyg 3 lapot ad a szerver
+	 * @param messageParts  az ebben lévő darabokat vesszővel elválasztva összeilleszti és 
+	 * hozzáfűzi az üzenet típust meghatározó karakterhez
+	 */
+	protected void serverMessageToOthers(int notTo, String messageType, String[] messageParts){
+		for(Player pl:players){
+			if(pl.getId()!=notTo)
+				serverMessage(pl, messageType, messageParts);
+		}
+	}
+	
+	/**
 	 * Legfelső kártya húzása(és eltávolítása) a pakliból
 	 * @return vagy egy kártya vagy null ha a pakli már üres!
 	 */
@@ -262,7 +277,7 @@ public class PlayerManagerThread extends Thread {
 	/**
 	 * Kártyapakli generálása
 	 */
-	private void generatePack(){
+	protected void generatePack(){
 		Card card;
 		
 		//összes szín
@@ -304,7 +319,7 @@ public class PlayerManagerThread extends Thread {
 	 * Nulla számú játékos kihagyással a következő játékos id-je  
 	 * @return
 	 */
-	private synchronized int getNextPlayerId(){
+	protected synchronized int getNextPlayerId(){
 		return getNextPlayerId(0);
 	}
 	/**
@@ -312,7 +327,7 @@ public class PlayerManagerThread extends Thread {
 	 * @param skippedPlayerNum hány játékost hagyjunk ki a következőhöz
 	 * @return
 	 */
-	private synchronized int getNextPlayerId(int skippedPlayerNum){
+	protected synchronized int getNextPlayerId(int skippedPlayerNum){
 		int currentInd=0;
 		int nextPlayerId;
 		
@@ -340,7 +355,7 @@ public class PlayerManagerThread extends Thread {
 		return nextPlayerId;
 	}
 	
-	private synchronized void switchDirection(){
+	protected synchronized void switchDirection(){
 		playingDirection=!playingDirection;
 	}
 	

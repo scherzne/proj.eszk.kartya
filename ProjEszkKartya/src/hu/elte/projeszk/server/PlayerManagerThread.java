@@ -146,32 +146,8 @@ public class PlayerManagerThread extends Thread {
 								//a többinél csak továbbítjuk a lapot, közöljük a játékosokkal
 								//hogy folyik a játszma
 								switch(clientCard.getCardValue()){//TODO: majd refaktor! külön func-okba kitenni a belsejét, boolen visszatéréssel
-									case HUZZKETTOT://köv játékos kimarad, kap két lapot is
-										if(lastCard.getCardColor()==clientCard.getCardColor() ||
-												lastCard.getCardValue()==CardValue.HUZZKETTOT){//előző lap színe egyezik vagy ez is húzz kettőt volt
-											nextPlayer=getNextPlayerId();//léptetés, ő fog kimaradni
-											//2 lap húzás
-											Card cards[]=drawCardsFromPack(2);
-											String cardStrs[]=getCardStringArray(cards);
-											//ez szerintem a gépi játékosnak kellhet
-											//közöljük vele, mi a helyzet, mit dobott az utolsó lépő
-											serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
-											//elküldjük neki a két húzott lapot
-											serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.SEND_CARD+"2", cardStrs);
-											//a többieknek pedig szintén infót
-											String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
-													" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
-													" kártyát tett le.";
-											serverMessageToOthers(nextPlayer, mess);
-											//továbblépés a következő játékosra, ő már kell tegyen lapot, így kérünk tőle
-											nextPlayer=getNextPlayerId();
-											serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
-													Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
-														Consts.HUZOTT,clientCard.getCardColorAsChar()+""});
-										}else{//nem teheti le a húzz kettőt lapot, sem a színe sem a típusa nem jó!
-											serverMessage(player, "Ezt a lapot nem dobhatod be!");
-											canSaveLastCard=false;
-										}
+									case HUZZKETTOT://köv játékos kimarad, kap két lapot is										
+											canSaveLastCard=doHuzzKettot(player, clientCard, pars);
 										break;
 									case FORDITTO://játékirány megfordul
 										if(lastCard.getCardColor()==clientCard.getCardColor() ||
@@ -333,6 +309,43 @@ public class PlayerManagerThread extends Thread {
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * Húzz kettőt kártyalap esetén a szerver üzenetei és játékmenet
+	 * @param player
+	 * @param clientCard a küldött kártya
+	 * @param pars a split-el üzenet tömb
+	 * @return lehet-e menteni az utolsó kártyalapot az eldobottak közé
+	 */
+	public boolean doHuzzKettot(Player player,Card clientCard,String pars[]){
+		if(lastCard.getCardColor()==clientCard.getCardColor() ||
+				lastCard.getCardValue()==CardValue.HUZZKETTOT){//előző lap színe egyezik vagy ez is húzz kettőt volt
+			nextPlayer=getNextPlayerId();//léptetés, ő fog kimaradni
+			//2 lap húzás
+			Card cards[]=drawCardsFromPack(2);
+			String cardStrs[]=getCardStringArray(cards);
+			//ez szerintem a gépi játékosnak kellhet
+			//közöljük vele, mi a helyzet, mit dobott az utolsó lépő
+			serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
+			//elküldjük neki a két húzott lapot
+			serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.SEND_CARD+"2", cardStrs);
+			//a többieknek pedig szintén infót
+			String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
+					" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
+					" kártyát tett le.";
+			serverMessageToOthers(nextPlayer, mess);
+			//továbblépés a következő játékosra, ő már kell tegyen lapot, így kérünk tőle
+			nextPlayer=getNextPlayerId();
+			serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
+					Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
+						Consts.HUZOTT,clientCard.getCardColorAsChar()+""});
+			
+			return true;
+		}else{//nem teheti le a húzz kettőt lapot, sem a színe sem a típusa nem jó!
+			serverMessage(player, "Ezt a lapot nem dobhatod be!");
+			return false;
+		}
 	}
 	
 	@Override

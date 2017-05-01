@@ -125,42 +125,51 @@ public class PlayerManagerThread extends Thread {
 				if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön
 					//TODO:játék
 					if(player.getId()==nextPlayer){//ha ő jön
-						char firstChar=row.charAt(0);//na mit küld-kér.
+						char firstChar=row.charAt(0);//na mit küld-kér.						
+						
 						//ez nem lesz jó, rosszul vannak az üzenet típusok definiálva!
 						switch(firstChar){
 							//a kliens valamilyen lapot küld. ez a módosítási javaslatom, 
 							//az egyik nem egyértelmű üzenet megoldására 
-							case Consts.SEND_CARD://dolgozzuk fel, amit küldött
+							case Consts.SEND_CARD:
+								//dolgozzuk fel, amit küldött
 								String pars[]=row.split(Consts.MESSAGE_SEPARATOR+"");
+								//lehet hogy rosszat küldött, ekkor várunk egy másik lapra, nem szabad menteni
+								boolean canSaveLastCard=true;
+								
 								//első string lesz a kártya, ezt elő kell állítani
 								//ezt el kell tenni, el lett dobva
 								Card clientCard=new Card(pars[1]);
-								lastCard=clientCard;
-								droppedCards.add(clientCard);
+								
 								//csak ezeknek van jelentősége a szerver szempontjából:
 								//HUZZKETTOT,FORDITTO,KIMARADSZ,SZINKEREO,HUZZNEGYET
 								//a többinél csak továbbítjuk a lapot, közöljük a játékosokkal
 								//hogy folyik a játszma
-								switch(clientCard.getCardValue()){
+								switch(clientCard.getCardValue()){//FIXME:ellenőrzés, lásd leírás
 									case HUZZKETTOT://köv játékos kimarad, kap két lapot is
-										nextPlayer=getNextPlayerId();//léptetés, ő fog kimaradni
-										//2 lap húzás
-										Card cards[]=drawCardsFromPack(2);
-										String cardStrs[]=getCardStringArray(cards);
-										//közöljük vele, mi a helyzet, mit dobott az utolsó lépő
-										serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
-										//elküldjük neki a két húzott lapot
-										serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.SEND_CARD+"2", cardStrs);
-										//a többieknek pedig szintén infót
-										String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
-												" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
-												" kártyát tett le.";
-										serverMessageToOthers(nextPlayer, mess);
-										//továbblépés a következő jáékosra, ő már kell tegyen lapot, így kérünk tőle
-										nextPlayer=getNextPlayerId();
-										serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
-												Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
-													"H",lastCard.getCardColorAsChar()+""});
+										if(lastCard.getCardColor()==clientCard.getCardColor() ||
+												lastCard.getCardValue()==CardValue.HUZZKETTOT){//előző lap színe egyezik vagy ez is húzz kettőt volt
+											nextPlayer=getNextPlayerId();//léptetés, ő fog kimaradni
+											//2 lap húzás
+											Card cards[]=drawCardsFromPack(2);
+											String cardStrs[]=getCardStringArray(cards);
+											//közöljük vele, mi a helyzet, mit dobott az utolsó lépő
+											serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
+											//elküldjük neki a két húzott lapot
+											serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.SEND_CARD+"2", cardStrs);
+											//a többieknek pedig szintén infót
+											String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
+													" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
+													" kártyát tett le.";
+											serverMessageToOthers(nextPlayer, mess);
+											//továbblépés a következő játékosra, ő már kell tegyen lapot, így kérünk tőle
+											nextPlayer=getNextPlayerId();
+											serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
+													Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
+														"H",lastCard.getCardColorAsChar()+""});
+										}else{//nem teheti le a húzz kettőt lapot, sem a színe sem a típusa nem jó!
+											serverMessage(player, "Ezt a lapot nem dobhatod be!");
+										}
 										break;
 									case FORDITTO:break;
 									case KIMARADSZ:break;
@@ -168,6 +177,13 @@ public class PlayerManagerThread extends Thread {
 									case HUZZNEGYET:break;
 									default:break;
 								}
+								
+								//nem volt hiba, be lett dobva a lap
+								if(canSaveLastCard){
+									lastCard=clientCard;
+									droppedCards.add(clientCard);
+								}
+								
 								lastPlayerDrawed=false;
 								break;
 							case Consts.SEND_COLOR://ha színt kért, ezt a színt kell a köv-nek rakni

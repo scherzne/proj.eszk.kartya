@@ -152,30 +152,8 @@ public class PlayerManagerThread extends Thread {
 									case FORDITTO://játékirány megfordul										
 											canSaveLastCard=doFordito(player, clientCard, pars);
 										break;
-									case KIMARADSZ://a köv.játékos egyszer kimarad
-										if(lastCard.getCardColor()==clientCard.getCardColor() ||
-										lastCard.getCardValue()==CardValue.KIMARADSZ){
-											//tudjuk ki marad ki, és közöljük is vele
-											nextPlayer=getNextPlayerId();
-											//gépi játékosnak kellhet
-											serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
-											//szöveges üzenetek
-											serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Egyszer kimaradsz, mert kimaradsz kártyát dobtak!");
-											//és miért
-											String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
-													" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
-													" kártyát tett le.";
-											serverMessageToOthers(nextPlayer, mess);
-											//tovább lépés arra játékosra aki tányleg jön
-											nextPlayer=getNextPlayerId();
-											//a lapot is küldjük
-											serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
-													Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
-														Consts.NEM_HUZOTT,clientCard.getCardColorAsChar()+""});
-										}else{
-											serverMessage(player, "Ezt a lapot nem dobhatod be!");
-											canSaveLastCard=false;
-										}
+									case KIMARADSZ://a köv.játékos egyszer kimarad										
+											canSaveLastCard=doKimaradsz(player, clientCard, pars);
 										break;
 									case SZINKEREO://kérdezzük meg milyen színt kér
 										//ez egyenlőre csak ennyi:
@@ -287,6 +265,41 @@ public class PlayerManagerThread extends Thread {
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * Kimaradsz kártyalap esetén a szerver üzenetei és játékmenet
+	 * @param player
+	 * @param clientCard a küldött kártya
+	 * @param pars a split-el üzenet tömb
+	 * @return lehet-e menteni az utolsó kártyalapot az eldobottak közé
+	 */
+	public boolean doKimaradsz(Player player,Card clientCard,String pars[]){
+		if(lastCard.getCardColor()==clientCard.getCardColor() ||
+				lastCard.getCardValue()==CardValue.KIMARADSZ){
+					//tudjuk ki marad ki, és közöljük is vele
+					nextPlayer=getNextPlayerId();
+					//gépi játékosnak kellhet
+					serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
+					//szöveges üzenetek
+					serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Egyszer kimaradsz, mert kimaradsz kártyát dobtak!");
+					//és miért
+					String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
+							" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
+							" kártyát tett le.";
+					serverMessageToOthers(nextPlayer, mess);
+					//tovább lépés arra játékosra aki tányleg jön
+					nextPlayer=getNextPlayerId();
+					//a lapot is küldjük
+					serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
+							Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
+								Consts.NEM_HUZOTT,clientCard.getCardColorAsChar()+""});
+					
+					return true;
+				}else{
+					serverMessage(player, "Ezt a lapot nem dobhatod be!");
+					return false;
+				}
 	}
 	
 	/**

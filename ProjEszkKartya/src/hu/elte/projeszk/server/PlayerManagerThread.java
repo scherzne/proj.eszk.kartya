@@ -204,7 +204,7 @@ public class PlayerManagerThread extends Thread {
 	/**
 	 * Játékmenet tényleges kezdete, amikor a játékosok megkapják az első kiosztott lapjaikat és felfordítja s szerver az első lapot is
 	 */
-	public void sendFirstCards(){
+	protected void sendFirstCards(){
 		Card card;
 		//kezdő játékos (0.) nevét közöljük mindenkivel, meg persze saját magával is
 		String pName=players.get(0).getName();//pl:jenő
@@ -231,7 +231,7 @@ public class PlayerManagerThread extends Thread {
 	 * Nem tud dobni eset
 	 * @param player
 	 */
-	public void doNoCard(Player player){
+	protected void doNoCard(Player player){
 		//a pakliból leveszünk egyet és elküldjük
 		//a következő még nem jöhet, mert lehet hogy ugyanaz lerakja
 		Card card=drawCardFromPack();
@@ -242,7 +242,7 @@ public class PlayerManagerThread extends Thread {
 	 * Húzz négyet kártyalap esetén a szerver üzenetei és a játékmenet
 	 * @param row a streamből olvasott sor
 	 */
-	public void doHuzzNegyet(String row){
+	protected void doHuzzNegyet(String row){
 		//húzz négyet esetén a köv.játékos kimarad és négy lapot is kap
 		nextPlayer=getNextPlayerId();//léptetés, ő fog kimaradni
 		String temp[]=row.split(Consts.MESSAGE_SEPARATOR+"");//ezt a színt választotta a jokeres
@@ -272,7 +272,7 @@ public class PlayerManagerThread extends Thread {
 	 * színkérő kártyalap esetén a szerver üzenetek és játékmenet
 	 * @param row a kiolvasott sor a streamből
 	 */
-	public void doSzinkero(String row){
+	protected void doSzinkero(String row){
 		//ekkor lehet léptetni a kört a köv játékosra
 		String temp[]=row.split(Consts.MESSAGE_SEPARATOR+"");
 		nextPlayer=getNextPlayerId();
@@ -290,7 +290,7 @@ public class PlayerManagerThread extends Thread {
 	 * @param pars a split-el üzenet tömb
 	 * @return lehet-e menteni az utolsó kártyalapot az eldobottak közé
 	 */
-	public boolean doDefault(Player player,Card clientCard,String pars[]){
+	protected boolean doDefault(Player player,Card clientCard,String pars[]){
 		nextPlayer=getNextPlayerId();
 		//gépi játékosnak kellhet
 		serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
@@ -316,7 +316,7 @@ public class PlayerManagerThread extends Thread {
 	 * @param pars a split-el üzenet tömb
 	 * @return lehet-e menteni az utolsó kártyalapot az eldobottak közé
 	 */
-	public boolean doKimaradsz(Player player,Card clientCard,String pars[]){
+	protected boolean doKimaradsz(Player player,Card clientCard,String pars[]){
 		if(lastCard.getCardColor()==clientCard.getCardColor() ||
 				lastCard.getCardValue()==CardValue.KIMARADSZ){
 					//tudjuk ki marad ki, és közöljük is vele
@@ -351,7 +351,7 @@ public class PlayerManagerThread extends Thread {
 	 * @param pars a split-el üzenet tömb
 	 * @return lehet-e menteni az utolsó kártyalapot az eldobottak közé
 	 */
-	public boolean doFordito(Player player,Card clientCard,String pars[]){
+	protected boolean doFordito(Player player,Card clientCard,String pars[]){
 		if(lastCard.getCardColor()==clientCard.getCardColor() ||
 				lastCard.getCardValue()==CardValue.FORDITTO){
 				//játékos irány fordítás, illetve új játékos kiválasztása											
@@ -386,7 +386,7 @@ public class PlayerManagerThread extends Thread {
 	 * @param pars a split-el üzenet tömb
 	 * @return lehet-e menteni az utolsó kártyalapot az eldobottak közé
 	 */
-	public boolean doHuzzKettot(Player player,Card clientCard,String pars[]){
+	protected boolean doHuzzKettot(Player player,Card clientCard,String pars[]){
 		if(lastCard.getCardColor()==clientCard.getCardColor() ||
 				lastCard.getCardValue()==CardValue.HUZZKETTOT){//előző lap színe egyezik vagy ez is húzz kettőt volt
 			nextPlayer=getNextPlayerId();//léptetés, ő fog kimaradni

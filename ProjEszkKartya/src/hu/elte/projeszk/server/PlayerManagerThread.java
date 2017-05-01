@@ -255,14 +255,44 @@ public class PlayerManagerThread extends Thread {
 								lastPlayerDrawed=false;
 								break;
 							case Consts.SEND_COLOR://ha színt kért, ezt a színt kell a köv-nek rakni
-								//ekkor lehet léptetni a kört a köv játékosra
-								String temp[]=row.split(Consts.MESSAGE_SEPARATOR+"");
-								nextPlayer=getNextPlayerId();
-								lastColorRequest=Card.convertCharacterToCardColor(temp[1].charAt(0));
-								serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
-										Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
-											((lastPlayerDrawed)?Consts.HUZOTT:Consts.NEM_HUZOTT),lastColorRequest+""});
-								lastPlayerDrawed=false;
+								//ez csak akkor fordulhat elő, ha az előző kártya színkérő joker
+								//vagy húzz négyet joker volt!!!
+								if(lastCard.getCardValue()==CardValue.SZINKEREO){
+									//ekkor lehet léptetni a kört a köv játékosra
+									String temp[]=row.split(Consts.MESSAGE_SEPARATOR+"");
+									nextPlayer=getNextPlayerId();
+									lastColorRequest=Card.convertCharacterToCardColor(temp[1].charAt(0));
+									serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
+											Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
+												((lastPlayerDrawed)?Consts.HUZOTT:Consts.NEM_HUZOTT),lastColorRequest+""});
+									lastPlayerDrawed=false;
+								}else if(lastCard.getCardValue()==CardValue.HUZZNEGYET){
+									//húzz négyet esetén a köv.játékos kimarad és négy lapot is kap
+									nextPlayer=getNextPlayerId();//léptetés, ő fog kimaradni
+									String temp[]=row.split(Consts.MESSAGE_SEPARATOR+"");//ezt a színt választotta a jokeres
+									lastColorRequest=Card.convertCharacterToCardColor(temp[1].charAt(0));
+									//4 lap húzás
+									Card cards[]=drawCardsFromPack(2);
+									String cardStrs[]=getCardStringArray(cards);
+									//ez szerintem a gépi játékosnak kellhet
+									//közöljük vele, mi a helyzet, mit dobott az utolsó lépő
+									serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{lastCard.getCardAsString()});
+									serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Sajnos most kapsz 4 lapot :(");
+									//elküldjük neki a két húzott lapot
+									serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.SEND_CARD+"4", cardStrs);
+									//a többieknek pedig szintén infót
+									String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
+											" "+lastCard.cardValueToString()+" "+lastCard.getCardValueAsChar()+
+											" kártyát tett le.";
+									serverMessageToOthers(nextPlayer, mess);
+									//továbblépés a következő játékosra, ő már kell tegyen lapot, így kérünk tőle
+									nextPlayer=getNextPlayerId();
+									serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
+											Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
+												Consts.HUZOTT,lastColorRequest+""});
+								}else{
+									serverMessage(player, "Hibás üzenet, nem válaszolhatsz színnel ha nem kérhetted!");
+								}
 								break;
 							case Consts.NO_CARD://nem tud rakni a játékos,
 								//a pakliból leveszünk egyet és elküldjük

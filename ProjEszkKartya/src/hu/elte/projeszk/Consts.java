@@ -70,4 +70,13 @@ public class Consts {
 	 * Üzenet részei közti elválasztó karakter
 	 */
 	public static final char MESSAGE_SEPARATOR=',';
+	
+	/**
+	 * Konstans az üzenetben húzott/nem húzott
+	 */
+	public static final String HUZOTT="H";
+	/**
+	 * Konstans az üzenetben húzott/nem húzott
+	 */
+	public static final String NEM_HUZOTT="N";
 }

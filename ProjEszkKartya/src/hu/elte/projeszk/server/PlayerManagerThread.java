@@ -145,7 +145,7 @@ public class PlayerManagerThread extends Thread {
 								//HUZZKETTOT,FORDITTO,KIMARADSZ,SZINKEREO,HUZZNEGYET
 								//a többinél csak továbbítjuk a lapot, közöljük a játékosokkal
 								//hogy folyik a játszma
-								switch(clientCard.getCardValue()){//FIXME:ellenőrzés, lásd leírás
+								switch(clientCard.getCardValue()){//TODO: majd refaktor! külön func-okba kitenni a belsejét, boolen visszatéréssel
 									case HUZZKETTOT://köv játékos kimarad, kap két lapot is
 										if(lastCard.getCardColor()==clientCard.getCardColor() ||
 												lastCard.getCardValue()==CardValue.HUZZKETTOT){//előző lap színe egyezik vagy ez is húzz kettőt volt
@@ -165,13 +165,31 @@ public class PlayerManagerThread extends Thread {
 											//továbblépés a következő játékosra, ő már kell tegyen lapot, így kérünk tőle
 											nextPlayer=getNextPlayerId();
 											serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
-													Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
-														"H",lastCard.getCardColorAsChar()+""});
+													Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
+														"H",clientCard.getCardColorAsChar()+""});
 										}else{//nem teheti le a húzz kettőt lapot, sem a színe sem a típusa nem jó!
 											serverMessage(player, "Ezt a lapot nem dobhatod be!");
+											canSaveLastCard=false;
 										}
 										break;
-									case FORDITTO:break;
+									case FORDITTO://játékirány megfordul
+										if(lastCard.getCardColor()==clientCard.getCardColor() ||
+											lastCard.getCardValue()==CardValue.FORDITTO){
+											//játékos irány fordítás											
+											switchDirection();
+											nextPlayer=getNextPlayerId();
+											//szöveges üzenetek
+											serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Te következel, mert egy fordítót dobtak!");
+											serverMessageToOthers(nextPlayer, "Játékirány megfordult");
+											//a lapot is küldjük
+											serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
+													Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
+														"N",clientCard.getCardColorAsChar()+""});
+										}else{
+											serverMessage(player, "Ezt a lapot nem dobhatod be!");
+											canSaveLastCard=false;
+										}
+										break;
 									case KIMARADSZ:break;
 									case SZINKEREO:break;
 									case HUZZNEGYET:break;

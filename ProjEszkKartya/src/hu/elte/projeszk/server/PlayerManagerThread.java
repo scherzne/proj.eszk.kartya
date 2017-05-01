@@ -167,7 +167,7 @@ public class PlayerManagerThread extends Thread {
 											nextPlayer=getNextPlayerId();
 											serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 													Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
-														"H",clientCard.getCardColorAsChar()+""});
+														Consts.HUZOTT,clientCard.getCardColorAsChar()+""});
 										}else{//nem teheti le a húzz kettőt lapot, sem a színe sem a típusa nem jó!
 											serverMessage(player, "Ezt a lapot nem dobhatod be!");
 											canSaveLastCard=false;
@@ -192,7 +192,7 @@ public class PlayerManagerThread extends Thread {
 											//a lapot is küldjük
 											serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 													Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
-														"N",clientCard.getCardColorAsChar()+""});
+														Consts.NEM_HUZOTT,clientCard.getCardColorAsChar()+""});
 										}else{
 											serverMessage(player, "Ezt a lapot nem dobhatod be!");
 											canSaveLastCard=false;
@@ -217,7 +217,7 @@ public class PlayerManagerThread extends Thread {
 											//a lapot is küldjük
 											serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 													Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
-														"N",clientCard.getCardColorAsChar()+""});
+														Consts.NEM_HUZOTT,clientCard.getCardColorAsChar()+""});
 										}else{
 											serverMessage(player, "Ezt a lapot nem dobhatod be!");
 											canSaveLastCard=false;
@@ -243,7 +243,7 @@ public class PlayerManagerThread extends Thread {
 								lastColorRequest=Card.convertCharacterToCardColor(temp[1].charAt(0));
 								serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 										Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
-											((lastPlayerDrawed)?"H":"N"),lastColorRequest+""});
+											((lastPlayerDrawed)?Consts.HUZOTT:Consts.NEM_HUZOTT),lastColorRequest+""});
 								lastPlayerDrawed=false;
 								break;
 							case Consts.NO_CARD://nem tud rakni a játékos,

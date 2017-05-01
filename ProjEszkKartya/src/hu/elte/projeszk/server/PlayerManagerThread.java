@@ -223,7 +223,10 @@ public class PlayerManagerThread extends Thread {
 											canSaveLastCard=false;
 										}
 										break;
-									case SZINKEREO:break;
+									case SZINKEREO://kérdezzük meg milyen színt kér
+										//ez egyenlőre csak ennyi:
+										serverMessage(player, Consts.REQUEST_COLOR+"", null);
+										break;
 									case HUZZNEGYET:break;
 									default:break;
 								}

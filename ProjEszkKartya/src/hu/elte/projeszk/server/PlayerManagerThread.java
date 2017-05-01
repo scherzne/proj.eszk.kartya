@@ -200,11 +200,7 @@ public class PlayerManagerThread extends Thread {
 								}
 								break;
 							case Consts.NO_CARD://nem tud rakni a játékos,
-								//a pakliból leveszünk egyet és elküldjük
-								//a következő még nem jöhet, mert lehet hogy ugyanaz lerakja
-								Card card=drawCardFromPack();
-								serverMessage(player, Consts.SEND_CARD+"1", new String[]{card.getCardAsString()});
-								lastPlayerDrawed=true;
+									doNoCard(player);
 								break;
 						}
 						lastMessage=row;
@@ -224,8 +220,17 @@ public class PlayerManagerThread extends Thread {
 		
 		return true;
 	}
-	
-	
+	/**
+	 * Nem tud dobni eset
+	 * @param player
+	 */
+	public void doNoCard(Player player){
+		//a pakliból leveszünk egyet és elküldjük
+		//a következő még nem jöhet, mert lehet hogy ugyanaz lerakja
+		Card card=drawCardFromPack();
+		serverMessage(player, Consts.SEND_CARD+"1", new String[]{card.getCardAsString()});
+		lastPlayerDrawed=true;
+	}
 	/**
 	 * Húzz négyet kártyalap esetén a szerver üzenetei és a játékmenet
 	 * @param row a streamből olvasott sor

@@ -243,7 +243,22 @@ public class PlayerManagerThread extends Thread {
 										lastCard=clientCard;
 										canSaveLastCard=false;
 										break;
-									default:break;
+									default://minden egyéb esetben léptetünk és küldjük a bedobott lap infókat
+										nextPlayer=getNextPlayerId();
+										//gépi játékosnak kellhet
+										serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
+										//szöveges üzenetek
+										serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Te jössz!");
+										//és miért
+										String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
+												" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
+												" kártyát tett le.";
+										serverMessageToOthers(nextPlayer, mess);
+										//a lapot is küldjük
+										serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
+												Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
+													Consts.NEM_HUZOTT,clientCard.getCardColorAsChar()+""});
+										break;
 								}
 								
 								//nem volt hiba, be lett dobva a lap

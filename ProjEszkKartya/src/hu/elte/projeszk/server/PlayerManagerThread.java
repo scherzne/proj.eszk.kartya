@@ -176,7 +176,7 @@ public class PlayerManagerThread extends Thread {
 									case FORDITTO://játékirány megfordul
 										if(lastCard.getCardColor()==clientCard.getCardColor() ||
 											lastCard.getCardValue()==CardValue.FORDITTO){
-											//játékos irány fordítás											
+											//játékos irány fordítás, illetve új játékos kiválasztása											
 											switchDirection();
 											nextPlayer=getNextPlayerId();
 											//gépi játékosnak kellhet
@@ -198,7 +198,31 @@ public class PlayerManagerThread extends Thread {
 											canSaveLastCard=false;
 										}
 										break;
-									case KIMARADSZ:break;
+									case KIMARADSZ://a köv.játékos egyszer kimarad
+										if(lastCard.getCardColor()==clientCard.getCardColor() ||
+										lastCard.getCardValue()==CardValue.KIMARADSZ){
+											//tudjuk ki marad ki, és közöljük is vele
+											nextPlayer=getNextPlayerId();
+											//gépi játékosnak kellhet
+											serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
+											//szöveges üzenetek
+											serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Egyszer kimaradsz, mert kimaradsz kártyát dobtak!");
+											//és miért
+											String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
+													" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
+													" kártyát tett le.";
+											serverMessageToOthers(nextPlayer, mess);
+											//tovább lépés arra játékosra aki tányleg jön
+											nextPlayer=getNextPlayerId();
+											//a lapot is küldjük
+											serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
+													Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
+														"N",clientCard.getCardColorAsChar()+""});
+										}else{
+											serverMessage(player, "Ezt a lapot nem dobhatod be!");
+											canSaveLastCard=false;
+										}
+										break;
 									case SZINKEREO:break;
 									case HUZZNEGYET:break;
 									default:break;

@@ -123,7 +123,7 @@ public class PlayerManagerThread extends Thread {
 				}
 			}else{//nevét már megadta, de lehet, hogy nem lehet még kezdeni
 				if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön
-					//TODO:játék
+					//játék
 					if(player.getId()==nextPlayer){//ha ő jön
 						char firstChar=row.charAt(0);//na mit küld-kér.						
 						
@@ -175,21 +175,8 @@ public class PlayerManagerThread extends Thread {
 										lastCard=clientCard;
 										canSaveLastCard=false;
 										break;
-									default://minden egyéb esetben léptetünk és küldjük a bedobott lap infókat
-										nextPlayer=getNextPlayerId();
-										//gépi játékosnak kellhet
-										serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
-										//szöveges üzenetek
-										serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Te jössz!");
-										//és miért
-										String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
-												" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
-												" kártyát tett le.";
-										serverMessageToOthers(nextPlayer, mess);
-										//a lapot is küldjük
-										serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
-												Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
-													Consts.NEM_HUZOTT,clientCard.getCardColorAsChar()+""});
+									default://minden egyéb esetben léptetünk és küldjük a bedobott lap infókat										
+											canSaveLastCard=doDefault(player, clientCard, pars);
 										break;
 								}
 								
@@ -205,14 +192,7 @@ public class PlayerManagerThread extends Thread {
 								//ez csak akkor fordulhat elő, ha az előző kártya színkérő joker
 								//vagy húzz négyet joker volt!!!
 								if(lastCard.getCardValue()==CardValue.SZINKEREO){
-									//ekkor lehet léptetni a kört a köv játékosra
-									String temp[]=row.split(Consts.MESSAGE_SEPARATOR+"");
-									nextPlayer=getNextPlayerId();
-									lastColorRequest=Card.convertCharacterToCardColor(temp[1].charAt(0));
-									serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
-											Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
-												((lastPlayerDrawed)?Consts.HUZOTT:Consts.NEM_HUZOTT),lastColorRequest+""});
-									lastPlayerDrawed=false;
+									doSzinkero(row);
 								}else if(lastCard.getCardValue()==CardValue.HUZZNEGYET){
 									//húzz négyet esetén a köv.játékos kimarad és négy lapot is kap
 									nextPlayer=getNextPlayerId();//léptetés, ő fog kimaradni
@@ -237,6 +217,7 @@ public class PlayerManagerThread extends Thread {
 									serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 											Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
 												Consts.HUZOTT,lastColorRequest+""});
+									lastPlayerDrawed=true;
 								}else{
 									serverMessage(player, "Hibás üzenet, nem válaszolhatsz színnel ha nem kérhetted!");
 								}
@@ -263,6 +244,46 @@ public class PlayerManagerThread extends Thread {
 			//TODO:valamit kezdeni a többiekkel, vagy mindenkit ledobni, mert nem
 			//lehet tudni milyen lapjai voltak
 		}
+		
+		return true;
+	}
+	/**
+	 * színkérő kártyalap esetén a szerver üzenetek és játékmenet
+	 * @param row a kiolvasott sor a streamből
+	 */
+	public void doSzinkero(String row){
+		//ekkor lehet léptetni a kört a köv játékosra
+		String temp[]=row.split(Consts.MESSAGE_SEPARATOR+"");
+		nextPlayer=getNextPlayerId();
+		lastColorRequest=Card.convertCharacterToCardColor(temp[1].charAt(0));
+		serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
+				Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
+					((lastPlayerDrawed)?Consts.HUZOTT:Consts.NEM_HUZOTT),lastColorRequest+""});
+		lastPlayerDrawed=false;
+	}
+	/**
+	 * Bármely nem speciális kártyalap esetén a szerver üzenetei és játékmenet
+	 * FIXME: UNO-t lekezelni
+	 * @param player
+	 * @param clientCard a küldött kártya
+	 * @param pars a split-el üzenet tömb
+	 * @return lehet-e menteni az utolsó kártyalapot az eldobottak közé
+	 */
+	public boolean doDefault(Player player,Card clientCard,String pars[]){
+		nextPlayer=getNextPlayerId();
+		//gépi játékosnak kellhet
+		serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
+		//szöveges üzenetek
+		serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Te jössz!");
+		//és miért
+		String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
+				" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
+				" kártyát tett le.";
+		serverMessageToOthers(nextPlayer, mess);
+		//a lapot is küldjük
+		serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
+				Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
+					Consts.NEM_HUZOTT,clientCard.getCardColorAsChar()+""});
 		
 		return true;
 	}

@@ -100,26 +100,7 @@ public class PlayerManagerThread extends Thread {
 				//ha ő az utolsó aki megadta a nevét, mindenkinek küldjük ki hogy kezdődik
 				//illetve az első játékosnak aki jön, hogy ő jön
 				if(canPlay && nextPlayer<0){//ez akkor teljesül, ha már játszhatunk, de még nincs köv. játékos
-					//kezdő játékos (0.) nevét közöljük mindenkivel, meg persze saját magával is
-					String pName=players.get(0).getName();//pl:jenő
-					serverMessage(players.get(0), "Kedves "+pName+"! Te kezdesz!");
-					for(int i=1;i<players.size();i++){
-						serverMessage(players.get(i), "A játék kezdődik, "+pName+" kezd.");
-					}
-					nextPlayer=players.get(0).getId();//a köv játékos azonosítóját tesszük most el,
-					// lehetne az indexe is, mert úgyis így jöttek sorba a körbe, mindegy majd kiderül
-					//melyik kényelmesebb
-					
-					//egy lap felforgatás, ezt el is tesszük a gyűjtőbe, mert senki nem kapja meg
-					//valamint mindenkinek elküldjük, hogy erről kell indulni
-					card=drawCardFromPack();
-					droppedCards.add(card);
-					lastCard=card;
-					
-					for(int i=0;i<players.size();i++){
-						//módosítva, egy újabb üzenet típussal kiegészítve
-						serverMessage(players.get(i), Consts.CARD_INFORMATION+"", new String[]{card.getCardAsString()});						
-					}
+					sendFirstCards();
 				}
 			}else{//nevét már megadta, de lehet, hogy nem lehet még kezdeni
 				if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön
@@ -219,6 +200,32 @@ public class PlayerManagerThread extends Thread {
 		}
 		
 		return true;
+	}
+	/**
+	 * Játékmenet tényleges kezdete, amikor a játékosok megkapják az első kiosztott lapjaikat és felfordítja s szerver az első lapot is
+	 */
+	public void sendFirstCards(){
+		Card card;
+		//kezdő játékos (0.) nevét közöljük mindenkivel, meg persze saját magával is
+		String pName=players.get(0).getName();//pl:jenő
+		serverMessage(players.get(0), "Kedves "+pName+"! Te kezdesz!");
+		for(int i=1;i<players.size();i++){
+			serverMessage(players.get(i), "A játék kezdődik, "+pName+" kezd.");
+		}
+		nextPlayer=players.get(0).getId();//a köv játékos azonosítóját tesszük most el,
+		// lehetne az indexe is, mert úgyis így jöttek sorba a körbe, mindegy majd kiderül
+		//melyik kényelmesebb
+		
+		//egy lap felforgatás, ezt el is tesszük a gyűjtőbe, mert senki nem kapja meg
+		//valamint mindenkinek elküldjük, hogy erről kell indulni
+		card=drawCardFromPack();
+		droppedCards.add(card);
+		lastCard=card;
+		
+		for(int i=0;i<players.size();i++){
+			//módosítva, egy újabb üzenet típussal kiegészítve
+			serverMessage(players.get(i), Consts.CARD_INFORMATION+"", new String[]{card.getCardAsString()});						
+		}
 	}
 	/**
 	 * Nem tud dobni eset

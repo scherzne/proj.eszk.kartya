@@ -153,6 +153,7 @@ public class PlayerManagerThread extends Thread {
 											//2 lap húzás
 											Card cards[]=drawCardsFromPack(2);
 											String cardStrs[]=getCardStringArray(cards);
+											//ez szerintem a gépi játékosnak kellhet
 											//közöljük vele, mi a helyzet, mit dobott az utolsó lépő
 											serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
 											//elküldjük neki a két húzott lapot
@@ -178,9 +179,16 @@ public class PlayerManagerThread extends Thread {
 											//játékos irány fordítás											
 											switchDirection();
 											nextPlayer=getNextPlayerId();
+											//gépi játékosnak kellhet
+											serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
 											//szöveges üzenetek
 											serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Te következel, mert egy fordítót dobtak!");
 											serverMessageToOthers(nextPlayer, "Játékirány megfordult");
+											//miért fordult meg a játékirány
+											String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
+													" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
+													" kártyát tett le.";
+											serverMessageToOthers(nextPlayer, mess);
 											//a lapot is küldjük
 											serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 													Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),

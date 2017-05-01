@@ -226,8 +226,23 @@ public class PlayerManagerThread extends Thread {
 									case SZINKEREO://kérdezzük meg milyen színt kér
 										//ez egyenlőre csak ennyi:
 										serverMessage(player, Consts.REQUEST_COLOR+"", null);
+										//módosítás: elmentjük az utolsó lapot, de nem tesszük el, ezt a send_color-ban kell lekezelni
+										//mert: itt még várunk egy színre
+										lastCard=clientCard;
+										canSaveLastCard=false;
 										break;
-									case HUZZNEGYET:break;
+									case HUZZNEGYET://na itt lenne egy olyan ellenőrzés, 
+										//amit szerver oldalon nem lehet megnézni, az itt kimarad, azt a kliensnek mindenképpen ellenőriznie kell
+										//mégpedig azt, hogy az utolsó lappal nincs-e egyező színe.
+										//A szerver ugyanis nem ismeri a játékosok kezében lévő lapokat.
+										
+										//bekérjük a színt, de tudni kellene hogy ez volt az utolsó lépés
+										serverMessage(player, Consts.REQUEST_COLOR+"", null);
+										//módosítás: elmentjük az utolsó lapot, de nem tesszük el, ezt a send_color-ban kell lekezelni
+										//mert: itt még várunk egy színre
+										lastCard=clientCard;
+										canSaveLastCard=false;
+										break;
 									default:break;
 								}
 								

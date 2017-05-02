@@ -101,7 +101,30 @@ public Card machineCardChooseAlgorithm(Card topCard, boolean lastPlayerDrawed, C
 			
 		}
 		
-		if (lastPlayerDrawed && !declaredColor.equals(CardColor.FEKETE)){}
+		if (lastPlayerDrawed && !declaredColor.equals(CardColor.FEKETE)){
+			//ötödik eset
+			// előző játékos húzott és színkényszer van.
+			// mivel elöttünk húztak, bármit rakhatunk az adott színben
+	
+				selectedCard = searchAnyNumberOfCertainColor(declaredColor);
+				
+				if (selectedCard == null){
+				
+				selectedCard = searchSameColorNotNumber(declaredColor);
+				}
+				if (selectedCard == null){
+					
+					selectedCard = searchJokerCard();
+				}
+				
+				if (selectedCard == null){
+					
+					selectedCard = searchDrawFourJoker();
+				}
+				
+			}
+				
+		
 	
 return selectedCard;	
 }
@@ -298,6 +321,9 @@ protected Card searchWhenTopNumber(Card topCard){
 		selectedCard = searchJokerCard();
 		
 	}
+	
+
+	
 	
 	if (selectedCard == null){
 		

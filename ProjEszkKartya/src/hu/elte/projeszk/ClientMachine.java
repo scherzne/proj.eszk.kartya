@@ -80,7 +80,26 @@ public Card machineCardChooseAlgorithm(Card topCard, boolean lastPlayerDrawed, C
 		
 		}
 		
-		if (lastPlayerDrawed && declaredColor.equals(CardColor.FEKETE)){}
+		if (lastPlayerDrawed && declaredColor.equals(CardColor.FEKETE)){
+			// Negyedik eset, előző játékos húzott - azaz nem tudott rakni- és nincs színkényszer
+			//ÖSSSZEVONÁSI LEHETŐSÉG ! ugyanaz mint feljebb
+		
+			if(topCard.getValue()<10){
+				
+				selectedCard = searchWhenTopNumber(topCard);
+			}else{
+				
+				
+				//legfelso kartya nem szam!
+				// ha az előző játékos rakta akkor a szivatósok közül nem lehet se fordító
+				// csak plussz 2 es plussz 4 es és szinkérő
+				
+				selectedCard = searchWhenTopNotNumber(topCard);
+			
+			}
+			
+			
+		}
 		
 		if (lastPlayerDrawed && !declaredColor.equals(CardColor.FEKETE)){}
 	

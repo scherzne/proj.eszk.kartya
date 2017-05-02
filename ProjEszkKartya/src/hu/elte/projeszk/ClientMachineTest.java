@@ -338,7 +338,52 @@ public class ClientMachineTest {
 	}
 	
 	
+
+	@Test
+    public void clientMachineHandTestMachineCardChooseAlgorithm_Fourth_Case() {
 	
+		
+	clientMachineTester = new ClientMachine();
+		
+	    Card  expectCard1 = new Card(CardColor.FEKETE,CardValue.SZINKEREO);
+	    Card  expectCard2 = new Card(CardColor.KEK,CardValue.NULLA);	  
+	    Card  expectCard3 = new Card(CardColor.KEK,CardValue.HUZZKETTOT);
+	    Card  expectCard4 = new Card(CardColor.FEKETE,CardValue.HUZZNEGYET);
+	    Card  expectCard5 = new Card(CardColor.PIROS,CardValue.KILENC);
+	    
+	    clientMachineTester.addCardToHand(new Card(CardColor.PIROS,CardValue.HAT));
+	    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.FORDITTO));
+	    clientMachineTester.addCardToHand(expectCard2);
+	    clientMachineTester.addCardToHand(expectCard3);
+	    clientMachineTester.addCardToHand(expectCard5);
+	    
+    
+	     Card topCard =   new Card(CardColor.SARGA,CardValue.HET); 
+	     assertEquals("If top card is SARGA HET  the return card should be null", null, clientMachineTester.machineCardChooseAlgorithm( topCard,true,CardColor.FEKETE));
+	   
+	      topCard =   new Card(CardColor.KEK,CardValue.HET); 
+	      assertEquals("If top card is KEK HET  the return card should be KEK NULLA", expectCard2, clientMachineTester.machineCardChooseAlgorithm( topCard,true,CardColor.FEKETE));
+	   
+	     clientMachineTester.removeCardFromHand(expectCard2);
+	     assertEquals("If top card is KEK HET  the return card should be KEK HUZZKETTOT", expectCard3, clientMachineTester.machineCardChooseAlgorithm( topCard,true,CardColor.FEKETE));
+	   
+	   
+	     topCard =   new Card(CardColor.KEK,CardValue.KILENC); 
+	     assertEquals("If top card is KEK HET  the return card should be PIROS KILENC", expectCard5, clientMachineTester.machineCardChooseAlgorithm( topCard,true,CardColor.FEKETE));
+	   
+	      topCard =   new Card(CardColor.SARGA,CardValue.HET);
+	      clientMachineTester.addCardToHand(expectCard1);
+		  clientMachineTester.addCardToHand(expectCard4);
+		  assertEquals("If top card is SARGA HET  the return card should be FEKETE SZINKERO", expectCard1, clientMachineTester.machineCardChooseAlgorithm( topCard,true,CardColor.FEKETE));
+	      
+	      
+	      clientMachineTester.removeCardFromHand(expectCard1);
+	      assertEquals("If top card is SARGA HET  the return card should be FEKETE HUZZNEGYET", expectCard4, clientMachineTester.machineCardChooseAlgorithm( topCard,true,CardColor.FEKETE));
+		   
+	      clientMachineTester.removeCardFromHand(expectCard4);
+	      assertEquals("If top card is SARGA HET  the return card should be null ", null, clientMachineTester.machineCardChooseAlgorithm( topCard,true,CardColor.FEKETE));
+		   
+
 	
-	
+	}
 }

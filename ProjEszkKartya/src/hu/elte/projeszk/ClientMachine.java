@@ -46,7 +46,7 @@ public Card machineCardChooseAlgorithm(Card topCard, boolean lastPlayerDrawed, C
 			selectedCard = searchWhenTopNumber(topCard);
 		}else{
 			//legfelso kartya nem szam!
-			// ha az előző játékos rakta akkor a sziveatósok közül nem lehet se fordító
+			// ha az előző játékos rakta akkor a szivatósok közül nem lehet se fordító
 			// csak plussz 2 es plussz 4 es és szinkérő
 			
 			selectedCard = searchWhenTopNotNumber(topCard);
@@ -56,23 +56,64 @@ public Card machineCardChooseAlgorithm(Card topCard, boolean lastPlayerDrawed, C
 	
 	
 		if (!lastPlayerDrawed && !declaredColor.equals(CardColor.FEKETE)){
+			
 			// VAN színkényszer és az utolsó ember nem húzott  (kártyát azaz az előző játékos rakta)
-			if(topCard.getValue()<10){
+			// mivel a színkényszer csak 1 játékosra vonatkozik, ezért ha raktak elöttünk, és van színkényszer
+			//akkor az elöttünk lévő rakta a szinkényszer kártyát. ekkor csak 2 lehetőség van, 
+			// ha plussznegyet vagy ha jokert raktak.
+			
+			if(topCard.getCardValue().equals(CardValue.HUZZNEGYET)){
 				
-				selectedCard = searchWhenTopNumberCertainColor(declaredColor);
+				selectedCard = searchDrawFourJoker();
 				
-			}else{
-				//legfelso kartya nem szam!
-				// ha az előző játékos rakta akkor a sziveatósok közül nem lehet se fordító
-				// csak plussz 2 es plussz 4 es és szinkérő
+			}else /*if (topCard.getCardValue().equals(CardValue.SZINKEREO))*/{
 				
-				//selectedCard = searchWhenTopNotNumberCertainColor(topCard);
-		}	
+				
+				selectedCard=	searchAnyNumberOfCertainColor(declaredColor);
+				
+				if (selectedCard== null){
+					selectedCard = searchWhenTopNotNumberCertainColor(declaredColor);}
+								
+			}
+				
+				
 		
 		}
+		
+		if (lastPlayerDrawed && declaredColor.equals(CardColor.FEKETE)){}
+		
+		if (lastPlayerDrawed && !declaredColor.equals(CardColor.FEKETE)){}
 	
 return selectedCard;	
 }
+
+
+protected Card searchWhenTopNotNumberCertainColor(CardColor cardColor){
+	
+	
+	
+	
+							
+		Card selectedCard = searchSameColorNotNumber(cardColor);
+	
+	if (selectedCard == null){
+	
+		
+		selectedCard = searchJokerCard();
+	
+	}
+	
+	if (selectedCard == null){
+	
+		
+		selectedCard = searchDrawFourJoker();
+	
+	}
+	
+	
+	return selectedCard;
+}
+
 
 protected Card searchWhenTopNumberCertainColor(CardColor cardColor){
 	
@@ -105,6 +146,8 @@ protected Card searchWhenTopNumberCertainColor(CardColor cardColor){
 	
 	return selectedCard;
 }
+
+
 
 
 

@@ -14,7 +14,40 @@ protected ArrayList<Card> hand = new ArrayList<Card>();
 
 
 	
-	 public static void main(String[] args) {
+	 public static void main(String[] args) throws UnknownHostException {
+
+		 String gamerName = args[0];
+		 String message;
+		 
+		 try{
+				String host = "localhost";
+		        int port =  11111;
+		        
+		        Socket client = new Socket(host, port);
+		        System.out.println("A kliens letrejott, es csatlakozott a szerverhez.");
+		        
+		        PrintWriter pw = new PrintWriter(client.getOutputStream());
+		        BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			
+			  
+ 
+		        do{
+		        	
+		        
+		        	
+		        	
+		        	break;
+		        	
+		        }while(true);
+		        
+		        
+		        client.close();
+		        System.out.println("A kliens leallt.");
+			
+			}  catch (Exception e) {
+	                System.err.println("Hiba a klienessel valo kommunikacioban.");
+				}
+		 
 		 
 
 }

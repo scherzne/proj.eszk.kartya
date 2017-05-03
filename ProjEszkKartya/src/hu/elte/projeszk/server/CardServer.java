@@ -18,7 +18,7 @@ public class CardServer {
 
 	public static void main(String[] args) throws IOException {
 		server=new ServerSocket(Consts.PORT);
-		server.setSoTimeout(Consts.START_GAME_TIMEOUT);
+		server.setSoTimeout(Consts.START_GAME_TIMEOUT*1000);
 		
 		//játékos gyűjtő
 		ArrayList<Player> players=new ArrayList<>();
@@ -62,7 +62,7 @@ public class CardServer {
 				players.add(player);//átmeneti gyűjtőbe tesszük
 
 			}catch (SocketTimeoutException e) {
-				
+				System.out.println(e.getMessage());
 			}
 		}
 	}

@@ -35,15 +35,15 @@ public class Consts {
 	 * Ezzel az információval a kliensnek is kell gazdálkodni!
 	 * Tudni a kell a következő és a többi játékosnak, mit tett le az előző,
 	 * és ezt nem csak szöveges üzenettel, hogy a kliens program is tudjon ellenőrizni! 
+	 * Gépi játékosnak kellhet?
 	 */
 	public static final char CARD_INFORMATION='I';
 	/**
-	 * Lapot 'A'd a szerver
+	 * Lapot 'A'd a szerver vagy a kliens
 	 */
 	public static final char SEND_CARD='A';
 	/**
 	 * 'L'apot kér a kliens
-	 * (ezt nem értem mire jó!)
 	 */
 	public static final char REQUEST_CARD='L';
 	/**
@@ -78,5 +78,5 @@ public class Consts {
 	/**
 	 * Konstans az üzenetben húzott/nem húzott
 	 */
-	public static final String NEM_HUZOTT="N";
+	public static final String NEM_HUZOTT="F";
 }

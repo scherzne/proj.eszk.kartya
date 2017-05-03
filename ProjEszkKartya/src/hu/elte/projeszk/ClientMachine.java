@@ -35,23 +35,15 @@ protected void removeCardFromHand(Card card){
 	 
 public Card machineCardChooseAlgorithm(Card topCard, boolean lastPlayerDrawed, CardColor declaredColor  ){
 
-	Card selectedCard= null;
+		Card selectedCard= null;
 	
-	//szabályok egy kártyát ad vissza az alapján hogy mi van a kezében, az előző játékos huzott-e és van e színkötelezettség
-	//ELSO ESET
-	if (!lastPlayerDrawed && declaredColor.equals(CardColor.FEKETE)){
-		// nincs színkérés és az utolsó ember nem húzott  kártyát azaz az előző játékos rakta
-		if(topCard.getValue()<10){
-			
-			selectedCard = searchWhenTopNumber(topCard);
-		}else{
-			//legfelso kartya nem szam!
-			// ha az előző játékos rakta akkor a szivatósok közül nem lehet se fordító
-			// csak plussz 2 es plussz 4 es és szinkérő
-			
-			selectedCard = searchWhenTopNotNumber(topCard);
+		//szabályok egy kártyát ad vissza az alapján hogy mi van a kezében, az előző játékos huzott-e és van e színkötelezettség
+		//ELSO ESET
+		if (!lastPlayerDrawed && declaredColor.equals(CardColor.FEKETE)){
+			// nincs színkérés és az utolsó ember nem húzott  kártyát azaz az előző játékos rakta
+		
+			selectedCard = commonCardChoosing(topCard);
 		}
-	}
 	
 	
 	
@@ -62,19 +54,7 @@ public Card machineCardChooseAlgorithm(Card topCard, boolean lastPlayerDrawed, C
 			//akkor az elöttünk lévő rakta a szinkényszer kártyát. ekkor csak 2 lehetőség van, 
 			// ha plussznegyet vagy ha jokert raktak.
 			
-			if(topCard.getCardValue().equals(CardValue.HUZZNEGYET)){
-				
-				selectedCard = searchDrawFourJoker();
-				
-			}else /*if (topCard.getCardValue().equals(CardValue.SZINKEREO))*/{
-				
-				
-				selectedCard=	searchAnyNumberOfCertainColor(declaredColor);
-				
-				if (selectedCard== null){
-					selectedCard = searchWhenTopNotNumberCertainColor(declaredColor);}
-								
-			}
+			selectedCard = specialCardChoosingNotDrawedAndNotDeclaredColor(topCard,declaredColor );
 				
 				
 		
@@ -82,21 +62,8 @@ public Card machineCardChooseAlgorithm(Card topCard, boolean lastPlayerDrawed, C
 		
 		if (lastPlayerDrawed && declaredColor.equals(CardColor.FEKETE)){
 			// Negyedik eset, előző játékos húzott - azaz nem tudott rakni- és nincs színkényszer
-			//ÖSSSZEVONÁSI LEHETŐSÉG ! ugyanaz mint feljebb
-		
-			if(topCard.getValue()<10){
-				
-				selectedCard = searchWhenTopNumber(topCard);
-			}else{
-				
-				
-				//legfelso kartya nem szam!
-				// ha az előző játékos rakta akkor a szivatósok közül nem lehet se fordító
-				// csak plussz 2 es plussz 4 es és szinkérő
-				
-				selectedCard = searchWhenTopNotNumber(topCard);
 			
-			}
+			selectedCard = commonCardChoosing(topCard);
 			
 			
 		}
@@ -106,21 +73,8 @@ public Card machineCardChooseAlgorithm(Card topCard, boolean lastPlayerDrawed, C
 			// előző játékos húzott és színkényszer van.
 			// mivel elöttünk húztak, bármit rakhatunk az adott színben
 	
-				selectedCard = searchAnyNumberOfCertainColor(declaredColor);
-				
-				if (selectedCard == null){
-				
-				selectedCard = searchSameColorNotNumber(declaredColor);
-				}
-				if (selectedCard == null){
-					
-					selectedCard = searchJokerCard();
-				}
-				
-				if (selectedCard == null){
-					
-					selectedCard = searchDrawFourJoker();
-				}
+			
+			selectedCard = specialCardChoosingDrawedAndDeclaredColor(declaredColor);
 				
 			}
 				
@@ -130,11 +84,76 @@ return selectedCard;
 }
 
 
+protected Card commonCardChoosing(Card topCard){
+	
+	Card selectedCard = null;
+	
+	if(topCard.getValue()<10){
+		
+		selectedCard = searchWhenTopNumber(topCard);
+	}else{
+		//legfelso kartya nem szam!
+		// ha az előző játékos rakta akkor a szivatósok közül nem lehet se fordító
+		// csak plussz 2 es plussz 4 es és szinkérő
+		
+		selectedCard = searchWhenTopNotNumber(topCard);
+	}
+	
+	return selectedCard;
+}
+
+
+protected Card specialCardChoosingNotDrawedAndNotDeclaredColor( Card topCard, CardColor declaredColor){
+	
+	Card selectedCard = null;
+
+	if(topCard.getCardValue().equals(CardValue.HUZZNEGYET)){
+		
+		selectedCard = searchDrawFourJoker();
+		
+	}else /*if (topCard.getCardValue().equals(CardValue.SZINKEREO))*/{
+		
+		
+		selectedCard=	searchAnyNumberOfCertainColor(declaredColor);
+		
+		if (selectedCard== null){
+			selectedCard = searchWhenTopNotNumberCertainColor(declaredColor);}
+		
+	
+	}
+	
+	
+	return selectedCard;
+}
+
+
+protected Card specialCardChoosingDrawedAndDeclaredColor(CardColor declaredColor){
+
+	Card selectedCard = null;
+	 selectedCard = searchAnyNumberOfCertainColor(declaredColor);
+	
+	if (selectedCard == null){
+	
+	selectedCard = searchSameColorNotNumber(declaredColor);
+	}
+	if (selectedCard == null){
+		
+		selectedCard = searchJokerCard();
+	}
+	
+	if (selectedCard == null){
+		
+		selectedCard = searchDrawFourJoker();
+	}
+	
+	return selectedCard;
+}
+
+
+
 protected Card searchWhenTopNotNumberCertainColor(CardColor cardColor){
 	
-	
-	
-	
+
 							
 		Card selectedCard = searchSameColorNotNumber(cardColor);
 	
@@ -156,7 +175,68 @@ protected Card searchWhenTopNotNumberCertainColor(CardColor cardColor){
 	return selectedCard;
 }
 
+protected Card searchWhenTopNotNumber(Card topCard){
+	
+	
+	
+	Card selectedCard = searchCertainCardAnyColor(topCard.getCardValue());
+	
+	
+	if (selectedCard == null){
+	
+		
+		selectedCard = searchDrawFourJoker();
+	
+	}
+	
+	
+	return selectedCard;
+}
 
+protected Card searchWhenTopNumber(Card topCard){
+	// számot keresünk 0-9 ig, ugyanolyan színben
+	Card	selectedCard = searchAnyNumberOfCertainColor(topCard.getCardColor());
+			
+	if (selectedCard == null){
+		
+		// ugyanazt a számot keresssük bármilyen színben
+		selectedCard = searchCertainCardAnyColor(topCard.getCardValue());
+		
+	}
+	
+	if (selectedCard == null){
+		
+		// "szivató kártyát" ugyanolyan színben
+		selectedCard = searchSameColorNotNumber(topCard.getCardColor());
+		
+	}
+	
+	if (selectedCard == null){
+		
+		// Joker kártyát keresünk
+		selectedCard = searchJokerCard();
+		
+	}
+	
+
+	
+	
+	if (selectedCard == null){
+		
+		// huzznegyet kártyát keresünk
+		selectedCard = searchDrawFourJoker();
+		
+	}
+	
+	if (selectedCard == null){
+		
+		//NEM TUDUNK RAKNI
+		
+	}
+return selectedCard;
+
+
+}
 protected Card searchWhenTopNumberCertainColor(CardColor cardColor){
 	
 	
@@ -279,68 +359,7 @@ protected Card searchDrawFourJoker() {
 	return card;
 }
 
-protected Card searchWhenTopNotNumber(Card topCard){
-	
-	
-	
-	Card selectedCard = searchCertainCardAnyColor(topCard.getCardValue());
-	
-	
-	if (selectedCard == null){
-	
-		
-		selectedCard = searchDrawFourJoker();
-	
-	}
-	
-	
-	return selectedCard;
-}
 
-protected Card searchWhenTopNumber(Card topCard){
-	// számot keresünk 0-9 ig, ugyanolyan színben
-	Card	selectedCard = searchAnyNumberOfCertainColor(topCard.getCardColor());
-			
-	if (selectedCard == null){
-		
-		// ugyanazt a számot keresssük bármilyen színben
-		selectedCard = searchCertainCardAnyColor(topCard.getCardValue());
-		
-	}
-	
-	if (selectedCard == null){
-		
-		// "szivató kártyát" ugyanolyan színben
-		selectedCard = searchSameColorNotNumber(topCard.getCardColor());
-		
-	}
-	
-	if (selectedCard == null){
-		
-		// Joker kártyát keresünk
-		selectedCard = searchJokerCard();
-		
-	}
-	
-
-	
-	
-	if (selectedCard == null){
-		
-		// huzznegyet kártyát keresünk
-		selectedCard = searchDrawFourJoker();
-		
-	}
-	
-	if (selectedCard == null){
-		
-		//NEM TUDUNK RAKNI
-		
-	}
-return selectedCard;
-
-
-}
 
 
 }

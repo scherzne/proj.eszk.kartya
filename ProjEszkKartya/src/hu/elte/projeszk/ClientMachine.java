@@ -14,45 +14,77 @@ protected ArrayList<Card> hand = new ArrayList<Card>();
 
 
 	
-	 public static void main(String[] args) throws UnknownHostException {
+public static void main(String[] args) throws UnknownHostException {
 
-		 String gamerName = args[0];
-		 String message;
-		 
-		 try{
-				String host = "localhost";
-		        int port =  11111;
-		        
-		        Socket client = new Socket(host, port);
-		        System.out.println("A kliens letrejott, es csatlakozott a szerverhez.");
-		        
-		        PrintWriter pw = new PrintWriter(client.getOutputStream());
-		        BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
-			
-			  
- 
-		        do{
-		        	
-		        
-		        	
-		        	
-		        	break;
-		        	
-		        }while(true);
-		        
-		        
-		        client.close();
-		        System.out.println("A kliens leallt.");
-			
-			}  catch (Exception e) {
-	                System.err.println("Hiba a klienessel valo kommunikacioban.");
-				}
+
+	ClientMachine clientMachine= new ClientMachine(args[0]);
+		
 		 
 		 
 
 }
+
+public  ClientMachine(String Name){
+	
+	 String gamerName = Name;
+	 String message="";
+	 
+	 
+	 try{
+			String host = "localhost";
+	        int port =  11111;
+	        
+	        Socket client = new Socket(host, port);
+	        System.out.println("A kliens letrejott, es csatlakozott a szerverhez.");
+	        
+	        PrintWriter pw = new PrintWriter(client.getOutputStream());
+	        BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+		
+		  
+
+	        do{
+	        	
+	        	
+	        	switch (message.charAt(0)){
+	        		
+	        		case ('A'):
+	        			// lapokat ad a szerver
+	        		
+	        		
+	        			
+	        			break;
+	        		
+	        		case ('L'): 
+	        			//lapot kér a szerver
+	        			
+	        			
+	        			
+	        			break;
+	        		
+	        		 case('S'): break;
+	        		// színt kér a szerver
+	        		 
+	        		 
+	        	}
+	        
+	        	
+	        	
+	        	break;
+	        	
+	        }while(true);
+	        
+	        
+	        client.close();
+	        System.out.println("A kliens leallt.");
+		
+		}  catch (Exception e) {
+               System.err.println("Hiba a klienessel valo kommunikacioban.");
+			}
+	
+	
+}
 			
-public void addCardToHand(Card card){
+public  void  addCardToHand(Card card){
 	
 	hand.add(card);
 	

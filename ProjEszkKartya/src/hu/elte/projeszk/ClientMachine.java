@@ -38,13 +38,14 @@ public  ClientMachine(String Name){
 	 
 	 Card topCard;
 	 Card returnCard;
+	 Card otherPlayersCard;
 	 
 	 try{
 			String host = "localhost";
 	        int portNumber = Consts.PORT;
 	        
 	        Socket client = new Socket(host, portNumber);
-	        System.out.println("A kliens letrejott, es csatlakozott a szerverhez.");
+	        System.out.println("A gépi kliens letrejott, es csatlakozott a szerverhez.");
 	        
 	        PrintWriter pw = new PrintWriter(client.getOutputStream());
 	        BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -58,14 +59,14 @@ public  ClientMachine(String Name){
 	        		
 	        		case ('A'):
 	        			// lapokat ad a szerver
-	        			
+	        			System.out.println("Kártyát kapunk:");
 	        				messageBeginWithCharA(message, br);
 	        			
 	        			break;
 	        		
 	        			case ('L'): 
 	        			//lapot kér a szerver
-	        				
+	        				System.out.println("Lapot kér a szerver:");
 		        			topCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
 	        				lastPlayerDrawed = initLastPlayerDrawed(message);
 	        				declaredColor = Card.convertCharacterToCardColor(message.charAt(7));
@@ -74,6 +75,7 @@ public  ClientMachine(String Name){
 		        			returnCard = machineCardChooseAlgorithm(topCard, lastPlayerDrawed, declaredColor);
 		        			removeCardFromHand(returnCard);
 		        			
+		        			System.out.println("A választott lap: "+returnCard);
 		        			
 		        			if (returnCard == null){
 		        				
@@ -96,7 +98,7 @@ public  ClientMachine(String Name){
 	        		
 	        		 case('S'):
 	        				// színt kér a szerver
-	        			 
+	        			 System.out.println("Színt kér a szerver!");
 	        			 // Gép esetén random adunk valami színt.
 	        			 //bővíthetőség: legyen olyan szín ami (sok) van
 	   
@@ -106,7 +108,14 @@ public  ClientMachine(String Name){
 								 
 			        			
 	        			 break;
-	        	
+	        		 case 'I': 
+	        			
+	        			 otherPlayersCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
+	        				
+	        			 System.out.println("Másik játékos rakott lapot:" + otherPlayersCard);
+	        			 
+	        			 
+	        			 break;
 	        		 case 'M': 
 	        			 
 	      			 
@@ -175,6 +184,8 @@ protected Card.CardColor randomDeclareColor(){
 			break;
 	}
 	
+	
+	 System.out.println("A gép által választott szín: "+declaredColorByMachine);
 	return declaredColorByMachine;
 	
 }
@@ -190,9 +201,17 @@ String unoMessage="";
 		   
 			switch (random){
 			
-			case '0': unoMessage=",UNO";   break;
+			case '0': unoMessage=",UNO";  
+			
+			System.out.println("UNO-t mond a gép!");
+			
+			break;
 		
-			default: unoMessage="";        break;
+			default: unoMessage="";  
+			System.out.println("Elfelejtett UNO-t mondani a gép.");  
+			
+			break;
+			
 			}
 		
 		

@@ -29,11 +29,17 @@ public  ClientMachine(String Name){
 	 String gamerName = Name;
 	 String message="";
 	 String answer;
+	 String unoMessage="";
 	 
+	 boolean gameRunning= true;
 	 boolean lastPlayerDrawed;
 	 Card.CardColor declaredColor;
+	 Card.CardColor declaredColorByMachine;
+	 
 	 Card topCard;
 	 Card returnCard;
+	 Random rand = new Random();
+	 int random;
 	 
 	 try{
 			String host = "localhost";
@@ -89,11 +95,45 @@ public  ClientMachine(String Name){
 		        			}
 		        			
 		        			declaredColor = Card.convertCharacterToCardColor(message.charAt(7));
-	        			
-		        			returnCard = machineCardChooseAlgorithm(topCard, lastPlayerDrawed, declaredColor);
+		        		
 		        			
-		        			// válasz.
-		        			//
+		        			returnCard = machineCardChooseAlgorithm(topCard, lastPlayerDrawed, declaredColor);
+		        			removeCardFromHand(returnCard);
+		        			
+		        			
+		        			if (returnCard == null){
+		        				
+		        				 pw.println("N");
+								 pw.flush();
+		        				
+		        			}else{
+		        		
+		        			
+		        			// UNO ESET!
+		        			if (hand.size()==1){
+		        				
+		        				
+		        				   random = rand.nextInt(3);
+		        				   
+		        					switch (random){
+		        		 			
+	        		 				case '0': unoMessage=",UNO";   break;
+	        		 			
+	        		 				default: 
+	        		 				
+	        		 					unoMessage="";
+	        		 					break;
+		        					}
+		        				
+		        				
+		        			}
+		        				
+		        			 pw.println("A,"+Card.convertCardColorToCharacter(returnCard.getCardColor())+","+Card.convertCardValueToCharacter(returnCard.getCardValue())+unoMessage);
+							 pw.flush();
+		        			
+		        			}
+							 
+		        			// válasz kiirása standard outputra
 		        			
 	        			break;
 	        		
@@ -101,11 +141,61 @@ public  ClientMachine(String Name){
 	        				// színt kér a szerver
 	        			 
 	        			 // Gép esetén random adunk valami színt.
+	        			 //bővíthetőség: legyen olyan szín ami (sok) van
+	   
+	        		 	
+
+	        		 	   random = rand.nextInt(4);
+	        		 		
+	        		 			switch (random){
+	        		 			
+	        		 				case '0': declaredColorByMachine =  CardColor.KEK;   break;
+	        		 				case '1': declaredColorByMachine =  CardColor.SARGA; break;
+	        		 				case '2': declaredColorByMachine =  CardColor.ZOLD;  break;
+	        		 				case '3': declaredColorByMachine =  CardColor.PIROS; break;
+	        		 				default: 
+	        		 					declaredColorByMachine= CardColor.FEKETE;
+	        		 					System.out.println("Hibás gépi színkérés");
+	        		 					
+	        		 					break;
+	        		 			}
+	        		 			
+	        		 			 pw.println(Card.convertCardColorToCharacter(declaredColorByMachine));
+								 pw.flush();
+								 
+			        			
+	        			 break;
+	        	
+	        		 case 'M': 
+	        			 
+	        		
+	        			 
+	        			 if (message.equals("M,Nyert")){
+	        				 
+	        				 gameRunning = false;
+	        				 System.out.println("Gratulálok Ön nyert!");
+	        				 
+	        				 
+	        			 }
+	        			 
+	        			 if (message.equals("M,Vesztett")){
+	        				 
+	        				 gameRunning = false;
+	        				 
+	        				 System.out.println("Sajnálom Ön vesztett!");
+		        				
+	        				 
+	        			 }
+	        			 
+	        			 if (message.equals("M,Nev")){
+	        				 
+	        				 pw.println(gamerName);
+							 pw.flush();
+	        				 
+	        			 }
 	        			 
 	        			 
 	        			 break;
-	        	
-	        		 
 	        		 
 	        		 
 	        	}
@@ -114,7 +204,7 @@ public  ClientMachine(String Name){
 	        	
 	        	break;
 	        	
-	        }while(true);
+	        }while(gameRunning);
 	        
 	        
 	        client.close();
@@ -186,7 +276,7 @@ public Card machineCardChooseAlgorithm(Card topCard, boolean lastPlayerDrawed, C
 				
 			}
 				
-		
+
 	
 return selectedCard;	
 }

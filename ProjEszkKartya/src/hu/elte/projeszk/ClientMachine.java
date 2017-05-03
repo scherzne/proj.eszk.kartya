@@ -43,9 +43,9 @@ public  ClientMachine(String Name){
 	 
 	 try{
 			String host = "localhost";
-	        int port =  11111;
+	        int portNumber = Consts.PORT;
 	        
-	        Socket client = new Socket(host, port);
+	        Socket client = new Socket(host, portNumber);
 	        System.out.println("A kliens letrejott, es csatlakozott a szerverhez.");
 	        
 	        PrintWriter pw = new PrintWriter(client.getOutputStream());

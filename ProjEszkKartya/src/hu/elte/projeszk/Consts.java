@@ -78,5 +78,5 @@ public class Consts {
 	/**
 	 * Konstans az üzenetben húzott/nem húzott
 	 */
-	public static final String NEM_HUZOTT="F";
+	public static final String NEM_HUZOTT="N";
 }

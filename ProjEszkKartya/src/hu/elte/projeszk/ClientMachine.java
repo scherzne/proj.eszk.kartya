@@ -49,12 +49,21 @@ public  ClientMachine(String Name){
 	        		
 	        		case ('A'):
 	        			// lapokat ad a szerver
-	        		
+	        			int index = message.charAt(1);
+        			
+        				for (int i =0; i < index; i++){
+        				
+        				
+        				String cardString =  br.readLine();
+        				addCardToHand(new Card(Card.convertCharacterToCardColor(cardString.charAt(0)), Card.convertCharacterToCardValue(cardString.charAt(1))));
+        				//Kiiratás
+        			
+        				}
 	        		
 	        			
 	        			break;
 	        		
-	        		case ('L'): 
+	        			case ('L'): 
 	        			//lapot kér a szerver
 	        			
 	        			

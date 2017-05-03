@@ -38,8 +38,6 @@ public  ClientMachine(String Name){
 	 
 	 Card topCard;
 	 Card returnCard;
-	 Random rand = new Random();
-	 int random;
 	 
 	 try{
 			String host = "localhost";
@@ -60,17 +58,8 @@ public  ClientMachine(String Name){
 	        		
 	        		case ('A'):
 	        			// lapokat ad a szerver
-	        			int index = message.charAt(1);
-        			
-        				for (int i =0; i < index; i++){
-        				
-        				
-        				String cardString =  br.readLine();
-        				addCardToHand(new Card(Card.convertCharacterToCardColor(cardString.charAt(0)), Card.convertCharacterToCardValue(cardString.charAt(1))));
-        				//Kiiratás
-        			
-        				}
-	        		
+	        			
+	        				messageBeginWithCharA(message, br);
 	        			
 	        			break;
 	        		
@@ -78,23 +67,8 @@ public  ClientMachine(String Name){
 	        			//lapot kér a szerver
 	        				
 		        			topCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
-	        					
-		        			if (message.charAt(5)== 'I'){
-		        				
-		        				lastPlayerDrawed= true;
-		        				
-		        			}else if  (message.charAt(5)== 'H')
-		        			
-		        			
-		        			{lastPlayerDrawed= false;  }
-		        			else{
-		        				
-		        				lastPlayerDrawed= false;
-		        				System.out.println("Hibás lap kérés Üzenet!");
-		        				
-		        			}
-		        			
-		        			declaredColor = Card.convertCharacterToCardColor(message.charAt(7));
+	        				lastPlayerDrawed = initLastPlayerDrawed(message);
+	        				declaredColor = Card.convertCharacterToCardColor(message.charAt(7));
 		        		
 		        			
 		        			returnCard = machineCardChooseAlgorithm(topCard, lastPlayerDrawed, declaredColor);
@@ -107,26 +81,9 @@ public  ClientMachine(String Name){
 								 pw.flush();
 		        				
 		        			}else{
-		        		
-		        			
+
 		        			// UNO ESET!
-		        			if (hand.size()==1){
-		        				
-		        				
-		        				   random = rand.nextInt(3);
-		        				   
-		        					switch (random){
-		        		 			
-	        		 				case '0': unoMessage=",UNO";   break;
-	        		 			
-	        		 				default: 
-	        		 				
-	        		 					unoMessage="";
-	        		 					break;
-		        					}
-		        				
-		        				
-		        			}
+		        			 unoMessage = randomizeUno();
 		        				
 		        			 pw.println("A,"+Card.convertCardColorToCharacter(returnCard.getCardColor())+","+Card.convertCardValueToCharacter(returnCard.getCardValue())+unoMessage);
 							 pw.flush();
@@ -143,33 +100,16 @@ public  ClientMachine(String Name){
 	        			 // Gép esetén random adunk valami színt.
 	        			 //bővíthetőség: legyen olyan szín ami (sok) van
 	   
-	        		 	
-
-	        		 	   random = rand.nextInt(4);
-	        		 		
-	        		 			switch (random){
-	        		 			
-	        		 				case '0': declaredColorByMachine =  CardColor.KEK;   break;
-	        		 				case '1': declaredColorByMachine =  CardColor.SARGA; break;
-	        		 				case '2': declaredColorByMachine =  CardColor.ZOLD;  break;
-	        		 				case '3': declaredColorByMachine =  CardColor.PIROS; break;
-	        		 				default: 
-	        		 					declaredColorByMachine= CardColor.FEKETE;
-	        		 					System.out.println("Hibás gépi színkérés");
-	        		 					
-	        		 					break;
-	        		 			}
-	        		 			
-	        		 			 pw.println(Card.convertCardColorToCharacter(declaredColorByMachine));
-								 pw.flush();
+	        			 declaredColorByMachine = randomDeclareColor();     		 			
+	        		 	 pw.println(Card.convertCardColorToCharacter(declaredColorByMachine));
+						 pw.flush();
 								 
 			        			
 	        			 break;
 	        	
 	        		 case 'M': 
 	        			 
-	        		
-	        			 
+	      			 
 	        			 if (message.equals("M,Nyert")){
 	        				 
 	        				 gameRunning = false;
@@ -216,7 +156,89 @@ public  ClientMachine(String Name){
 	
 	
 }
+protected Card.CardColor randomDeclareColor(){
+	
+	Random rand = new Random();
+	 int random = rand.nextInt(4);
+	Card.CardColor declaredColorByMachine= CardColor.FEKETE;
+	
+	switch (random){
+		
+		case '0': declaredColorByMachine =  CardColor.KEK;   break;
+		case '1': declaredColorByMachine =  CardColor.SARGA; break;
+		case '2': declaredColorByMachine =  CardColor.ZOLD;  break;
+		case '3': declaredColorByMachine =  CardColor.PIROS; break;
+		default: 
+			declaredColorByMachine= CardColor.FEKETE;
+			System.out.println("Hibás gépi színkérés");
 			
+			break;
+	}
+	
+	return declaredColorByMachine;
+	
+}
+protected String  randomizeUno(){
+	
+String unoMessage="";
+
+	if (hand.size()==1){
+		
+		
+		Random rand = new Random();
+		int   random = rand.nextInt(3);
+		   
+			switch (random){
+			
+			case '0': unoMessage=",UNO";   break;
+		
+			default: unoMessage="";        break;
+			}
+		
+		
+	}
+	
+return	unoMessage;
+	
+}
+
+
+
+protected void messageBeginWithCharA(String message, BufferedReader br) throws IOException {
+	
+	int index = message.charAt(1);
+	
+	for (int i =0; i < index; i++){
+	
+	
+	String cardString =  br.readLine();
+	addCardToHand(new Card(Card.convertCharacterToCardColor(cardString.charAt(0)), Card.convertCharacterToCardValue(cardString.charAt(1))));
+	//Kiiratás
+
+	}
+	
+	
+}
+
+protected boolean initLastPlayerDrawed(String message){
+
+	if (message.charAt(5)== 'I'){
+		
+		return true;
+		
+	}else if  (message.charAt(5)== 'H'){
+		
+		return false; 
+	
+	}else{
+		
+		
+		System.out.println("Hibás lap kérés Üzenet!");
+		return false;
+	}
+			
+}
+
 public  void  addCardToHand(Card card){
 	
 	hand.add(card);

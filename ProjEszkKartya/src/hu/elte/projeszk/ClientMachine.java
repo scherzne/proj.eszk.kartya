@@ -28,7 +28,12 @@ public  ClientMachine(String Name){
 	
 	 String gamerName = Name;
 	 String message="";
+	 String answer;
 	 
+	 boolean lastPlayerDrawed;
+	 Card.CardColor declaredColor;
+	 Card topCard;
+	 Card returnCard;
 	 
 	 try{
 			String host = "localhost";
@@ -65,13 +70,42 @@ public  ClientMachine(String Name){
 	        		
 	        			case ('L'): 
 	        			//lapot kér a szerver
+	        				
+		        			topCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
+	        					
+		        			if (message.charAt(5)== 'I'){
+		        				
+		        				lastPlayerDrawed= true;
+		        				
+		        			}else if  (message.charAt(5)== 'H')
+		        			
+		        			
+		        			{lastPlayerDrawed= false;  }
+		        			else{
+		        				
+		        				lastPlayerDrawed= false;
+		        				System.out.println("Hibás lap kérés Üzenet!");
+		        				
+		        			}
+		        			
+		        			declaredColor = Card.convertCharacterToCardColor(message.charAt(7));
 	        			
-	        			
-	        			
+		        			returnCard = machineCardChooseAlgorithm(topCard, lastPlayerDrawed, declaredColor);
+		        			
+		        			// válasz.
+		        			//
+		        			
 	        			break;
 	        		
-	        		 case('S'): break;
-	        		// színt kér a szerver
+	        		 case('S'):
+	        				// színt kér a szerver
+	        			 
+	        			 // Gép esetén random adunk valami színt.
+	        			 
+	        			 
+	        			 break;
+	        	
+	        		 
 	        		 
 	        		 
 	        	}

@@ -179,6 +179,17 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 	 
 	 
 }
+	
+	System.out.println("Valasz"+answer);
+	
+	//System.out.println(Arrays.toString(hand));
+	
+	for (Card c: hand){
+		
+		System.out.println(c+ "Kartya" );
+		
+	}
+	
 	return answer;
 }
 
@@ -252,7 +263,7 @@ protected void messageBeginWithCharA(String message, BufferedReader br) throws I
 	
 	for (int i =0; i < index; i++){
 	
-	
+		System.out.println("Valami");
 	String cardString =  br.readLine();
 	addCardToHand(new Card(Card.convertCharacterToCardColor(cardString.charAt(0)), Card.convertCharacterToCardValue(cardString.charAt(1))));
 	//Kiiratás

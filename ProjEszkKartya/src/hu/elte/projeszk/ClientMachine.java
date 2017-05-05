@@ -143,7 +143,7 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 		
 		 otherPlayersCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
 			
-		 System.out.println("Másik játékos rakott lapot:" + otherPlayersCard);
+		 System.out.println("Másik játékos rakott lapot:" + otherPlayersCard.getCardColor() + " " +otherPlayersCard.getCardValue());
 		 
 		 
 		 break;

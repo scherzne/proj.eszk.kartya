@@ -136,11 +136,11 @@ public class ClientMachineSocketTest {
 	      assertEquals("When inputstream is 'L,S7,N,F', the machine cant give back card ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 	  
 	      setSocketInputStreamMocking("L,Z5,N,F");
-	      assertEquals("When inputstream is 'L,Z5,N,F' the message should be null ","A,Z9", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      assertEquals("When inputstream is 'L,Z5,N,F' the message should be ZOLD KILENC ","A,Z9", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 		  
 	      
 	      setSocketInputStreamMocking("L,S6,N,F");
-	      assertEquals("When inputstream is 'L,S6,N,F', the machine cant give back card ","A,K6", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      assertEquals("When inputstream is 'L,S6,N,F', the message should be KEK HAT ","A,K6", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 		  
 	      setSocketInputStreamMocking("L,S6,N,F");
 	      assertEquals("When inputstream is 'L,S6,N,F', for the second time the machine cant give back card ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
@@ -191,15 +191,12 @@ public class ClientMachineSocketTest {
 	      setSocketInputStreamMocking("L,S7,I,F");
 	      assertEquals("When inputstream is 'L,S7,I,F', the machine cant give back card ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 	  
-	      setSocketInputStreamMocking("L,S7,I,F");
-	      assertEquals("When inputstream is 'L,S7,I,F', the machine cant give back card ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
-	  
 	      setSocketInputStreamMocking("L,Z5,I,F");
-	      assertEquals("When inputstream is 'L,Z5,I,F' the message should be null ","A,Z9", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      assertEquals("When inputstream is 'L,Z5,I,F' the message should be ZOLD KILENC ","A,Z9", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 		  
 	      
 	      setSocketInputStreamMocking("L,S6,I,F");
-	      assertEquals("When inputstream is 'L,S6,I,F', the machine cant give back card ","A,K6", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      assertEquals("When inputstream is 'L,S6,I,F', the message should be KEK HAT ","A,K6", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 		  
 	      setSocketInputStreamMocking("L,S6,I,F");
 	      assertEquals("When inputstream is 'L,S6,I,F', for the second time the machine cant give back card ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
@@ -251,8 +248,8 @@ public class ClientMachineSocketTest {
 	      setSocketInputStreamMocking("L,S7,I,S");
 	      assertEquals("When inputstream is 'L,S7,I,S', the machine cant give back card ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 	  
-	      setSocketInputStreamMocking("L,S7,I,F");
-	      assertEquals("When inputstream is 'L,S7,I,F', the machine cant give back card ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      setSocketInputStreamMocking("L,S7,I,S");
+	      assertEquals("When inputstream is 'L,S7,I,S', the machine cant give back card ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 	  
 	      setSocketInputStreamMocking("L,Z5,I,F");
 	      assertEquals("When inputstream is 'L,Z5,I,F' the message should be null ","A,Z9", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response

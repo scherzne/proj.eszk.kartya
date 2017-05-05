@@ -19,6 +19,7 @@ public class Player {
 	private int id;
 	private boolean live;
 	private String name=null;
+	private int cardCount=0;
 
 	public Player(Socket socket,int id) throws IOException{
 		this.socket=socket;
@@ -94,7 +95,37 @@ public class Player {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	/**
+	 * kézben tartott kártyák darabszáma. Ez az osztó szeme, mivel a lapokat magukat
+	 * megegyezés alapján nem láthatja. Azt viszont egy igazi játékban is látja az osztó
+	 * , hogy a játékosnak hány lap van a kezében.
+	 * Erre az UNO bemondása miatt van szükség, mivel a 2 kézben tartott lap és bedobás
+	 * esetén, amennyiben a játékos nem mond hozzá UNO-t is, büntetést érdemel,
+	 * lap osztást fog kapni.
+	 * @return
+	 */
+	public int getCardCount(){
+		return this.cardCount;
+	}
+	/**
+	 * UNO miatt muszáj tudni hány lapja van a játékosnak, 
+	 * ezért kiosztáskor növelni kell
+	 * @param c kapott lapok száma
+	 */
+	public synchronized void increaseCardCount(int c){
+		if(c>0)
+			this.cardCount+=c;
+	}
+	
+	/**
+	 * UNO miatt muszáj tudni hány lapja van a játékosnak, 
+	 * ezért bedobáskor csökkenteni kell
+	 */
+	public synchronized void decreaseCardCount(){
+		if(this.cardCount-1>0)
+			this.cardCount--;
+	}
+	
 	@Override
 	public String toString() {
 		return name;

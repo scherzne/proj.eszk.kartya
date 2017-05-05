@@ -44,6 +44,8 @@ public class CardServer {
 				managerId++;
 				managers.add(manager);
 				manager.start();//elindítjuk a manager-t, innen ő kezeli a játékos csoportot
+				//ez lemaradt!
+				players=new ArrayList<>();
 			}
 			try {
 				//ők már várakoznak a partnerre, ne dobódjonak el
@@ -60,7 +62,8 @@ public class CardServer {
 				
 				Player player=new Player(socket, id);				
 				players.add(player);//átmeneti gyűjtőbe tesszük
-
+				player.write("Várakozás a többi játékosra");
+				
 			}catch (SocketTimeoutException e) {
 				System.out.println(e.getMessage());
 			}

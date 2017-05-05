@@ -76,7 +76,37 @@ public class ClientMachineSocketTest {
 		
 	}
 	
-	
+	@Test
+	public void testingInformation() {
+	// Szinválasztás tesztelése
+		
+	    encoding = "UTF-8";
+	    
+	    try {
+	      Socket socket = Mockito.mock(Socket.class);
+
+	      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+	      Mockito.when(socket.getOutputStream()).thenReturn(byteArrayOutputStream);
+   
+	      Mockito.when(socket.getInputStream()).thenReturn(inputStream);
+     
+	      
+	      clientMachineTester = new ClientMachine("JatekosNev");
+	      clientMachineTester.setSocket(socket);
+	      
+	      setIncomingMessage("I,K3");
+	      assertEquals("When inputstrewam is 'I,K3', output should be K ",null, clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	  
+	      setIncomingMessage("I,SH");
+	      assertEquals("When inputstrewam is 'I,SH', output should be K ",null, clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+		  
+	      
+	    } catch (IOException e) {
+	      e.printStackTrace();
+	    }
+		
+		
+	}
 
 	
 

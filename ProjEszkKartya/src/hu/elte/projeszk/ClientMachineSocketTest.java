@@ -110,7 +110,7 @@ public class ClientMachineSocketTest {
 
 	@Test
 	public void testingCardChoosingCase1() {
-	//nincs színkötelezettség, előző ember húzott
+	//nincs színkötelezettség, előző ember nem húzott
 		
 	    encoding = "UTF-8";
 	    
@@ -166,8 +166,7 @@ public class ClientMachineSocketTest {
 	
 	@Test
 	public void testingCardChoosingCase2() {
-	//nincs színkötelezettség, előző ember rakott
-		
+	//nincs színkötelezettség, előző játékos húzott
 	    encoding = "UTF-8";
 	    
 	    try {
@@ -248,31 +247,29 @@ public class ClientMachineSocketTest {
 	      setSocketInputStreamMocking("L,S7,I,S");
 	      assertEquals("When inputstream is 'L,S7,I,S', the machine cant give back card ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 	  
-	      setSocketInputStreamMocking("L,S7,I,S");
-	      assertEquals("When inputstream is 'L,S7,I,S', the machine cant give back card ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
-	  
-	      setSocketInputStreamMocking("L,Z5,I,F");
-	      assertEquals("When inputstream is 'L,Z5,I,F' the message should be null ","A,Z9", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      setSocketInputStreamMocking("L,PH,I,P");
+	      assertEquals("When inputstream is 'L,PH,I,P' the message should be PIROS NULLA ","A,P0", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 		  
 	      
-	      setSocketInputStreamMocking("L,S6,I,F");
-	      assertEquals("When inputstream is 'L,S6,I,F', the machine cant give back card ","A,K6", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      setSocketInputStreamMocking("L,PH,I,P");
+	      assertEquals("When inputstream is 'L,S6,I,F', the mmessage should be PIROS HUZZKETTOT ","A,PH", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 		  
-	      setSocketInputStreamMocking("L,S6,I,F");
-	      assertEquals("When inputstream is 'L,S6,I,F', for the second time the machine cant give back card ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      setSocketInputStreamMocking("L,PK,I,P");
+	      assertEquals("When inputstream is 'L,S6,I,F', (PIROS KIMARADSZ)  the mmessage should be ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 		  
-	      setSocketInputStreamMocking("L,SH,I,F");
-	      assertEquals("When inputstream is 'L,S6,I,F' the message should be PIROS HUZZKETTO ","A,PH", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
-		  
-	      setSocketInputStreamMocking("L,SK,I,F");
-	      assertEquals("When inputstream is 'L,SK,I,F' the message should be KEK KIMARADSZ ","A,KK", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
-		  
-	      
-	      setSocketInputStreamMocking("L,F4,I,F");
-	      assertEquals("When inputstream is 'L,SK,I,F' the message should be null ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
-		  
-	      
+	      clientMachineTester.addCardToHand( new Card(CardColor.FEKETE,CardValue.SZINKEREO));
+	      setSocketInputStreamMocking("L,Z5,I,P");
+	      assertEquals("When inputstream is 'L,Z5,I,F', (ZOLD OT)  the mmessage should be FEKETE SZINKERO ","A,FS", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+		
 	     
+	      clientMachineTester.addCardToHand( new Card(CardColor.FEKETE,CardValue.SZINKEREO));
+	      clientMachineTester.addCardToHand( new Card(CardColor.FEKETE,CardValue.HUZZNEGYET));
+	      setSocketInputStreamMocking("L,Z5,I,P");
+	      assertEquals("When inputstream is 'L,Z5,I,F', (ZOLD OT)  the mmessage should be FEKETE SZINKERO ","A,FS", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+		
+	      setSocketInputStreamMocking("L,Z5,I,P");
+	      assertEquals("When inputstream is 'L,Z5,I,F', (ZOLD OT)  the mmessage should be FEKETE HUZZNEGYET ","A,FN", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+		
 	      
 	    } catch (IOException e) {
 	      e.printStackTrace();

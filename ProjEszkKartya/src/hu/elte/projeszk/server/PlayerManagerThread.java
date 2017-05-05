@@ -501,13 +501,21 @@ public class PlayerManagerThread extends Thread {
 	}
 	
 	/**
-	 * FIXME: üres paklit megoldani!!!
 	 * Legfelső kártya húzása(és eltávolítása) a pakliból
+	 * Amennyiben elfogyott a pakli, akkor a bedobott kártyalapok gyűjtőjéből
+	 * Kivesszük a lapokat és betesszük a pakliba, majd megkeverjük.
 	 * @return vagy egy kártya vagy null ha a pakli már üres!
 	 */
 	protected synchronized Card drawCardFromPack(){
-		if(cardPack.size()>0){
+		if(!cardPack.isEmpty()){//van még lap
 			return cardPack.remove(cardPack.size()-1);
+		}else if(!droppedCards.isEmpty()){//elfogyott, újrakeverjük a bedobottakat
+			cardPack.addAll(droppedCards);//system.arraycopy-val van, úgyhogy a köv lépés nem probléma
+			droppedCards.clear();
+			
+			//pakli megkeverése
+			Collections.shuffle(cardPack);
+			return cardPack.remove(cardPack.size()-1);//ua.
 		}
 		
 		return null;

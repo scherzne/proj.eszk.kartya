@@ -29,7 +29,7 @@ public class ClientMachineSocketTest {
      String outGoingMessage;
 	 String encoding;
 	
-	public void setIncomingMessage(String message) throws UnsupportedEncodingException{
+	public void setSocketInputStreamMocking(String message) throws UnsupportedEncodingException{
 		
 		inCommingMessage = message;
 		 br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(inCommingMessage.getBytes(encoding))));
@@ -64,7 +64,7 @@ public class ClientMachineSocketTest {
 	      };
 	      clientMachineTester.setSocket(socket);
 	      
-	      setIncomingMessage("S");
+	      setSocketInputStreamMocking("S");
 	
 	      assertEquals("When inputstrewam is 'S', outputstream should be K ","K", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
  
@@ -94,11 +94,11 @@ public class ClientMachineSocketTest {
 	      clientMachineTester = new ClientMachine("JatekosNev");
 	      clientMachineTester.setSocket(socket);
 	      
-	      setIncomingMessage("I,K3");
-	      assertEquals("When inputstrewam is 'I,K3', output should be K ",null, clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      setSocketInputStreamMocking("I,K3");
+	      assertEquals("When inputstrewam is 'I,K3', output should be null ",null, clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 	  
-	      setIncomingMessage("I,SH");
-	      assertEquals("When inputstrewam is 'I,SH', output should be K ",null, clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      setSocketInputStreamMocking("I,SH");
+	      assertEquals("When inputstrewam is 'I,SH', output should be null ",null, clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 		  
 	      
 	    } catch (IOException e) {
@@ -108,6 +108,60 @@ public class ClientMachineSocketTest {
 		
 	}
 
-	
+	@Test
+	public void testingCardChoosing() {
+	// Szinválasztás tesztelése
+		
+	    encoding = "UTF-8";
+	    
+	    try {
+	      Socket socket = Mockito.mock(Socket.class);
+
+	      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+	      Mockito.when(socket.getOutputStream()).thenReturn(byteArrayOutputStream);
+   
+	      Mockito.when(socket.getInputStream()).thenReturn(inputStream);
+     
+	      
+	      clientMachineTester = new ClientMachine("JatekosNev");
+	      clientMachineTester.setSocket(socket);
+	      
+	      clientMachineTester.addCardToHand( new Card(CardColor.KEK,CardValue.HAT));
+	      clientMachineTester.addCardToHand( new Card(CardColor.KEK,CardValue.KIMARADSZ));
+	      clientMachineTester.addCardToHand( new Card(CardColor.ZOLD,CardValue.KILENC));
+	      clientMachineTester.addCardToHand( new Card(CardColor.PIROS,CardValue.HUZZKETTOT));
+	      clientMachineTester.addCardToHand( new Card(CardColor.PIROS,CardValue.NULLA));
+	      
+	      setSocketInputStreamMocking("L,S7,N,F");
+	      assertEquals("When inputstream is 'L,S7,N,F', the machine cant give back card ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	  
+	      setSocketInputStreamMocking("L,Z5,N,F");
+	      assertEquals("When inputstream is 'L,Z5,N,F' the message should be null ","A,Z9", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+		  
+	      
+	      setSocketInputStreamMocking("L,S6,N,F");
+	      assertEquals("When inputstream is 'L,S6,N,F', the machine cant give back card ","A,K6", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+		  
+	      setSocketInputStreamMocking("L,S6,N,F");
+	      assertEquals("When inputstream is 'L,S6,N,F', for the second time the machine cant give back card ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+		  
+	      setSocketInputStreamMocking("L,SH,N,F");
+	      assertEquals("When inputstream is 'L,S6,N,F' the message should be PIROS HUZZKETTO ","A,PH", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+		  
+	      setSocketInputStreamMocking("L,SK,N,F");
+	      assertEquals("When inputstream is 'L,SK,N,F' the message should be KEK KIMARADSZ ","A,KK", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+		  
+	      
+	      setSocketInputStreamMocking("L,F4,N,F");
+	      assertEquals("When inputstream is 'L,SK,N,F' the message should be null ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+		  
+	     
+	      
+	    } catch (IOException e) {
+	      e.printStackTrace();
+	    }
+		
+		
+	}
 
 }

@@ -258,7 +258,7 @@ public class PlayerManagerThread extends Thread {
 		serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.SEND_CARD+"4", cardStrs);
 		//a többieknek pedig szintén infót
 		String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
-				" "+lastCard.cardValueToString()+" "+lastCard.getCardValueAsChar()+
+				" "+lastCard.cardColorToString()+" "+lastCard.getCardValueAsChar()+
 				" kártyát tett le.";
 		serverMessageToOthers(nextPlayer, mess);
 		//továbblépés a következő játékosra, ő már kell tegyen lapot, így kérünk tőle
@@ -298,7 +298,7 @@ public class PlayerManagerThread extends Thread {
 		serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Te jössz!");
 		//és miért
 		String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
-				" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
+				" "+clientCard.cardColorToString()+" "+clientCard.getCardValueAsChar()+
 				" kártyát tett le.";
 		serverMessageToOthers(nextPlayer, mess);
 		//a lapot is küldjük
@@ -327,7 +327,7 @@ public class PlayerManagerThread extends Thread {
 					serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Egyszer kimaradsz, mert kimaradsz kártyát dobtak!");
 					//és miért
 					String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
-							" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
+							" "+clientCard.cardColorToString()+" "+clientCard.getCardValueAsChar()+
 							" kártyát tett le.";
 					serverMessageToOthers(nextPlayer, mess);
 					//tovább lépés arra játékosra aki tányleg jön
@@ -364,7 +364,7 @@ public class PlayerManagerThread extends Thread {
 				serverMessageToOthers(nextPlayer, "Játékirány megfordult");
 				//miért fordult meg a játékirány
 				String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
-						" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
+						" "+clientCard.cardColorToString()+" "+clientCard.getCardValueAsChar()+
 						" kártyát tett le.";
 				serverMessageToOthers(nextPlayer, mess);
 				//a lapot is küldjük
@@ -400,7 +400,7 @@ public class PlayerManagerThread extends Thread {
 			serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.SEND_CARD+"2", cardStrs);
 			//a többieknek pedig szintén infót
 			String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
-					" "+clientCard.cardValueToString()+" "+clientCard.getCardValueAsChar()+
+					" "+clientCard.cardColorToString()+" "+clientCard.getCardValueAsChar()+
 					" kártyát tett le.";
 			serverMessageToOthers(nextPlayer, mess);
 			//továbblépés a következő játékosra, ő már kell tegyen lapot, így kérünk tőle

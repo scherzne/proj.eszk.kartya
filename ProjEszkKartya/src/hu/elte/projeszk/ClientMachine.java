@@ -27,19 +27,12 @@ public static void main(String[] args) throws UnknownHostException {
 
 public  ClientMachine(String Name){
 	
-	 String gamerName = Name;
-	 String message="";
+
 	 String answer;
-	 String unoMessage="";
 	 
 	 boolean gameRunning= true;
-	 boolean lastPlayerDrawed;
-	 Card.CardColor declaredColor;
-	 Card.CardColor declaredColorByMachine;
-	 
-	 Card topCard;
-	 Card returnCard;
-	 Card otherPlayersCard;
+	
+	
 	 
 	 try{
 			String host = "localhost";
@@ -56,9 +49,11 @@ public  ClientMachine(String Name){
 	        	  
 	        	
 	  	          answer =  switchAtInputCharacter(br);
+	  	         
+	  	          if (answer!=null){
 	  	          pw.println(answer);
 	  	          pw.flush();
-	        	
+	  	          }
 	        	
 	        }while(gameRunning);
 	        

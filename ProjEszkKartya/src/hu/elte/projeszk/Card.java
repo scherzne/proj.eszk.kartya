@@ -96,6 +96,21 @@ public class Card {
 	}
 	
 	/**
+	 * A kártya színe szövegesen, pl: Piros
+	 * @return Egy szó, ami a kártya színe
+	 */
+	public String cardColorToString(){
+		switch(cardColor){
+			case SARGA:return "Sárga";
+			case KEK:return "Kék";
+			case PIROS:return "Piros";
+			case ZOLD:return "Zöld";
+			case FEKETE:return "Fekete";
+			default:return "Érvénytelen";
+		}
+	}
+	
+	/**
 	 * Kártya típusok szöveges reprezentációja, 
 	 * csak szöveges üzenetekhez, hogy olvashatóak legyenek emberek számára is.
 	 * @return

@@ -243,6 +243,7 @@ public class PlayerManagerThread extends Thread {
 	 * @param row a streamből olvasott sor
 	 */
 	protected void doHuzzNegyet(String row){
+		int tempId=nextPlayer;
 		//húzz négyet esetén a köv.játékos kimarad és négy lapot is kap
 		nextPlayer=getNextPlayerId();//léptetés, ő fog kimaradni
 		String temp[]=row.split(Consts.MESSAGE_SEPARATOR+"");//ezt a színt választotta a jokeres
@@ -257,10 +258,7 @@ public class PlayerManagerThread extends Thread {
 		//elküldjük neki a két húzott lapot
 		serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.SEND_CARD+"4", cardStrs);
 		//a többieknek pedig szintén infót
-		String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
-				" "+lastCard.cardColorToString()+" "+lastCard.getCardValueAsChar()+
-				" kártyát tett le.";
-		serverMessageToOthers(nextPlayer, mess);
+		droppedCardInfoToOthers(playerThreads.get(tempId).getPlayer());
 		//továbblépés a következő játékosra, ő már kell tegyen lapot, így kérünk tőle
 		nextPlayer=getNextPlayerId();
 		serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
@@ -297,10 +295,7 @@ public class PlayerManagerThread extends Thread {
 		//szöveges üzenetek
 		serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Te jössz!");
 		//és miért
-		String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
-				" "+clientCard.cardColorToString()+" "+clientCard.getCardValueAsChar()+
-				" kártyát tett le.";
-		serverMessageToOthers(nextPlayer, mess);
+		droppedCardInfoToOthers(player);
 		//a lapot is küldjük
 		serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 				Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
@@ -326,10 +321,7 @@ public class PlayerManagerThread extends Thread {
 					//szöveges üzenetek
 					serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Egyszer kimaradsz, mert kimaradsz kártyát dobtak!");
 					//és miért
-					String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
-							" "+clientCard.cardColorToString()+" "+clientCard.getCardValueAsChar()+
-							" kártyát tett le.";
-					serverMessageToOthers(nextPlayer, mess);
+					droppedCardInfoToOthers(player);
 					//tovább lépés arra játékosra aki tányleg jön
 					nextPlayer=getNextPlayerId();
 					//a lapot is küldjük
@@ -363,10 +355,7 @@ public class PlayerManagerThread extends Thread {
 				serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Te következel, mert egy fordítót dobtak!");
 				serverMessageToOthers(nextPlayer, "Játékirány megfordult");
 				//miért fordult meg a játékirány
-				String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
-						" "+clientCard.cardColorToString()+" "+clientCard.getCardValueAsChar()+
-						" kártyát tett le.";
-				serverMessageToOthers(nextPlayer, mess);
+				droppedCardInfoToOthers(player);
 				//a lapot is küldjük
 				serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 						Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
@@ -399,10 +388,7 @@ public class PlayerManagerThread extends Thread {
 			//elküldjük neki a két húzott lapot
 			serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.SEND_CARD+"2", cardStrs);
 			//a többieknek pedig szintén infót
-			String mess=playerThreads.get(nextPlayer).getPlayer().getName()+
-					" "+clientCard.cardColorToString()+" "+clientCard.getCardValueAsChar()+
-					" kártyát tett le.";
-			serverMessageToOthers(nextPlayer, mess);
+			droppedCardInfoToOthers(player);
 			//továbblépés a következő játékosra, ő már kell tegyen lapot, így kérünk tőle
 			nextPlayer=getNextPlayerId();
 			serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
@@ -414,6 +400,18 @@ public class PlayerManagerThread extends Thread {
 			serverMessage(player, "Ezt a lapot nem dobhatod be!");
 			return false;
 		}
+	}
+	
+	/**
+	 * (Ez csak egy ismétlődő kód azért van kitéve)
+	 * Üzenet a szervertől az épp nem jövő játékosoknak, hogy milyen lapot tettek le
+	 */
+	protected void droppedCardInfoToOthers(Player player){
+		//a többieknek infó
+		String mess=player.getName()+
+						" "+lastCard.cardColorToString()+" "+lastCard.getCardValueAsChar()+
+						" kártyát tett le.";
+		serverMessageToOthers(nextPlayer, mess);
 	}
 	
 	@Override

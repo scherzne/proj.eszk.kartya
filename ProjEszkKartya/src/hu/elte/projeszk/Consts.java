@@ -79,4 +79,9 @@ public class Consts {
 	 * Konstans az üzenetben húzott/nem húzott
 	 */
 	public static final String NEM_HUZOTT="N";
+	
+	/**
+	 * UNO szövege
+	 */
+	public static final String UNO="UNO";
 }

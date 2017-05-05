@@ -10,7 +10,8 @@ import java.util.Collections;
 import java.util.HashMap;
 
 /**
- * 
+ * Ez az együtt játszó játékosok szálait egybefogó, a játékmenetet kezelő menedzser szál.
+ * Ő áll kapcsolatban a hozzá osztott szálakkal amikhez a játékosok tartoznak. 
  * @author scherzne
  *
  */
@@ -23,9 +24,18 @@ public class PlayerManagerThread extends Thread {
 	 * Bedobott és az első felforgatott kártyalap is ebbe kerül, hogy újra lehessen keverni
 	 */
 	private ArrayList<Card> droppedCards;
+	/**
+	 * Kommunikációs szálak gyűjtője.
+	 */
 	private HashMap<Integer, PlayerThread> playerThreads;
+	/**
+	 * Utolsó bedobott kártyalap
+	 */
 	private Card lastCard;
-	
+	/**
+	 * Játékosok gyűjtője. Megtartjuk, mert a körhöz innen a leggyorsabb hozzáférni.
+	 * Nem probléma, úgyis csak referenciák.
+	 */
 	private ArrayList<Player> players;//mégis kell, mert különben nem ismert a játékosok sorrendje, úgyis csak referenciákat tartalmaz, nem túl nagy
 	private int managerId=-1;	
 	
@@ -36,14 +46,25 @@ public class PlayerManagerThread extends Thread {
 	private boolean isRunning=false; 
 	
 	private String lastMessage;
+	/**
+	 * Üzenetkezeléshez: utolsó játékos húzott-e lapot
+	 */
 	private boolean lastPlayerDrawed=false;
+	/**
+	 * Üzenetkezeléshez: utolsó játékos által kért/bedobott szín
+	 */
 	private Card.CardColor lastColorRequest;
 	/**
 	 * Előre irány true, visszafelé irány a false
 	 */
 	private boolean playingDirection=true;
-	
+	/**
+	 * A játék indulhat-e? Mindenki megadta-e már a nevét.
+	 */
 	private boolean canPlay=false;//mindenki megadta-e a nevét, addig nincs kezdés
+	/**
+	 * Segéd: hányan adták meg már a nevüket.
+	 */
 	private int nameCount=0;//segéd, amiben számláljuk hányan adták meg a nevük
 	//ez már nem fog kelleni ha mindenki, átbeszi a helyét a canPlay, ekkor már nem 
 	//számlálgatunk arraylist-et
@@ -72,7 +93,9 @@ public class PlayerManagerThread extends Thread {
 	}	
 	
 	/**
-	 * TODO:teljes játékmenet kezelése
+	 * Játékmenet kezelés, egy üzenet olvasásakor.
+	 * Minden egyes játékoshoz tartozó szerver szál ezen keresztül kommunikál
+	 * a szerverrel. 
 	 * @param player
 	 * @param row beolvasott sor a kliens-ről
 	 * @return
@@ -126,7 +149,7 @@ public class PlayerManagerThread extends Thread {
 								//HUZZKETTOT,FORDITTO,KIMARADSZ,SZINKEREO,HUZZNEGYET
 								//a többinél csak továbbítjuk a lapot, közöljük a játékosokkal
 								//hogy folyik a játszma
-								switch(clientCard.getCardValue()){//TODO: majd refaktor! külön func-okba kitenni a belsejét, boolen visszatéréssel
+								switch(clientCard.getCardValue()){
 									case HUZZKETTOT://köv játékos kimarad, kap két lapot is										
 											canSaveLastCard=doHuzzKettot(player, clientCard, pars);
 										break;

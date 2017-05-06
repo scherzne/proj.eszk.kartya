@@ -13,7 +13,7 @@ public class ClientMachine {
 
 protected ArrayList<Card> hand = new ArrayList<Card>();
 private Socket client;	
-
+private String gamerName;
 
 	
 public static void main(String[] args) throws UnknownHostException {
@@ -26,11 +26,11 @@ public static void main(String[] args) throws UnknownHostException {
 
 }
 
-public  ClientMachine(String Name){
+public  ClientMachine(String name){
 	
 
 	 String answer;
-	 
+	 gamerName = name;
 	 boolean gameRunning= true;
 	
 	
@@ -138,10 +138,10 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 			 
 		 }
 		 
-		 if (message.equals("M,Nev")){
+		 if (message.equals("M,Szerver: Add meg a neved!")){
 			 
-			// pw.println(gamerName);
-			// pw.flush();
+			answer = gamerName;
+		
 			 
 		 }
 		 

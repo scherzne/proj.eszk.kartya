@@ -119,7 +119,7 @@ public class PlayerManagerThread extends Thread {
 					arr[i]=card.getCardAsString();
 				}
 				serverMessage(player, mess1, arr);//lapok küldése a játékosnak
-				
+				player.increaseCardCount(7);
 				//ha ő az utolsó aki megadta a nevét, mindenkinek küldjük ki hogy kezdődik
 				//illetve az első játékosnak aki jön, hogy ő jön
 				if(canPlay && nextPlayer<0){//ez akkor teljesül, ha már játszhatunk, de még nincs köv. játékos
@@ -187,7 +187,7 @@ public class PlayerManagerThread extends Thread {
 								//nem volt hiba, be lett dobva a lap
 								if(canSaveLastCard){
 									lastCard=clientCard;
-									droppedCards.add(clientCard);
+									dropCard(player, clientCard);
 								}
 								
 								lastPlayerDrawed=false;
@@ -197,8 +197,11 @@ public class PlayerManagerThread extends Thread {
 								//vagy húzz négyet joker volt!!!
 								if(lastCard.getCardValue()==CardValue.SZINKEREO){
 									doSzinkero(row);
+									//most tesszük el a bedobott lapot
+									dropCard(player, lastCard);
 								}else if(lastCard.getCardValue()==CardValue.HUZZNEGYET){
 									doHuzzNegyet(row,lastCard);
+									dropCard(player, lastCard);
 								}else{
 									serverMessage(player, "Hibás üzenet, nem válaszolhatsz színnel ha nem kérhetted!");
 								}
@@ -223,6 +226,19 @@ public class PlayerManagerThread extends Thread {
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * Kártya bedobás egy helyen kezelése, hogy további tevékenységek is megtörténhessenek
+	 * amik hozzá tartoznak. Mint a player-nél a kézben tartott kártyák mennyiségének
+	 * csökkentése, valamint a bedobott lap begyűjtése, az utolsó bedobott lap feljeygyzése.
+	 * @param player a játékos aki bedobta
+	 * @param card ezt a kártyalapot
+	 */
+	protected void dropCard(Player player,Card card){
+		player.decreaseCardCount();
+		droppedCards.add(card);
+		lastCard=card;
 	}
 	/**
 	 * Játékmenet tényleges kezdete, amikor a játékosok megkapják az első kiosztott lapjaikat és felfordítja s szerver az első lapot is
@@ -260,6 +276,7 @@ public class PlayerManagerThread extends Thread {
 		Card card=drawCardFromPack();
 		serverMessage(player, Consts.SEND_CARD+"1", new String[]{card.getCardAsString()});
 		lastPlayerDrawed=true;
+		player.increaseCardCount(1);
 	}
 	/**
 	 * Húzz négyet kártyalap esetén a szerver üzenetei és a játékmenet
@@ -288,6 +305,7 @@ public class PlayerManagerThread extends Thread {
 				Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
 					Consts.HUZOTT,lastColorRequest+""});
 		lastPlayerDrawed=true;
+		playerThreads.get(nextPlayer).getPlayer().increaseCardCount(4);
 	}
 	/**
 	 * színkérő kártyalap esetén a szerver üzenetek és játékmenet
@@ -411,13 +429,15 @@ public class PlayerManagerThread extends Thread {
 			//elküldjük neki a két húzott lapot
 			serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.SEND_CARD+"2", cardStrs);
 			//a többieknek pedig szintén infót
-			droppedCardInfoToOthers(player,clientCard);
+			droppedCardInfoToOthers(playerThreads.get(nextPlayer).getPlayer(),clientCard);
 			//továbblépés a következő játékosra, ő már kell tegyen lapot, így kérünk tőle
 			nextPlayer=getNextPlayerId();
 			serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 					Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
 						Consts.HUZOTT,clientCard.getCardColorAsChar()+""});
 			
+			lastPlayerDrawed=true;
+			playerThreads.get(nextPlayer).getPlayer().increaseCardCount(2);
 			return true;
 		}else{//nem teheti le a húzz kettőt lapot, sem a színe sem a típusa nem jó!
 			serverMessage(player, "Ezt a lapot nem dobhatod be!");

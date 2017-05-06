@@ -71,15 +71,10 @@ public  ClientMachine(String Name){
 
 protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 	
-	Card topCard;
-	Boolean lastPlayerDrawed;
-	CardColor declaredColor;
+
 	CardColor declaredColorByMachine;
 	Card otherPlayersCard;
-	Card returnCard;
-	String unoMessage ;
 	String answer=null;
-	
 	String message= br.readLine();
     System.out.println("Kapott üzenet:"+message); 
 	
@@ -87,56 +82,31 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 	
 	case ('A'):
 		// lapokat ad a szerver
-		System.out.println("Kártyát kapunk továbbadjuk:");
+		System.out.println("Kártyát kapunk :");
 			messageBeginWithCharA(message, br);
 		
 		break;
 	
 		case ('L'): 
-		//lapot kér a szerver
-			System.out.println("Lapot kér a szerver:");
-			topCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
-			lastPlayerDrawed = initLastPlayerDrawed(message);
-			declaredColor = Card.convertCharacterToCardColor(message.charAt(7));
 		
-			
-			returnCard = machineCardChooseAlgorithm(topCard, lastPlayerDrawed, declaredColor);
-			removeCardFromHand(returnCard);
-			
-			System.out.println("A választott lap: "+returnCard.getCardColor() + " " +returnCard.getCardValue() );
-			
-			if (returnCard == null){
-				
-				// pw.println("N");
-				// pw.flush();
-				
-				answer = "N";
-			}else{
-
-			// UNO ESET!
-			 unoMessage = randomizeUno();
-				
-			// pw.println("A,"+Card.convertCardColorToCharacter(returnCard.getCardColor())+","+Card.convertCardValueToCharacter(returnCard.getCardValue())+unoMessage);
-			// pw.flush();
-			
-			 answer = "A,"+Card.convertCardColorToCharacter(returnCard.getCardColor())+Card.convertCardValueToCharacter(returnCard.getCardValue())+unoMessage;
-			 
+			System.out.println("Lapot kér a szerver:");
+			if (hand.size()!=0)
+			{
+				answer = cardChoosing(message);
 			}
-			 
 			// válasz kiirása standard outputra
 			
 		break;
 	
 	 case('S'):
-			// színt kér a szerver
+			
 		 System.out.println("Színt kér a szerver!");
-		 // Gép esetén random adunk valami színt.
+		
 		 //bővíthetőség: legyen olyan szín ami (sok) van
 
 		 declaredColorByMachine = randomDeclareColor();     		 			
 		 answer = ""+Card.convertCardColorToCharacter(declaredColorByMachine);
-		 //pw.println(Card.convertCardColorToCharacter(declaredColorByMachine));
-		// pw.flush();
+	
 				 
     			
 		 break;
@@ -206,6 +176,37 @@ protected void setSocket(Socket socket) throws UnknownHostException, IOException
 	
 
 }
+
+protected String cardChoosing(String message){
+	
+	String choosenCardString;
+	
+	Card topCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
+	Boolean lastPlayerDrawed = initLastPlayerDrawed(message);
+	CardColor declaredColor = Card.convertCharacterToCardColor(message.charAt(7));
+	
+	
+	Card returnCard = machineCardChooseAlgorithm(topCard, lastPlayerDrawed, declaredColor);
+	removeCardFromHand(returnCard);
+	
+
+	if (returnCard == null){
+		
+		choosenCardString = "N";
+	}else{
+
+	// UNO ESET!
+	  String unoMessage = randomizeUno();
+
+	
+	 choosenCardString = "A,"+Card.convertCardColorToCharacter(returnCard.getCardColor())+Card.convertCardValueToCharacter(returnCard.getCardValue())+unoMessage;
+	 
+	}
+	
+	return choosenCardString;
+	
+}
+
 protected Card.CardColor randomDeclareColor(){
 	
 	Random rand = new Random();

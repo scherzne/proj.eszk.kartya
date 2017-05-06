@@ -103,7 +103,7 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 			returnCard = machineCardChooseAlgorithm(topCard, lastPlayerDrawed, declaredColor);
 			removeCardFromHand(returnCard);
 			
-			System.out.println("A választott lap: "+returnCard);
+			System.out.println("A választott lap: "+returnCard.getCardColor() + " " +returnCard.getCardValue() );
 			
 			if (returnCard == null){
 				

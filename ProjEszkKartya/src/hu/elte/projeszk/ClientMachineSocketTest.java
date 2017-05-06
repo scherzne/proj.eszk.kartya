@@ -107,6 +107,69 @@ public class ClientMachineSocketTest {
 		
 		
 	}
+	
+	
+	@Test
+	public void testingAddingCards()  {
+	
+		System.out.println("Kártyát kapunk:");
+		 
+		  encoding = "UTF-8";
+		  
+		  try {
+			  		Socket socket = Mockito.mock(Socket.class);
+
+			      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			      Mockito.when(socket.getOutputStream()).thenReturn(byteArrayOutputStream);
+		   
+			      Mockito.when(socket.getInputStream()).thenReturn(inputStream);
+		     
+			      
+			      clientMachineTester = new ClientMachine("JatekosNev");
+			      clientMachineTester.setSocket(socket);
+		
+			      
+			  
+	      
+	     setSocketInputStreamMocking("A4,P4,K1,S2,FN");
+	     
+	 
+	      clientMachineTester.switchAtInputCharacter(br);
+	      
+	      assertEquals("hand size must be 4 after adding 4 card ", 4, clientMachineTester.hand.size());
+	        
+	      assertEquals("first card of hand must be PIROS HAT", CardColor.PIROS, clientMachineTester.hand.get(0).getCardColor());
+	      assertEquals("first card of hand must be PIROS HAT", CardValue.NEGY, clientMachineTester.hand.get(0).getCardValue());
+	      
+	      assertEquals("second card of hand must be KEK EGY", CardColor.KEK, clientMachineTester.hand.get(1).getCardColor());
+	      assertEquals("second card of hand must be KEK EGY", CardValue.EGY, clientMachineTester.hand.get(1).getCardValue());
+	     
+	      assertEquals("third card of hand must be SARGA KETTO", CardColor.SARGA, clientMachineTester.hand.get(2).getCardColor());
+	      assertEquals("third card of hand must be SARGA KETTO", CardValue.KETTO, clientMachineTester.hand.get(2).getCardValue());
+	     
+	      assertEquals("fourth card of hand must be FEKETE HUZZNEGYET", CardColor.FEKETE, clientMachineTester.hand.get(3).getCardColor());
+	      assertEquals("fourth card of hand must be FEKETE HUZZNEGYET", CardValue.HUZZNEGYET, clientMachineTester.hand.get(3).getCardValue());
+	     
+	      setSocketInputStreamMocking("A2,Z6,KK");
+	      clientMachineTester.switchAtInputCharacter(br);
+	      
+	      assertEquals("hand size must be 6 after adding 2 card ",6, clientMachineTester.hand.size());
+	      
+	      assertEquals("fifth card of hand must be ZOLD HAT", CardColor.ZOLD, clientMachineTester.hand.get(4).getCardColor());
+	      assertEquals("fifth card of hand must be ZOLD HAT", CardValue.HAT, clientMachineTester.hand.get(4).getCardValue());
+	     
+	      assertEquals("sixth card of hand must be KEK KIMARADSZ", CardColor.KEK, clientMachineTester.hand.get(5).getCardColor());
+	      assertEquals("sixth card of hand must be KEK KIMARADSZ", CardValue.KIMARADSZ, clientMachineTester.hand.get(5).getCardValue());
+	     
+	      
+	      
+	      } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+	}
+	
 
 	@Test
 	public void testingCardChoosingCase1() {

@@ -136,7 +136,7 @@ public class ClientMachineSocketTest {
 	 
 	      clientMachineTester.switchAtInputCharacter(br);
 	      
-	      assertEquals("hand size must be 4 after adding 4 card ", 4, clientMachineTester.hand.size());
+	      assertEquals("hand size must be 4 after adding 4 card ", 4, clientMachineTester.handGetSize());
 	        
 	      assertEquals("first card of hand must be PIROS HAT", CardColor.PIROS, clientMachineTester.hand.get(0).getCardColor());
 	      assertEquals("first card of hand must be PIROS HAT", CardValue.NEGY, clientMachineTester.hand.get(0).getCardValue());
@@ -153,13 +153,14 @@ public class ClientMachineSocketTest {
 	      setSocketInputStreamMocking("A2,Z6,KK");
 	      clientMachineTester.switchAtInputCharacter(br);
 	      
-	      assertEquals("hand size must be 6 after adding 2 card ",6, clientMachineTester.hand.size());
+	      assertEquals("hand size must be 6 after adding 2 card ",6, clientMachineTester.handGetSize());
 	      
 	      assertEquals("fifth card of hand must be ZOLD HAT", CardColor.ZOLD, clientMachineTester.hand.get(4).getCardColor());
 	      assertEquals("fifth card of hand must be ZOLD HAT", CardValue.HAT, clientMachineTester.hand.get(4).getCardValue());
 	     
 	      assertEquals("sixth card of hand must be KEK KIMARADSZ", CardColor.KEK, clientMachineTester.hand.get(5).getCardColor());
 	      assertEquals("sixth card of hand must be KEK KIMARADSZ", CardValue.KIMARADSZ, clientMachineTester.hand.get(5).getCardValue());
+	     
 	     
 	      
 	      

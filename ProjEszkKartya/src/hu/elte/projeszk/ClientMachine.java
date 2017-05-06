@@ -183,15 +183,21 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 	
 	System.out.println("Valasz"+answer);
 	
-	//System.out.println(Arrays.toString(hand));
-	
-	/*for (Card c: hand){
-		
-		System.out.println(c+ "Kartya" );
-		
-	}*/
 	
 	return answer;
+}
+
+
+protected int handGetSize(){
+	
+	return hand.size();
+	
+}
+
+protected void remove(Card card){
+	
+	 hand.remove(card);
+	
 }
 
 

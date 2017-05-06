@@ -2,6 +2,7 @@ package hu.elte.projeszk;
 
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.*;
 import java.util.*;
 import hu.elte.projeszk.Card;
@@ -80,13 +81,13 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 	String answer=null;
 	
 	String message= br.readLine();
-    System.out.println(message); 
+    System.out.println("Kapott üzenet:"+message); 
 	
 	switch (message.charAt(0)){
 	
 	case ('A'):
 		// lapokat ad a szerver
-		System.out.println("Kártyát kapunk:");
+		System.out.println("Kártyát kapunk továbbadjuk:");
 			messageBeginWithCharA(message, br);
 		
 		break;
@@ -184,11 +185,11 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 	
 	//System.out.println(Arrays.toString(hand));
 	
-	for (Card c: hand){
+	/*for (Card c: hand){
 		
 		System.out.println(c+ "Kartya" );
 		
-	}
+	}*/
 	
 	return answer;
 }
@@ -258,16 +259,40 @@ return	unoMessage;
 
 
 protected void messageBeginWithCharA(String message, BufferedReader br) throws IOException {
+	//split!!
+	 String[] splitted = message.split(",");
 	
-	int index = message.charAt(1);
-	
-	for (int i =0; i < index; i++){
-	
-		System.out.println("Valami");
-	String cardString =  br.readLine();
-	addCardToHand(new Card(Card.convertCharacterToCardColor(cardString.charAt(0)), Card.convertCharacterToCardValue(cardString.charAt(1))));
-	//Kiiratás
+	 
+	//int index = message.charAt(1);
+	 
+	 System.out.println(message);
+	 System.out.println("Kaptunk " +splitted[0].charAt(1)+"db kártyát:");
 
+	/*for (int i =1; i < splitted[0].charAt(1); i++){
+		
+		System.out.println(splitted[0].charAt(1));
+		System.out.println(i);
+	
+		addCardToHand(new Card(Card.convertCharacterToCardColor(splitted[i].charAt(0)), Card.convertCharacterToCardValue(splitted[i].charAt(1))));
+		System.out.println(hand.get(hand.size()-1).getCardColor()+ " " +hand.get(hand.size()-1).getCardValue());
+		
+		if (i == (int) (splitted[0].charAt(1))){
+			
+			System.out.println("belepett"); 
+			break;}
+	}/*/
+
+	 
+	for (String s:  splitted){
+		
+		if ((s.charAt(0))=='A' ){
+			System.out.println("Nem kártya");
+			
+		}else{
+			
+		addCardToHand(new Card(Card.convertCharacterToCardColor(s.charAt(0)), Card.convertCharacterToCardValue(s.charAt(1))));
+		System.out.println(hand.get(hand.size()-1).getCardColor()+ " " +hand.get(hand.size()-1).getCardValue());
+		}
 	}
 	
 	

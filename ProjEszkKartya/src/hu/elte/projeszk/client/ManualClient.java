@@ -41,25 +41,23 @@ public class ManualClient {
 		br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		sc = new Scanner(socket.getInputStream());
 		kbScanner = new Scanner(System.in);
-		
 
 		hasEnded = false;
 
 	}
-   
-	
-	//Szerverrel való kommunikáció biztosítása
+
+	//Szerverrel valo kommunikacio biztositasa
 	public void communicate() throws IOException {
-		
-		//szerver által küldött üzenet tárolása
+
+		// Szerver altal kuldott uzenet tarolasa
 		String serverMessageString = "";
 		BufferedReader stdinReader = new BufferedReader(new InputStreamReader(System.in));
 
-		
-		/*Addig kérjük be a klienstől a szerver nevét,
-		 * amíg "ok" választ nem kapunk a szervertől
+		/*
+		 * Addig kerjuk be a klienstol a nevet, amig ok valaszt
+		 * nem kapunk a szervertol
 		 */
-		
+
 		while (!serverMessageString.equals("ok")) {
 			System.out.print("Nev: ");
 
@@ -77,33 +75,32 @@ public class ManualClient {
 				serverMessageString = br.readLine();
 
 				/*
-				 * A szerver lapokat ad,
-				 * A karakter után számérték, amennyi lapot kapunk
-				 * Majd lapok "konvertálása" és kézhez adása
+				 * A szerver lapokat ad, A karakter utan szamertek, amennyi lapot kapunk
+				 *  Majd lapok "konvertalasa" es kezhez adasa
 				 */
 				if (serverMessageString.charAt(0) == 'A') {
-					
+
 					int numberOfSendedCards = Character.getNumericValue(serverMessageString.charAt(1));
 					for (int i = 0; i < numberOfSendedCards; i++) {
 						serverMessageString = br.readLine();
 						List<String> messages = new ArrayList<String>();
 						messages = Arrays.asList(serverMessageString.split(","));
-						
+
 						CardColor cColor = Card.convertCharacterToCardColor(messages.get(1).charAt(0));
 						CardValue cValue = Card.convertCharacterToCardValue(messages.get(1).charAt(1));
 						
 						cardsInHand.add(new Card(cColor, cValue));
-						System.out.println("Lapot kaptál: " + Card.convertCardColorToCharacter(cColor) + Card.convertCardValueToCharacter(cValue));
-						
+						System.out.println("Lapot kaptal: " + Card.convertCardColorToCharacter(cColor)
+								+ Card.convertCardValueToCharacter(cValue));
+
 					}
 				}
-				
+
 				/*
-				 * Szerver lapot kér 
-				 * Vesszőkkel elválasztott sztring
-				 * 2. rész lap mindig az előzőleg eldobott lap
-				 * 3. rész: húzott vagy nem az előző játékos
-				 * 4. rész: színkényszer megadása
+				 * Szerver lapot ker vesszokkel elvalasztott sztring
+				 *  2. resz: lap mindig az elozoleg eldobott lap
+				 *  3. resz: rakott vagy nem az elozo jatekos
+				 *  4. resz: szinkenyszer megadasa
 				 */
 				if (serverMessageString.charAt(0) == 'L') {
 
@@ -114,35 +111,73 @@ public class ManualClient {
 					CardValue cValue = Card.convertCharacterToCardValue(messages.get(1).charAt(1));
 
 					Card card = new Card(cColor, cValue);
-					
-					System.out.println("Lap, amire tenni kell: " + Card.convertCardColorToCharacter(cColor) + Card.convertCardValueToCharacter(cValue));
-					System.out.print("Te lapod: ");
-					
-					Card choosenCard;
-					do {
-						String choosenCardString = kbScanner.nextLine();
-						
-						choosenCard = getCardFromString(choosenCardString);
-						
-						if (checkIfCardInHand(choosenCard) == -1) {
-							System.out.println("A kiválasztott kártya nincs a kezedben!" );
-						}
-						
-						if (!checkIfCardIsAppropriate(choosenCard, card)) {
-							System.out.println("A kiválasztott kártya nem megfelelő!" );
-						}
-					} while (checkIfCardInHand(choosenCard) == -1 && checkIfCardIsAppropriate(choosenCard, card));
-					
 
+					System.out.println("Lap, amire tenni kell: " + Card.convertCardColorToCharacter(cColor)
+							+ Card.convertCardValueToCharacter(cValue));
+
+					//A kivalasztott kartya 
+					Card choosenCard = null;
+					String choosenCardAsString = "";
+					/*Taroljuk, hogy valasztottunk-e kartyat,
+					 * ha igen, es megfelelo volt,
+					 * elkuldjuk a megfeleo stringet
+					 */
+					boolean hasChoosenCard = false;
+					
+					boolean isFalseN = false;
+					do {
+						hasChoosenCard = false;
+						isFalseN = false;
+						System.out.print("Te lapod: ");
+						String choosenCardString = kbScanner.nextLine();
+
+						// Nincs kartya, nem tud tenni
+						if (choosenCardString.equals("N")) {
+							if (!checkIfAppropriateCardInHand(cColor, cValue)) {
+								pw.println("N");
+								String newCardString = br.readLine();
+								Card newCard = Card.parseCardFromString(newCardString);
+								cardsInHand.add(newCard);
+							} else {
+								System.out.println("Van kartya nalad, ami megfelelo!");
+								isFalseN = true;
+							}
+						}
+						else {
+							
+							choosenCardAsString = choosenCardString;
+							choosenCard = getCardFromString(choosenCardString);
+							
+							if (checkIfCardInHand(choosenCard) == -1) {
+								System.out.println("A kivalasztott kartya nincs a kezedben!");
+							}
+	
+							if (!checkIfCardIsAppropriate(choosenCard, card)) {
+								System.out.println("A kivalasztott kartya nem megfelelo!");
+							}
+						}
+
+					} while (checkIfCardInHand(choosenCard) == -1 && checkIfCardIsAppropriate(choosenCard, card)
+							&& isFalseN);
+
+					if (hasChoosenCard) {
+						
+						//Szerver, hogy kezeli UNO es kartya egyuttes kuldeset?
+						if (cardsInHand.size() == 2) {
+							pw.println("UNO");
+							
+						}
+						pw.println(choosenCardAsString);
+					}
 				}
 
 				if (serverMessageString.charAt(0) == 'S') {
 					char choosenColor = ' ';
-					
+
 					do {
 						choosenColor = stdinReader.readLine().charAt(0);
 					} while (choosenColor != 'P' && choosenColor != 'S' && choosenColor != 'Z' && choosenColor != 'K');
-					
+
 					pw.println(choosenColor);
 				}
 
@@ -155,42 +190,51 @@ public class ManualClient {
 		}
 
 	}
-	
+
 	private boolean checkIfCardIsAppropriate(Card choosenCard, Card card) {
-		if (choosenCard.getCardColor() == card.getCardColor() ||
-			choosenCard.getCardValue() == card.getCardValue()) {
+		if (choosenCard.getCardColor() == card.getCardColor() || choosenCard.getCardValue() == card.getCardValue()) {
 			return true;
 		}
 		return false;
 	}
 
-	//Annak vizsgálata, hogy a választott kártya ténylegesen a kézben van-e
-	//Ha igen, visszaadjuk a kártya indexét a listában
-	//Ha nem, -1-et
+	// Annak vizsgalata, hogy a valasztott kartya tenylegesen a kezben
+	// van-e
+	// Ha igen, visszaadjuk a kartya indexet a listaban
+	// Ha nem, -1-et
 	private int checkIfCardInHand(Card card) {
-		boolean found = false;
 		int i = 0;
 		for (; i < cardsInHand.size() && !found; i++) {
 			if (cardsInHand.get(i).equals(card)) {
 				found = true;
 			}
 		}
-		
+
 		if (found) {
 			return i;
-		}
-		else {
+		} else {
 			return -1;
 		}
-		
+
 	}
-	
+
 	private Card getCardFromString(String card) {
 		CardColor choosenCardColor = Card.convertCharacterToCardColor(card.charAt(0));
 		CardValue choosenCardValue = Card.convertCharacterToCardValue(card.charAt(1));
-		
+
 		Card choosenCard = new Card(choosenCardColor, choosenCardValue);
 		return choosenCard;
-		
+
+	}
+
+	private boolean checkIfAppropriateCardInHand(CardColor cColor, CardValue cValue) {
+		boolean found = false;
+		for (int i = 0; i < cardsInHand.size() && !found; i++) {
+			if (cardsInHand.get(i).getCardValue() == cValue || cardsInHand.get(i).getCardColor() == cColor) {
+				found = true;
+			}
+		}
+
+		return found;
 	}
 }

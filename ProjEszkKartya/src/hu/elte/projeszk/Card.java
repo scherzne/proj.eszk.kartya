@@ -1,18 +1,30 @@
 package hu.elte.projeszk;
 
 /**
- * Sajnos enumok a színek és a számok, ezért nehezebb kezelni!
+ * Egy UNO játékkártyát reprezentáló osztály.
  * 
  */
 public class Card {
+	/**
+	* A kártyák lehetséges színeit reprezentáló enum.
+	* 
+	*/
 	public enum CardColor {SARGA, KEK, ZOLD, PIROS,FEKETE, INVALID} ;
+	/**
+	* A kártyák lehetséges típusait reprezentáló enum.
+	* 
+	*/
 	public enum CardValue {NULLA,EGY, KETTO, HAROM, NEGY, OT, HAT, HET, NYOLC,KILENC,FORDITTO,HUZZKETTOT,KIMARADSZ,SZINKEREO,HUZZNEGYET,INVALID} ;
 	
 	CardValue cardValue;
 	CardColor cardColor;
 	private int cardValueInt;
 	
-	
+	/**
+	 * CardColor és CardValue paramétert kérő konstruktor.
+	 * @param cardColor kártya színe 
+	 * @param cardValue kártya típusa
+	 */
 	public Card(CardColor cardcolor, CardValue cardValue){
 		this.cardValue=cardValue;
 		this.cardColor=cardcolor;
@@ -20,9 +32,9 @@ public class Card {
 	}
 	
 	/**
-	 * Integerekkel is létre kell tudni hozni
-	 * @param color 
-	 * @param value
+	 * Két integerből kártyát létrehozó konstruktor.
+	 * @param color színt reprezentáló szám
+	 * @param value típust reprezentáló szám
 	 */
 	public Card(int color, int value){
 		this.cardColor=intToCardColor(color);
@@ -31,7 +43,7 @@ public class Card {
 	}
 	/**
 	 * Stringből kártya előállítása konstruktor
-	 * @param cardString
+	 * @param cardString bemeneti String pl.: P5
 	 */
 	public Card(String cardString){
 		this.cardColor=convertCharacterToCardColor(cardString.charAt(0));
@@ -39,9 +51,9 @@ public class Card {
 		this.cardValueInt=cardValueToInt(this.cardValue);
 	}
 	/**
-	 * CardColor->Int konverzió
-	 * @param color
-	 * @return
+	 * CardColor-> Int konverzió
+	 * @param color átalakítandó CardColor
+	 * @return a megfelelő szám
 	 */
 	public static int cardColorToInt(CardColor color){
 		switch(color){
@@ -55,8 +67,8 @@ public class Card {
 	}
 	/**
 	 * Integer->CardColor konverzió
-	 * @param val
-	 * @return
+	 * @param val átalakítandó szám
+	 * @return a megfelelő CardColor
 	 */
 	public static CardColor intToCardColor(int val){
 		switch(val){
@@ -71,8 +83,8 @@ public class Card {
 	
 	/**
 	 * Integer->CardValue konverzió
-	 * @param val
-	 * @return
+	 * @param val átalakítandó szám
+	 * @return a megfelelő CardValue
 	 */
 	public static CardValue intToCardValue(int val){
 		switch(val){
@@ -113,7 +125,7 @@ public class Card {
 	/**
 	 * Kártya típusok szöveges reprezentációja, 
 	 * csak szöveges üzenetekhez, hogy olvashatóak legyenek emberek számára is.
-	 * @return
+	 * @return Egy szó, ami a kártya típusa
 	 */
 	public String cardValueToString(){
 		switch(cardValue){
@@ -137,6 +149,11 @@ public class Card {
 		}
 	}
 	
+	/**
+	 * CardValue-> Int konverzió
+	 * @param color átalakítandó CardValue
+	 * @return a megfelelő szám
+	 */
 	public static int cardValueToInt( CardValue cardValue){
 		
 		int value=-1;	
@@ -169,10 +186,9 @@ public class Card {
 	}
 
 	/**
-	 * Áthelyezve StaticCardColorChar-ból ha már így beégetetten van.
-	 * Logikailag akkor is ide tartozik! Nem kell neki külön osztály!
-	 * @param c
-	 * @return
+	 * Character -> CardColor konverzió
+	 * @param c átalakítandó karakter
+	 * @return a megfelelő CardColor
 	 */
 	public static CardColor convertCharacterToCardColor(char c){		
 		CardColor cardColor=null;
@@ -190,10 +206,9 @@ public class Card {
 	}
 
 	/**
-	 * Áthelyezve StaticCardColorChar-ból ha már így beégetetten van.
-	 * Logikailag akkor is ide tartozik! Nem kell neki külön osztály!
-	 * @param cardColor
-	 * @return
+	 * CardColor -> Character konverzió
+	 * @param cardColor átalakítandó CardColor
+	 * @return a megfelelő karakter
 	 */
 	public static char convertCardColorToCharacter(CardColor cardColor){		
 		char c=' ';
@@ -210,10 +225,9 @@ public class Card {
 	}
 	
 	/**
-	 * Áthelyezve StaticCardValueChar-ból. Logikailag ide tartozik
-	 * Továbbra is: nem értek egyet a beégetett kódokkal!
-	 * @param c
-	 * @return
+	 * Character -> CardValue konverzió
+	 * @param c átalakítandó karakter
+	 * @return a megfelelő CardValue
 	 */
 	public static CardValue convertCharacterToCardValue(char c){		
 		CardValue cardValue=null;
@@ -242,10 +256,9 @@ public class Card {
 	}
 	
 	/**
-	 * Áthelyezve StaticCardValueChar-ból. Logikailag ide tartozik
-	 * Továbbra is: nem értek egyet a beégetett kódokkal!
-	 * @param cardValue
-	 * @return
+	 * CardValue -> Character konverzió
+	 * @param cardValue átalakítandó CardValue
+	 * @return a megfelelő karakter
 	 */
 	public static char convertCardValueToCharacter(CardValue cardValue){		
 		char c=' ';
@@ -274,7 +287,7 @@ public class Card {
 	}
 
 	/**
-	 * Egy elméletileg kártya string üzenet feldolgozása
+	 * Egy kártya string üzenet feldolgozása
 	 * @param str pl: P4 , ami piros 4-est jelent
 	 * @return egy kártyával vagy null-al ha nem tudta parsolni
 	 */
@@ -298,14 +311,14 @@ public class Card {
 	}
 	
 	/**
-	 * Kártya értéke stringként is kell, úgy tűnik :)
-	 * @return
+	 * Kártya értéke stringként visszaadva
+	 * @return kártyastring
 	 */
 	public String getCardAsString(){
 		return ""+getCardColorAsChar()+getCardValueAsChar();
 	}
 	/**
-	 * Rendkívül kényelmetlen a folytonos konverzió, erre kis segítség
+	 * Karakterként visszaadja a kártyaszínt
 	 * @return a kártya színe karakterként, pl: P,K,S...
 	 */
 	public char getCardColorAsChar(){
@@ -313,7 +326,7 @@ public class Card {
 	}
 	
 	/**
-	 * Rendkívül kényelmetlen a folytonos konverzió, erre kis segítség
+	 * Karakterként visszaadja a kártyatípust
 	 * @return kártya értéke karakterként, pl: 0,1,...
 	 */
 	public char getCardValueAsChar(){

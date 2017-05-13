@@ -1,8 +1,7 @@
 package hu.elte.projeszk;
 
 /**
- * Konstansok, például kommunikáciüós port, játékosok száma, időzítések
- * @author scherzne
+ * Konstansok, például kommunikációs port, játékosok száma, időzítések
  *
  */
 public class Consts {
@@ -11,8 +10,8 @@ public class Consts {
 	 */
 	public static final int PORT=65456;
 	/**
-	 * A játék elindulhat ha legalább ennyi játékos van már és START_GAME_TIMEOUT-on túl senki nem csatlakozott
-	 * azután csatlakozók következő körben jönnek.
+	 * A játék elindulhat ha legalább ennyi játékos van már és START_GAME_TIMEOUT-on túl senki nem csatlakozott,
+	 * az azután csatlakozók csak következő körben jönnek.
 	 */
 	public static final int MIN_PLAYERS=2;
 	public static final int MAX_PLAYERS=10;
@@ -22,7 +21,7 @@ public class Consts {
 	 */
 	public static final int START_GAME_TIMEOUT=60;
 	/**
-	 * Másodpercben. Ha valaki ennyi inaktivitás után nem csinál semmit le kell dobni.
+	 * Ha valaki ennyi másodperc inaktivitás után nem csinál semmit le kell dobni.
 	 */
 	public static final int INACTIVE_TIMEOUT=60*5;
 	
@@ -33,7 +32,7 @@ public class Consts {
 	/**
 	 * Egy kártya információt küld a szerver, például arról, hogy mi a felforgatott lap!
 	 * Ezzel az információval a kliensnek is kell gazdálkodni!
-	 * Tudni a kell a következő és a többi játékosnak, mit tett le az előző,
+	 * Tudnia kell a következő és a többi játékosnak, mit tett le az előző,
 	 * és ezt nem csak szöveges üzenettel, hogy a kliens program is tudjon ellenőrizni! 
 	 * Gépi játékosnak kellhet?
 	 */

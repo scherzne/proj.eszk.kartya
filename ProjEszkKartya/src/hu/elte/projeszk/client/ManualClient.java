@@ -16,12 +16,33 @@ import hu.elte.projeszk.Card.CardColor;
 import hu.elte.projeszk.Card.CardValue;
 import hu.elte.projeszk.Consts;
 
+/**
+ * Ember jatekos osztaly
+ * @author      Hagymasi Daniel
+ */
+
 public class ManualClient {
+	/**
+	 * BufferedReader socket olvasasra
+	 */
 	private BufferedReader br;
+	/**
+	 * PrintWriter socket irasra
+	 */
 	private PrintWriter pw;
+	
 	private Scanner sc;
+	/**
+	 * Scanner billentyuzetrol valo beolvasasra
+	 */
 	private Scanner kbScanner;
+	/**
+	 * Kliens nevenek tarolasa
+	 */
 	private String clientName;
+	/**
+	 * Kezben levo kartyak tarolasa
+	 */
 	private ArrayList<Card> cardsInHand;
 	private boolean hasEnded;
 
@@ -33,6 +54,11 @@ public class ManualClient {
 		client.communicate();
 	}
 
+	
+	/**
+	 * ManualClient osztaly konstruktora
+	 * Adattagok inicializálása
+	 */
 	public ManualClient() throws UnknownHostException, IOException {
 		cardsInHand = new ArrayList<Card>();
 		socket = new Socket("localhost", Consts.PORT);
@@ -46,14 +72,16 @@ public class ManualClient {
 
 	}
 
-	//Szerverrel valo kommunikacio biztositasa
+	/**
+	 * Szerverrel valo kommunikacio biztositasa 
+	 */
 	public void communicate() throws IOException {
 
 		// Szerver altal kuldott uzenet tarolasa
 		String serverMessageString = "";
 		BufferedReader stdinReader = new BufferedReader(new InputStreamReader(System.in));
 
-		/*
+		/**
 		 * Addig kerjuk be a klienstol a nevet, amig ok valaszt
 		 * nem kapunk a szervertol
 		 */
@@ -74,7 +102,7 @@ public class ManualClient {
 
 				serverMessageString = br.readLine();
 
-				/*
+				/**
 				 * A szerver lapokat ad, A karakter utan szamertek, amennyi lapot kapunk
 				 *  Majd lapok "konvertalasa" es kezhez adasa
 				 */
@@ -96,7 +124,7 @@ public class ManualClient {
 					}
 				}
 
-				/*
+				/**
 				 * Szerver lapot ker vesszokkel elvalasztott sztring
 				 *  2. resz: lap mindig az elozoleg eldobott lap
 				 *  3. resz: rakott vagy nem az elozo jatekos
@@ -118,7 +146,7 @@ public class ManualClient {
 					//A kivalasztott kartya 
 					Card choosenCard = null;
 					String choosenCardAsString = "";
-					/*Taroljuk, hogy valasztottunk-e kartyat,
+					/**Taroljuk, hogy valasztottunk-e kartyat,
 					 * ha igen, es megfelelo volt,
 					 * elkuldjuk a megfeleo stringet
 					 */
@@ -191,6 +219,13 @@ public class ManualClient {
 
 	}
 
+	/**
+	 *	Megvizsgaljuk, hogy a kivalasztott kartya megfelelo 	
+	 *
+	 * @param  choosenCard  Kivalasztott kartya
+	 * @param  card Ellenorzendo kartya
+	 * @return    	A kivalasztott kartya megfelelo-e
+	 */
 	private boolean checkIfCardIsAppropriate(Card choosenCard, Card card) {
 		if (choosenCard.getCardColor() == card.getCardColor() || choosenCard.getCardValue() == card.getCardValue()) {
 			return true;
@@ -198,10 +233,16 @@ public class ManualClient {
 		return false;
 	}
 
-	// Annak vizsgalata, hogy a valasztott kartya tenylegesen a kezben
-	// van-e
-	// Ha igen, visszaadjuk a kartya indexet a listaban
-	// Ha nem, -1-et
+
+	/**
+	 * Annak vizsgalata, hogy a valasztott kartya tenylegesen a kezben van-e
+	 * Ha igen, visszaadjuk a kartya indexet a listaban
+	 * Ha nem, -1-et
+	 *
+	 * @param  card Ellenorizendo kartya
+	 * @return      A megfelelo kartya valoban a kezben van-e, kartya index, ha igen, -1 egyebkent
+	 */
+	
 	private int checkIfCardInHand(Card card) {
 		int i = 0;
 		for (; i < cardsInHand.size() && !found; i++) {
@@ -217,6 +258,13 @@ public class ManualClient {
 		}
 
 	}
+	
+	/**
+	 * Stringbol kartya tipussa alakitas, ellenorzesek miatt
+	 *
+	 * @param  card Ellenorizendo kartya
+	 * @return A konvertalt kartya
+	 */
 
 	private Card getCardFromString(String card) {
 		CardColor choosenCardColor = Card.convertCharacterToCardColor(card.charAt(0));
@@ -226,6 +274,14 @@ public class ManualClient {
 		return choosenCard;
 
 	}
+	
+	/**
+	 * Annak vizsgalata, hogy a megfelelo kartya van-e a kezben
+	 *
+	 * @param  cColor kartyaszin
+	 * @param  cValue kartyaertek
+	 * @return      Van-e megfeleo kartya a kezben, ha igen true, egyebkent false
+	 */
 
 	private boolean checkIfAppropriateCardInHand(CardColor cColor, CardValue cValue) {
 		boolean found = false;

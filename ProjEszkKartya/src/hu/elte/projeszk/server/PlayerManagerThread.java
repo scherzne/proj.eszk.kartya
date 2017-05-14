@@ -258,7 +258,14 @@ public class PlayerManagerThread extends Thread {
 		//egy lap felforgatás, ezt el is tesszük a gyűjtőbe, mert senki nem kapja meg
 		//valamint mindenkinek elküldjük, hogy erről kell indulni
 		card=drawCardFromPack();
-		droppedCards.add(card);
+		//ha a kártya kezdő lapnak nem valami jó, húzzunk újat aadig amíg nem jön egy kényelmes lap
+		if(isCardProblematic(card)){
+			while(isCardProblematic(card)){
+				droppedCards.add(card);
+				card=drawCardFromPack();
+			}
+		}
+		droppedCards.add(card);				
 		lastCard=card;
 		
 		for(int i=0;i<players.size();i++){
@@ -672,9 +679,22 @@ public class PlayerManagerThread extends Thread {
 		return nextPlayerId;
 	}
 	
+	/**
+	 * Játékirány megfordítása
+	 */
 	protected synchronized void switchDirection(){
 		playingDirection=!playingDirection;
 	}
+	/**
+	 * Egy kártya kezdő lapnak problémás-e vagy sem
+	 * @param card
+	 * @return true ha a kártya szívatós, false egyébként
+	 */
+	protected boolean isCardProblematic(Card card){
+		int cardVal=card.getValue();
+		
+		return (!(cardVal>=0 && cardVal<=9))?false:true;
+	}	
 	
 	/**
 	 * Manager azonosító visszaadása, amit a konstruktornak kell átadni

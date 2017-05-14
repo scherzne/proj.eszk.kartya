@@ -23,7 +23,7 @@ public class Consts {
 	/**
 	 * Ha valaki ennyi másodperc inaktivitás után nem csinál semmit le kell dobni.
 	 */
-	public static final int INACTIVE_TIMEOUT=60*5;
+	public static final int INACTIVE_TIMEOUT=60*10;
 	
 	/**
 	 * Megegyezés alapján a kliens-szerver üzenetek kezdő karakterének konstansai

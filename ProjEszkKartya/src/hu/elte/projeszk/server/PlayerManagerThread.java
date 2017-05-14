@@ -145,6 +145,13 @@ public class PlayerManagerThread extends Thread {
 								//ezt el kell tenni, el lett dobva
 								Card clientCard=new Card(pars[1]);
 								
+								//be kell mondania az uno-t ha csak két lap van a kezében!
+								if(player.getCardCount()==2){//itt még nem lett csükkentve a lapjai száma, azért ellenőrizzük így
+									if(!row.matches("(.*)"+Consts.UNO+"(.*)")){
+										doHuzzHarmat(player);
+									}
+								}
+								
 								//csak ezeknek van jelentősége a szerver szempontjából:
 								//HUZZKETTOT,FORDITTO,KIMARADSZ,SZINKEREO,HUZZNEGYET
 								//a többinél csak továbbítjuk a lapot, közöljük a játékosokkal
@@ -239,6 +246,7 @@ public class PlayerManagerThread extends Thread {
 		player.decreaseCardCount();
 		droppedCards.add(card);
 		lastCard=card;
+		//FIXME:checkPlayerWins
 	}
 	/**
 	 * Játékmenet tényleges kezdete, amikor a játékosok megkapják az első kiosztott lapjaikat és felfordítja s szerver az első lapot is
@@ -451,6 +459,22 @@ public class PlayerManagerThread extends Thread {
 			return false;
 		}
 	}
+
+	/**
+	 * Be nem mondott UNO büntetése, a játékos kap három lapot
+	 * @param player
+	 */
+	protected void doHuzzHarmat(Player player){		
+		//3 lap húzás
+		Card cards[]=drawCardsFromPack(3);
+		String cardStrs[]=getCardStringArray(cards);
+		serverMessage(player, "Nem mondtad be az UNO-t, büntetésed: 3 lap!");
+		//elküldjük neki a két húzott lapot
+		serverMessage(player, Consts.SEND_CARD+"3", cardStrs);
+			
+		player.increaseCardCount(3);
+	}
+
 	
 	/**
 	 * (Ez csak egy ismétlődő kód azért van kitéve)

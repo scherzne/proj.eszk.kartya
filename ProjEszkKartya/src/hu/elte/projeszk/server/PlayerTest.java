@@ -11,42 +11,59 @@ import org.junit.Test;
 
 public class PlayerTest {	
 	private Socket socket;
+	private Player player;
 	
 	@Before
 	public void setUp() throws Exception {
 		socket=new FakeSocket("bla".getBytes());
+		player=new Player(socket, 10);
+		player.setName("Jenő");
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		socket.close();
-	}
-	
+	}	
 	
 	@Test
-	public void testGetLastAction() {
-		try {			
-			Player player=new Player(socket, 0);
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Nem jött létre a Player osztály");
-		}
-		
+	public void testGetLastAction() throws InterruptedException {		
+		long tempTime=System.currentTimeMillis();
+		Thread.sleep(100);
+		player.read();
+		if(!(player.getLastAction()>tempTime))
+			fail("lastAction nem aktualizálódik "+tempTime+" "+player.getLastAction());
 	}
 
 	@Test
+	public void testRead(){
+		assertEquals("bla", player.read());
+	}
+	
+	@Test
 	public void testGetId() {
-		fail("Not yet implemented");
+		assertEquals(10, player.getId());
 	}
 
 	@Test
 	public void testGetName() {
-		fail("Not yet implemented");
+		assertEquals("Jenő", player.getName());
 	}
 
 	@Test
 	public void testGetCardCount() {
-		fail("Not yet implemented");
+		assertEquals(0, player.getCardCount());
+		player.increaseCardCount(-1);
+		assertEquals(0, player.getCardCount());
+		player.increaseCardCount(0);
+		assertEquals(0, player.getCardCount());
+		player.decreaseCardCount();
+		assertEquals(0, player.getCardCount());
+		player.increaseCardCount(3);
+		assertEquals(3, player.getCardCount());
+		player.decreaseCardCount();
+		assertEquals(2, player.getCardCount());
+		player.increaseCardCount(3);
+		assertEquals(5, player.getCardCount());
 	}
 
 }

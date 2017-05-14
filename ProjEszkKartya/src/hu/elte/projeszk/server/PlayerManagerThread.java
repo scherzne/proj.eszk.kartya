@@ -227,9 +227,11 @@ public class PlayerManagerThread extends Thread {
 			}
 		}else{//gáz van, kilépett vagy leszakadt. jó esetben a streamen ekkor jön a null,
 			//rossz esetben semmi, csak nincs köv. játékos
-			return false;
-			//TODO:valamit kezdeni a többiekkel, vagy mindenkit ledobni, mert nem
+			//valamit kezdeni a többiekkel, vagy mindenkit ledobni, mert nem
 			//lehet tudni milyen lapjai voltak
+			dropAllPlayers("Valaki leszakadt!");
+			isRunning=false;
+			return false;
 		}
 		
 		return true;
@@ -246,7 +248,22 @@ public class PlayerManagerThread extends Thread {
 		player.decreaseCardCount();
 		droppedCards.add(card);
 		lastCard=card;
-		//FIXME:checkPlayerWins
+		
+		//nyertes ellenőrzése: ha nulla lapja maradt bedobás után
+		if(player.getCardCount()<=0){
+			gameOverMessages(player);
+			isRunning=false;
+		}
+	}
+	
+	/**
+	 * Amikor valaki nyer, küldünik neki egy nyertél szöveget, a többieknek pedig
+	 * a nyertes nevét
+	 * @param winner a nyertes játékos
+	 */
+	protected void gameOverMessages(Player winner){
+		serverMessage(winner, "Te nyerted a játékot! Gratulálunk!");
+		serverMessageToOthers(winner.getId(), winner.getName()+" nyert. Sajnálom!");
 	}
 	/**
 	 * Játékmenet tényleges kezdete, amikor a játékosok megkapják az első kiosztott lapjaikat és felfordítja s szerver az első lapot is
@@ -509,7 +526,7 @@ public class PlayerManagerThread extends Thread {
 			//TODO: checkPlayersAreLiving, ellenőrzés hogy van-e még élő játékos, ne maradjon a szál a levegőben
 		}
 				
-		super.run();
+		dropAllPlayers("Játék vége! Viszlát");
 	}
 	/**
 	 * Üzenet a standard outputra, mindenféle loghoz

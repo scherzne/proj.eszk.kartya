@@ -338,7 +338,6 @@ public class PlayerManagerThread extends Thread {
 	}
 	/**
 	 * Bármely nem speciális kártyalap esetén a szerver üzenetei és játékmenet
-	 * FIXME: UNO-t lekezelni
 	 * @param player
 	 * @param clientCard a küldött kártya
 	 * @param pars a split-el üzenet tömb
@@ -571,6 +570,25 @@ public class PlayerManagerThread extends Thread {
 		for(Player pl:players){
 			if(pl.getId()!=notTo)
 				serverMessage(pl, messageType, messageParts);
+		}
+	}
+	/**
+	 * Socketek lezárása, szálak kilövése
+	 * @param message 
+	 */
+	protected void dropAllPlayers(String message){
+		for(PlayerThread pth:playerThreads.values()){
+			try {//leállítjuk a szálat
+				try {//lezárjuk a socketjét, csak előtte mondunk neki valamit, hogy miért
+					serverMessage(pth.getPlayer(), message);
+					pth.getPlayer().getSocket().close();
+				} catch (Exception e) {
+					logToConsole(pth.getPlayer().getName()+" lezárása nem sikerült");
+				}
+				pth.interrupt();//szál interrupt
+			} catch (Exception e) {
+				logToConsole(pth.getName()+" szál kilövése nem sikerült");
+			}
 		}
 	}
 	

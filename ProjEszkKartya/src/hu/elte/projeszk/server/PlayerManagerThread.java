@@ -266,6 +266,22 @@ public class PlayerManagerThread extends Thread {
 		serverMessageToOthers(winner.getId(), winner.getName()+" nyert. Sajnálom!");
 	}
 	/**
+	 * annak ellenőrzése, hogy minden játékos élő-e.
+	 * Ezt úgy végezzük, hogy az utolsó bejegyzett aktivitás idejéhez hozzáadjuk az
+	 *  inaktivitási időt és ha ez kisebb mint a jelenlegi idő, akkor biztos nem nyúlt semmihez
+	 *  a fickó egy ideje
+	 * @return
+	 */
+	protected boolean checkPlayersAreLiving(){
+		for(Player player:players){
+			if(player.isLive() && player.getLastAction()+(Consts.INACTIVE_TIMEOUT*1000)<System.currentTimeMillis()){
+				player.die();
+				return false;
+			}
+		}
+		return true;
+	}
+	/**
 	 * Játékmenet tényleges kezdete, amikor a játékosok megkapják az első kiosztott lapjaikat és felfordítja s szerver az első lapot is
 	 */
 	protected void sendFirstCards(){
@@ -523,9 +539,12 @@ public class PlayerManagerThread extends Thread {
 			} catch (InterruptedException e) {
 				isRunning=false;
 			}
-			//TODO: checkPlayersAreLiving, ellenőrzés hogy van-e még élő játékos, ne maradjon a szál a levegőben
+			if(!checkPlayersAreLiving()){//valaki leszakadt, vagy megunta
+				dropAllPlayers("Valaki megunta vagy leszakadt! Bocs, így nem lehet játszani! VÉGE!");
+				isRunning=false;
+			}
 		}
-				
+		//úgyis megfogja a dropAllPlayersben lévő catch ha lett volna már közben egy ledobálás
 		dropAllPlayers("Játék vége! Viszlát");
 	}
 	/**
@@ -598,6 +617,7 @@ public class PlayerManagerThread extends Thread {
 			try {//leállítjuk a szálat
 				try {//lezárjuk a socketjét, csak előtte mondunk neki valamit, hogy miért
 					serverMessage(pth.getPlayer(), message);
+					pth.getPlayer().die();
 					pth.getPlayer().getSocket().close();
 				} catch (Exception e) {
 					logToConsole(pth.getPlayer().getName()+" lezárása nem sikerült");

@@ -51,6 +51,11 @@ public  ClientMachine(String name){
 	        	
 	  	          answer =  switchAtInputCharacter(br);
 	  	         
+	  	          if (answer=="D"){
+	  	        	
+	  	        	  break;// kilépünk a ciklusból
+	  	        	  
+	  	          }
 	  	          if (answer!=null){
 	  	          pw.println(answer);
 	  	          pw.flush();
@@ -120,38 +125,26 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 		 break;
 	 case 'M': 
 		 
-		 
-		 if (message.equals("M,Nyert")){
-			 
-		//	 gameRunning = false;
-		//	 System.out.println("Gratulálok Ön nyert!");
-			 
-			 
-		 }
-		 
-		 if (message.equals("M,Vesztett")){
-			 
-		//	 gameRunning = false;
-			 
-		//	 System.out.println("Sajnálom Ön vesztett!");
-				
-			 
-		 }
-		 
-		 if (message.equals("M,Szerver: Add meg a neved!")){
-			 
-			answer = gamerName;
+		 System.out.println(message);
 		
-			 
-		 }
-		 
+
 		 
 		 break;
-	 
+	 	
+	  case 'B':
+			answer = gamerName;
+		
+		 break;	 
+		 
+	  case 'D':
+			answer = "D";
+		
+		 break;	  
+			 
 	 
 }
 	
-	System.out.println("Valasz"+answer);
+	System.out.println("Valasz "+answer);
 	
 	
 	return answer;

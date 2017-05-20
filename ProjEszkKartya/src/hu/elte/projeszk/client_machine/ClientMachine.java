@@ -91,7 +91,7 @@ public  ClientMachine(String name){
 	  	         
 	  	          if (answer!=null){
 	  	         
-	  	        	  
+	  	        	  System.out.println("Az"+name +" által elküldött válasz: " + answer);	  
 	  	          pw.println(answer);
 	  	          pw.flush();
 	  	         
@@ -179,7 +179,7 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 	 
 }
 	
-	System.out.println("Valasz "+answer);
+	System.out.println("Valasz (meg nem elkuldott) "+answer);
 	
 	
 	return answer;

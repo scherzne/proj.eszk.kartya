@@ -309,7 +309,13 @@ public class PlayerManagerThread extends Thread {
 		droppedCards.add(card);				
 		lastCard=card;
 		
-		for(int i=0;i<players.size();i++){
+		//a kezdő játékos kapja meg így is, hogy ő tudjon jönni
+		serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
+				Consts.REQUEST_CARD+"", new String[]{card.getCardAsString(),
+					Consts.NEM_HUZOTT,card.getCardColorAsChar()+""});
+		
+		//kezdő játékos nem infóként kapja
+		for(int i=1;i<players.size();i++){
 			//módosítva, egy újabb üzenet típussal kiegészítve
 			serverMessage(players.get(i), Consts.CARD_INFORMATION+"", new String[]{card.getCardAsString()});						
 		}

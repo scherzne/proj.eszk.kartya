@@ -51,11 +51,7 @@ public  ClientMachine(String name){
 	        	
 	  	          answer =  switchAtInputCharacter(br);
 	  	         
-	  	          if (answer=="D"){
-	  	        	
-	  	        	  break;// kilépünk a ciklusból
-	  	        	  
-	  	          }
+	  	         
 	  	          if (answer!=null){
 	  	          pw.println(answer);
 	  	          pw.flush();
@@ -136,10 +132,6 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 		
 		 break;	 
 		 
-	  case 'D':
-			answer = "D";
-		
-		 break;	  
 			 
 	 
 }

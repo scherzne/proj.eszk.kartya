@@ -2,6 +2,7 @@ package hu.elte.projeszk;
 
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.*;
 import java.util.*;
 import hu.elte.projeszk.Card;
@@ -10,16 +11,346 @@ import hu.elte.projeszk.Card.CardValue;
 
 public class ClientMachine {
 
-protected ArrayList<Card> hand = new ArrayList<Card>();	
-
+protected ArrayList<Card> hand = new ArrayList<Card>();
+private Socket client;	
+private String gamerName;
 
 	
-	 public static void main(String[] args) {
+public static void main(String[] args) throws UnknownHostException {
+
+
+	ClientMachine clientMachine= new ClientMachine(args[0]);
+		
+		 
 		 
 
 }
+
+public  ClientMachine(String name){
+	
+
+	 String answer="";
+	 gamerName = name;
+	 boolean gameRunning= true;
+	
+	
+	 
+	
+			String host = "localhost";
+	        int portNumber = Consts.PORT;
+	        
+	        try {
+				client = new Socket(host, portNumber);
+			} catch (UnknownHostException e) {
+				System.out.println("UnknownHostException, ismeretlen host "+ e);
+				e.printStackTrace();
+			} catch (IOException e) {
+				System.out.println("IOException t "+ e);
+				e.printStackTrace();
+			}
+	    	System.out.println("A gépi kliens letrejott, es csatlakozott a szerverhez.");
+		    
+	    
+	    	PrintWriter pw= null;
+			try {
+				
+				pw = new PrintWriter(client.getOutputStream());
+				
+			} catch (IOException e) {
+				System.out.println("A Hiba  a printwriter léterhozásakor.");
+				e.printStackTrace();
+				
+			}
 			
-public void addCardToHand(Card card){
+			BufferedReader  br = null;
+			try {
+			     br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+					
+			} catch (IOException e) {
+				System.out.println("A Hiba  a BufferedReader léterhozásakor.");
+				e.printStackTrace();
+				
+			}
+	      
+	      
+	        do{
+	        	  
+	        	
+	  	          try {
+					answer =  switchAtInputCharacter(br);
+	  	          
+	  	          	} catch (IOException e) {
+					// TODO Auto-generated catch block
+	  	          	System.out.println("A szerver bontotta a kapcsolatot.");
+	  	          	gameRunning= false;
+					e.printStackTrace();
+				}
+	  	         
+	  	         
+	  	          if (answer!=null){
+	  	         
+	  	        	  
+	  	          pw.println(answer);
+	  	          pw.flush();
+	  	         
+	  	          }
+	        	
+	        }while(gameRunning);
+	        
+	        
+	        try {
+				client.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        System.out.println("A kliens leallt.");
+		
+		
+	
+	
+}
+
+protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
+	
+
+	CardColor declaredColorByMachine;
+	Card otherPlayersCard;
+	String answer=null;
+	String message= br.readLine();
+    System.out.println("Kapott üzenet:"+message); 
+	
+	switch (message.charAt(0)){
+	
+	case ('A'):
+		// lapokat ad a szerver
+		System.out.println("Kártyát kapunk :");
+			messageBeginWithCharA(message, br);
+		
+		break;
+	
+		case ('L'): 
+		
+			System.out.println("Lapot kér a szerver:");
+			if (hand.size()!=0)
+			{
+				answer = cardChoosing(message);
+			}
+			// válasz kiirása standard outputra
+			
+		break;
+	
+	 case('S'):
+			
+		 System.out.println("Színt kér a szerver!");
+		
+		 //bővíthetőség: legyen olyan szín ami (sok) van
+
+		 declaredColorByMachine = randomDeclareColor();     		 			
+		 answer = ""+Card.convertCardColorToCharacter(declaredColorByMachine);
+	
+				 
+    			
+		 break;
+	 case 'I': 
+		
+		 otherPlayersCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
+			
+		 System.out.println("Másik játékos rakott lapot:" + otherPlayersCard.getCardColor() + " " +otherPlayersCard.getCardValue());
+		 
+		 
+		 break;
+	 case 'M': 
+		 
+		 System.out.println(message);
+		
+
+		 
+		 break;
+	 	
+	  case 'B':
+			answer = gamerName;
+		
+		 break;	 
+		 
+			 
+	 
+}
+	
+	System.out.println("Valasz "+answer);
+	
+	
+	return answer;
+}
+
+
+protected int handGetSize(){
+	
+	return hand.size();
+	
+}
+
+protected void remove(Card card){
+	
+	 hand.remove(card);
+	
+}
+
+
+protected void setSocket(Socket socket) throws UnknownHostException, IOException {
+	 client = socket;
+	
+
+}
+
+protected String cardChoosing(String message){
+	
+	String choosenCardString;
+	
+	Card topCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
+	Boolean lastPlayerDrawed = initLastPlayerDrawed(message);
+	CardColor declaredColor = Card.convertCharacterToCardColor(message.charAt(7));
+	
+	
+	Card returnCard = machineCardChooseAlgorithm(topCard, lastPlayerDrawed, declaredColor);
+	removeCardFromHand(returnCard);
+	
+
+	if (returnCard == null){
+		
+		choosenCardString = "N";
+	}else{
+
+	// UNO ESET!
+	  String unoMessage = randomizeUno();
+
+	
+	 choosenCardString = "A,"+Card.convertCardColorToCharacter(returnCard.getCardColor())+Card.convertCardValueToCharacter(returnCard.getCardValue())+unoMessage;
+	 
+	}
+	
+	return choosenCardString;
+	
+}
+
+protected Card.CardColor randomDeclareColor(){
+	
+	Random rand = new Random();
+	 int random = rand.nextInt(4);
+	Card.CardColor declaredColorByMachine= CardColor.FEKETE;
+	
+	switch (random){
+		
+		case '0': declaredColorByMachine =  CardColor.KEK;   break;
+		case '1': declaredColorByMachine =  CardColor.SARGA; break;
+		case '2': declaredColorByMachine =  CardColor.ZOLD;  break;
+		case '3': declaredColorByMachine =  CardColor.PIROS; break;
+		default: 
+			declaredColorByMachine= CardColor.FEKETE;
+			System.out.println("Hibás gépi színkérés");
+			
+			break;
+	}
+	
+	
+	 System.out.println("A gép által választott szín: "+declaredColorByMachine);
+	return declaredColorByMachine;
+	
+}
+protected String  randomizeUno(){
+	
+String unoMessage="";
+
+	if (hand.size()==1){
+		
+		
+		Random rand = new Random();
+		int   random = rand.nextInt(3);
+		   
+			switch (random){
+			
+			case '0': unoMessage=",UNO";  
+			
+			System.out.println("UNO-t mond a gép!");
+			
+			break;
+		
+			default: unoMessage="";  
+			System.out.println("Elfelejtett UNO-t mondani a gép.");  
+			
+			break;
+			
+			}
+		
+		
+	}
+	
+return	unoMessage;
+	
+}
+
+
+
+protected void messageBeginWithCharA(String message, BufferedReader br) throws IOException {
+	//split!!
+	 String[] splitted = message.split(",");
+	
+	 
+	//int index = message.charAt(1);
+	 
+	 System.out.println(message);
+	 System.out.println("Kaptunk " +splitted[0].charAt(1)+"db kártyát:");
+
+	/*for (int i =1; i < splitted[0].charAt(1); i++){
+		
+		System.out.println(splitted[0].charAt(1));
+		System.out.println(i);
+	
+		addCardToHand(new Card(Card.convertCharacterToCardColor(splitted[i].charAt(0)), Card.convertCharacterToCardValue(splitted[i].charAt(1))));
+		System.out.println(hand.get(hand.size()-1).getCardColor()+ " " +hand.get(hand.size()-1).getCardValue());
+		
+		if (i == (int) (splitted[0].charAt(1))){
+			
+			System.out.println("belepett"); 
+			break;}
+	}/*/
+
+	 
+	for (String s:  splitted){
+		
+		if ((s.charAt(0))=='A' ){
+			System.out.println("Nem kártya");
+			
+		}else{
+			
+		addCardToHand(new Card(Card.convertCharacterToCardColor(s.charAt(0)), Card.convertCharacterToCardValue(s.charAt(1))));
+		System.out.println(hand.get(hand.size()-1).getCardColor()+ " " +hand.get(hand.size()-1).getCardValue());
+		}
+	}
+	
+	
+}
+
+protected boolean initLastPlayerDrawed(String message){
+
+	if (message.charAt(5)== 'I'){
+		
+		return true;
+		
+	}else if  (message.charAt(5)== 'N'){
+		
+		return false; 
+	
+	}else{
+		
+		
+		System.out.println("Hibás lap kérés Üzenet!");
+		return false;
+	}
+			
+}
+
+public  void  addCardToHand(Card card){
 	
 	hand.add(card);
 	
@@ -78,7 +409,7 @@ public Card machineCardChooseAlgorithm(Card topCard, boolean lastPlayerDrawed, C
 				
 			}
 				
-		
+
 	
 return selectedCard;	
 }

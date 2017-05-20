@@ -1,23 +1,25 @@
 package hu.elte.projeszk;
 
+
+
+import  hu.elte.projeszk.Card.CardColor;
+import  hu.elte.projeszk.Card.CardValue;
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import  hu.elte.projeszk.Card.CardColor;
-import  hu.elte.projeszk.Card.CardValue;
 import  hu.elte.projeszk.Card;
-import org.junit.runners.Parameterized.Parameters; 
 
-public class ClientMachineTest {
+public class ClientMachineTestChoosingAlgorithm {
 
 	
-	ClientMachine clientMachineTester = new ClientMachine();
+	ClientMachine clientMachineTester;
 	  
 	@Test
     public void clientMachineHandTestAddAndRemoveCardMethods() {
 		
-		clientMachineTester = new ClientMachine();
+		clientMachineTester = new ClientMachine("JatekosNev");
 	   
 	    clientMachineTester.addCardToHand(new Card (CardColor.PIROS,CardValue.HAT));
 	    clientMachineTester.addCardToHand(new Card (CardColor.SARGA,CardValue.KILENC));
@@ -44,7 +46,7 @@ public class ClientMachineTest {
 	@Test
     public void clientMachineHandTestSearchSameColor0_9_Number() {
 		
-		 clientMachineTester = new ClientMachine();
+		 clientMachineTester = new ClientMachine("JatekosNev");
 	   
 	    Card card1= new Card(CardColor.PIROS,CardValue.HAT);
 	    Card card2= new Card(CardColor.KEK,CardValue.NULLA);
@@ -69,7 +71,7 @@ public class ClientMachineTest {
     public void clientMachineHandTestsearchCertainCardAnyColor() {
 		
 		
-		 clientMachineTester = new ClientMachine();
+		 clientMachineTester = new ClientMachine("JatekosNev");
 	
 	    Card card1= new Card(CardColor.KEK,CardValue.FORDITTO);
 	    
@@ -103,7 +105,7 @@ public class ClientMachineTest {
 	@Test
     public void clientMachineHandTestsearchSameColorNotNumber() {
 		
-		 clientMachineTester = new ClientMachine();
+		 clientMachineTester = new ClientMachine("JatekosNev");
 		
 	    Card card1= new Card(CardColor.KEK,CardValue.FORDITTO);
 	    Card card2= new Card(CardColor.KEK,CardValue.HUZZKETTOT);
@@ -136,7 +138,7 @@ public class ClientMachineTest {
 	@Test
     public void clientMachineHandTestSearchJokerCard() {
 		 
-		    clientMachineTester = new ClientMachine();
+		    clientMachineTester = new ClientMachine("JatekosNev");
 		 
 		    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.HAT));
 		    clientMachineTester.addCardToHand(new Card(CardColor.KEK,CardValue.KILENC));
@@ -161,7 +163,7 @@ public class ClientMachineTest {
 	@Test
     public void clientMachineHandTestSearchDrawFourJoker() {
 		 
-		    clientMachineTester = new ClientMachine();
+		    clientMachineTester = new ClientMachine("JatekosNev");
 		 
 		    clientMachineTester.addCardToHand(new Card(CardColor.ZOLD,CardValue.HAT));
 		    clientMachineTester.addCardToHand(new Card(CardColor.KEK,CardValue.KILENC));
@@ -181,7 +183,7 @@ public class ClientMachineTest {
     public void clientMachineHandTestMachineCardChooseAlgorithm_First_Case() {
 		//Az elso eset amikor a legfelso eldobott lap (top card) csak szam, elöttünk lévő játékos rakta, és nincs színkényszer
 		
-		    clientMachineTester = new ClientMachine();
+		    clientMachineTester = new ClientMachine("JatekosNev");
 	
 		    Card  expectCard1 = new Card(CardColor.ZOLD,CardValue.HAT);
 		    Card  expectCard2 = new Card(CardColor.KEK,CardValue.KILENC);
@@ -199,6 +201,8 @@ public class ClientMachineTest {
 		    topCard =   new Card(CardColor.SARGA,CardValue.HAT);
 		    assertEquals("If top card is SARGA HAT the return card should be ZOLD HAT", expectCard1,  clientMachineTester.machineCardChooseAlgorithm(topCard,false,CardColor.FEKETE));
 			
+		    
+		    
 		    topCard =  new Card(CardColor.PIROS,CardValue.KILENC);
 		    assertEquals("If top card is PIROS KILENC the return card should be KEK KILENC", expectCard2,clientMachineTester.machineCardChooseAlgorithm( topCard,false,CardColor.FEKETE));
 		    
@@ -224,7 +228,7 @@ public class ClientMachineTest {
 	@Test
     public void clientMachineHandTestMachineCardChooseAlgorithm_Second_Case() {
 		//Az elso eset amikor a legfelso eldobott lap szivatos kártya, elöttünk lévő játékos rakta, és nincs színkényszer
-	    clientMachineTester = new ClientMachine();
+	    clientMachineTester = new ClientMachine("JatekosNev");
 		
 	    Card  expectCard1 = new Card(CardColor.FEKETE,CardValue.SZINKEREO);
 	    Card  expectCard2 = new Card(CardColor.KEK,CardValue.HUZZKETTOT);
@@ -271,7 +275,7 @@ public class ClientMachineTest {
     public void clientMachineHandTestMachineCardChooseAlgorithm_Third_Case() {
 		//A harmdaik eset amikor a legfelso eldobott lap szam , elöttünk lévő játékos rakta, és VAN színkényszer
 		//Mivel a színkényszer csak  darab játékosra vonatkozik ezért ha az elözö játékos lapott rakott az csak PluszNégyes v színkérő lehet 
-		clientMachineTester = new ClientMachine();
+		clientMachineTester = new ClientMachine("JatekosNev");
 		
 	    Card  expectCard1 = new Card(CardColor.FEKETE,CardValue.SZINKEREO);
 	    Card  expectCard2 = new Card(CardColor.SARGA,CardValue.NULLA);	  
@@ -343,7 +347,7 @@ public class ClientMachineTest {
     public void clientMachineHandTestMachineCardChooseAlgorithm_Fourth_Case() {
 	
 		
-	 clientMachineTester = new ClientMachine();
+	 clientMachineTester = new ClientMachine("JatekosNev");
 		
 	    Card  expectCard1 = new Card(CardColor.FEKETE,CardValue.SZINKEREO);
 	    Card  expectCard2 = new Card(CardColor.KEK,CardValue.NULLA);	  
@@ -361,8 +365,8 @@ public class ClientMachineTest {
 	     Card topCard =   new Card(CardColor.SARGA,CardValue.HET); 
 	     assertEquals("If top card is SARGA HET  the return card should be null", null, clientMachineTester.machineCardChooseAlgorithm( topCard,true,CardColor.FEKETE));
 	   
-	      topCard =   new Card(CardColor.KEK,CardValue.HET); 
-	      assertEquals("If top card is KEK HET  the return card should be KEK NULLA", expectCard2, clientMachineTester.machineCardChooseAlgorithm( topCard,true,CardColor.FEKETE));
+	     topCard =   new Card(CardColor.KEK,CardValue.HET); 
+	     assertEquals("If top card is KEK HET  the return card should be KEK NULLA", expectCard2, clientMachineTester.machineCardChooseAlgorithm( topCard,true,CardColor.FEKETE));
 	   
 	     clientMachineTester.removeCardFromHand(expectCard2);
 	     assertEquals("If top card is KEK HET  the return card should be KEK HUZZKETTOT", expectCard3, clientMachineTester.machineCardChooseAlgorithm( topCard,true,CardColor.FEKETE));
@@ -371,10 +375,10 @@ public class ClientMachineTest {
 	     topCard =   new Card(CardColor.KEK,CardValue.KILENC); 
 	     assertEquals("If top card is KEK HET  the return card should be PIROS KILENC", expectCard5, clientMachineTester.machineCardChooseAlgorithm( topCard,true,CardColor.FEKETE));
 	   
-	      topCard =   new Card(CardColor.SARGA,CardValue.HET);
-	      clientMachineTester.addCardToHand(expectCard1);
-		  clientMachineTester.addCardToHand(expectCard4);
-		  assertEquals("If top card is SARGA HET  the return card should be FEKETE SZINKERO", expectCard1, clientMachineTester.machineCardChooseAlgorithm( topCard,true,CardColor.FEKETE));
+	     topCard =   new Card(CardColor.SARGA,CardValue.HET);
+	     clientMachineTester.addCardToHand(expectCard1);
+		 clientMachineTester.addCardToHand(expectCard4);
+		 assertEquals("If top card is SARGA HET  the return card should be FEKETE SZINKERO", expectCard1, clientMachineTester.machineCardChooseAlgorithm( topCard,true,CardColor.FEKETE));
 	      
 	      
 	      clientMachineTester.removeCardFromHand(expectCard1);
@@ -391,7 +395,7 @@ public class ClientMachineTest {
     public void clientMachineHandTestMachineCardChooseAlgorithm_Fifth_Case() {
 		// ötödik eset, elöttünk húztak és színkényszer van. mivel húztak, bármit rakhatunk az adott színben
 		
-		clientMachineTester = new ClientMachine();
+		clientMachineTester = new ClientMachine("JatekosNev");
 			
 	    Card  expectCard1 = new Card(CardColor.SARGA,CardValue.KETTO);
 	    Card  expectCard2 = new Card(CardColor.SARGA,CardValue.HUZZKETTOT);

@@ -91,7 +91,7 @@ public  ClientMachine(String name){
 	  	         
 	  	          if (answer!=null){
 	  	         
-	  	        	  System.out.println("Az"+name +" által elküldött válasz: " + answer);	  
+	  	          System.out.println("Az"+name +" által elküldött válasz: " + answer);	  
 	  	          pw.println(answer);
 	  	          pw.flush();
 	  	         
@@ -182,7 +182,9 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 	 
 }
 	
-	System.out.println("Valasz (meg nem elkuldott) "+answer);
+	//System.out.println("Valasz (meg nem elkuldott) "+answer);
+	
+	
 	
 	
 	return answer;
@@ -211,7 +213,7 @@ protected void setSocket(Socket socket) throws UnknownHostException, IOException
 protected String cardChoosing(String message){
 	
 	String choosenCardString;
-	
+	 String unoMessage="";
 	Card topCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
 	Boolean lastPlayerDrawed = initLastPlayerDrawed(message);
 	CardColor declaredColor = Card.convertCharacterToCardColor(message.charAt(7));
@@ -227,11 +229,13 @@ protected String cardChoosing(String message){
 	}else{
 
 	// UNO ESET!
-	  String unoMessage = randomizeUno();
+	if (hand.size()==1){
+	   unoMessage = randomizeUno();
 
+	}
+	choosenCardString = Consts.SEND_CARD+","+Card.convertCardColorToCharacter(returnCard.getCardColor())+Card.convertCardValueToCharacter(returnCard.getCardValue())+unoMessage;
 	
-	 choosenCardString = Consts.SEND_CARD+","+Card.convertCardColorToCharacter(returnCard.getCardColor())+Card.convertCardValueToCharacter(returnCard.getCardValue())+unoMessage;
-	 
+	
 	}
 	
 	return choosenCardString;

@@ -66,7 +66,7 @@ public  ClientMachine(String name){
 			
 			BufferedReader  br = null;
 		//	try {
-		//	     br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			     br = new BufferedReader(new InputStreamReader(client.getInputStream()));
 					
 		//	} catch (IOException e) {
 		//		System.out.println("A Hiba  a BufferedReader léterhozásakor.");
@@ -119,7 +119,10 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 	CardColor declaredColorByMachine;
 	Card otherPlayersCard;
 	String answer=null;
+	
 	String message= br.readLine();
+	
+
     System.out.println("Kapott üzenet:"+message); 
 	
 	switch (message.charAt(0)){

@@ -1,4 +1,4 @@
-package hu.elte.projeszk;
+package hu.elte.projeszk.client_machine;
 
 
 

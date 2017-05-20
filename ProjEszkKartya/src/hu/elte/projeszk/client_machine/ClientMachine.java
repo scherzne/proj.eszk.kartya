@@ -1,4 +1,4 @@
-package hu.elte.projeszk;
+package hu.elte.projeszk.client_machine;
 
 
 import java.io.*;
@@ -6,6 +6,7 @@ import java.lang.reflect.Array;
 import java.net.*;
 import java.util.*;
 import hu.elte.projeszk.Card;
+import hu.elte.projeszk.Consts;
 import hu.elte.projeszk.Card.CardColor;
 import hu.elte.projeszk.Card.CardValue;
 

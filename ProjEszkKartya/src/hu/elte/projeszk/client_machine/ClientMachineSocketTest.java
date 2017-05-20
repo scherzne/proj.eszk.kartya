@@ -1,10 +1,11 @@
-package hu.elte.projeszk;
+package hu.elte.projeszk.client_machine;
 
 import static org.junit.Assert.assertEquals;
 
 
 import org.mockito.Mockito;
 
+import hu.elte.projeszk.Card;
 import hu.elte.projeszk.Card.CardColor;
 import hu.elte.projeszk.Card.CardValue;
 

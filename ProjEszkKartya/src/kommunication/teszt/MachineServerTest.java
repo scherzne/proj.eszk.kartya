@@ -24,7 +24,7 @@ final	String[] SimulationGamerName = {"GepiJatekos1","GepiJatekos2", "GepiJateko
         }.start();
 		
 		
-		for (int i =0; i<2; i++){
+		for (int i =0; i<3; i++){
 		
 			 new SimulateThread(i) {
 			 

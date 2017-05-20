@@ -245,6 +245,7 @@ public class ManualClient {
 	
 	private int checkIfCardInHand(Card card) {
 		int i = 0;
+		boolean found=false;
 		for (; i < cardsInHand.size() && !found; i++) {
 			if (cardsInHand.get(i).equals(card)) {
 				found = true;

@@ -29,43 +29,84 @@ public static void main(String[] args) throws UnknownHostException {
 public  ClientMachine(String name){
 	
 
-	 String answer;
+	 String answer="";
 	 gamerName = name;
 	 boolean gameRunning= true;
 	
 	
 	 
-	 try{
+	
 			String host = "localhost";
 	        int portNumber = Consts.PORT;
 	        
-	        client = new Socket(host, portNumber);
+	        try {
+				client = new Socket(host, portNumber);
+			} catch (UnknownHostException e) {
+				System.out.println("UnknownHostException, ismeretlen host "+ e);
+				e.printStackTrace();
+			} catch (IOException e) {
+				System.out.println("IOException t "+ e);
+				e.printStackTrace();
+			}
 	    	System.out.println("A gépi kliens letrejott, es csatlakozott a szerverhez.");
-	        
-	        PrintWriter pw = new PrintWriter(client.getOutputStream());
-	        BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
-		
+		    
+	    
+	    	PrintWriter pw= null;
+			try {
+				
+				pw = new PrintWriter(client.getOutputStream());
+				
+			} catch (IOException e) {
+				System.out.println("A Hiba  a printwriter léterhozásakor.");
+				e.printStackTrace();
+				
+			}
+			
+			BufferedReader  br = null;
+			try {
+			     br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+					
+			} catch (IOException e) {
+				System.out.println("A Hiba  a BufferedReader léterhozásakor.");
+				e.printStackTrace();
+				
+			}
+	      
 	      
 	        do{
 	        	  
 	        	
-	  	          answer =  switchAtInputCharacter(br);
+	  	          try {
+					answer =  switchAtInputCharacter(br);
+	  	          
+	  	          	} catch (IOException e) {
+					// TODO Auto-generated catch block
+	  	          	System.out.println("A szerver bontotta a kapcsolatot.");
+	  	          	gameRunning= false;
+					e.printStackTrace();
+				}
 	  	         
 	  	         
 	  	          if (answer!=null){
+	  	         
+	  	        	  
 	  	          pw.println(answer);
 	  	          pw.flush();
+	  	         
 	  	          }
 	        	
 	        }while(gameRunning);
 	        
 	        
-	        client.close();
+	        try {
+				client.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	        System.out.println("A kliens leallt.");
 		
-		}  catch (Exception e) {
-               System.err.println("Hiba a klienessel valo kommunikacioban.");
-			}
+		
 	
 	
 }

@@ -123,13 +123,13 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 	String message= br.readLine();
 	
 
-    System.out.println("Kapott üzenet:"+message); 
+    System.out.println(gamerName +" Kapott üzenet:"+message); 
 	
 	switch (message.charAt(0)){
 	
 	case (Consts.SEND_CARD): //'A'
 		// lapokat ad a szerver
-		System.out.println("Kártyát kapunk :");
+		System.out.println(gamerName+ " Kártyát kapunk :");
 			messageBeginWithCharA(message, br);
 		
 		break;
@@ -145,14 +145,14 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 			
 		break;
 	
-	 case(Consts.SEND_COLOR)://'S'
+	 case(Consts.REQUEST_COLOR)://'S'
 			
 		 System.out.println("Színt kér a szerver!");
 		
 		 //bővíthetőség: legyen olyan szín ami (sok) van
 
 		 declaredColorByMachine = randomDeclareColor();     		 			
-		 answer = ""+Card.convertCardColorToCharacter(declaredColorByMachine);
+		 answer =Consts.SEND_COLOR+","+Card.convertCardColorToCharacter(declaredColorByMachine);
 	
 				 
     			
@@ -161,7 +161,7 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 		
 		 otherPlayersCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
 			
-		 System.out.println("Másik játékos rakott lapot:" + otherPlayersCard.getCardColor() + " " +otherPlayersCard.getCardValue());
+		// System.out.println("Másik játékos rakott lapot:" + otherPlayersCard.getCardColor() + " " +otherPlayersCard.getCardValue());
 		 
 		 
 		 break;
@@ -329,7 +329,7 @@ protected void messageBeginWithCharA(String message, BufferedReader br) throws I
 		
 		//if ((s.charAt(0))=='A' ){
 		if (((s.charAt(0))+"").equals(Consts.SEND_CARD+"") ){
-			System.out.println("Nem kártya");
+		//	System.out.println("Nem kártya");
 			
 		}else{
 			

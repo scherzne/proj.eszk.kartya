@@ -25,7 +25,7 @@ public class TestCardClass {
 	  // TESZT KÁRTYA PÉLDÁNYOSÍTÁSRA
 		  assertEquals(CardColor.KEK,myCard.getCardColor());
 		  assertEquals(CardValue.HAROM ,myCard.getCardValue());
-		  
+		 
 		  myCard = new Card(cardColor,CardValue.SZINKEREO);
 		  assertEquals(CardValue.SZINKEREO ,myCard.getCardValue());
 		  

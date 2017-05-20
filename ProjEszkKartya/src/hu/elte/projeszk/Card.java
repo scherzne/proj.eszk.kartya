@@ -157,7 +157,7 @@ public class Card {
 	public static int cardValueToInt( CardValue cardValue){
 		
 		int value=-1;	
-		
+	//
 		switch (cardValue){
 		case NULLA:  	value=0; break;
 		case EGY:  	 	value=1; break;

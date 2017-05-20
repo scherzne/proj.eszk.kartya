@@ -159,7 +159,7 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 		 break;
 	 case Consts.CARD_INFORMATION: //'I'
 		
-		 otherPlayersCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
+	//	 otherPlayersCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
 			
 		// System.out.println("Másik játékos rakott lapot:" + otherPlayersCard.getCardColor() + " " +otherPlayersCard.getCardValue());
 		 
@@ -213,11 +213,13 @@ protected void setSocket(Socket socket) throws UnknownHostException, IOException
 protected String cardChoosing(String message){
 	
 	String choosenCardString;
-	 String unoMessage="";
+	String unoMessage="";
 	Card topCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
+	System.out.println(topCard);
 	Boolean lastPlayerDrawed = initLastPlayerDrawed(message);
+	System.out.println(lastPlayerDrawed);
 	CardColor declaredColor = Card.convertCharacterToCardColor(message.charAt(7));
-	
+	System.out.println(declaredColor);
 	
 	Card returnCard = machineCardChooseAlgorithm(topCard, lastPlayerDrawed, declaredColor);
 	removeCardFromHand(returnCard);
@@ -225,7 +227,7 @@ protected String cardChoosing(String message){
 
 	if (returnCard == null){
 		
-		choosenCardString = ""+Consts.NO_CARD;//"N"
+		choosenCardString =Consts.NO_CARD+"";//"N"
 	}else{
 
 	// UNO ESET!
@@ -245,24 +247,25 @@ protected String cardChoosing(String message){
 protected Card.CardColor randomDeclareColor(){
 	
 	Random rand = new Random();
-	 int random = rand.nextInt(4);
+	 int random = rand.nextInt(4); 
+		
 	Card.CardColor declaredColorByMachine= CardColor.FEKETE;
 	
 	switch (random){
 		
-		case '0': declaredColorByMachine =  CardColor.KEK;   break;
-		case '1': declaredColorByMachine =  CardColor.SARGA; break;
-		case '2': declaredColorByMachine =  CardColor.ZOLD;  break;
-		case '3': declaredColorByMachine =  CardColor.PIROS; break;
-		default: 
-			declaredColorByMachine= CardColor.FEKETE;
-			System.out.println("Hibás gépi színkérés");
+		case 0: declaredColorByMachine =  CardColor.KEK;   break;
+		case 1: declaredColorByMachine =  CardColor.SARGA; break;
+		case 2: declaredColorByMachine =  CardColor.ZOLD;  break;
+		case 3: declaredColorByMachine =  CardColor.PIROS; break;
+		//default: 
+		//	declaredColorByMachine= CardColor.FEKETE;
+		//	System.out.println("Hibás gépi színkérés:"+ random);
 			
-			break;
+	//		break;
 	}
 	
 	
-	 System.out.println("A gép által választott szín: "+declaredColorByMachine);
+	 System.out.println(" A gép által választott szín: "+declaredColorByMachine);
 	return declaredColorByMachine;
 	
 }
@@ -387,6 +390,8 @@ public Card machineCardChooseAlgorithm(Card topCard, boolean lastPlayerDrawed, C
 			// nincs színkérés és az utolsó ember nem húzott  kártyát azaz az előző játékos rakta
 		
 			selectedCard = commonCardChoosing(topCard);
+			
+			
 		}
 	
 	
@@ -432,9 +437,10 @@ protected Card commonCardChoosing(Card topCard){
 	
 	Card selectedCard = null;
 	
-	if(topCard.getValue()<10){
+	if(topCard.getValue()<10 ){
 		
 		selectedCard = searchWhenTopNumber(topCard);
+		
 	}else{
 		//legfelso kartya nem szam!
 		// ha az előző játékos rakta akkor a szivatósok közül nem lehet se fordító
@@ -540,7 +546,7 @@ protected Card searchWhenTopNotNumber(Card topCard){
 protected Card searchWhenTopNumber(Card topCard){
 	// számot keresünk 0-9 ig, ugyanolyan színben
 	Card	selectedCard = searchAnyNumberOfCertainColor(topCard.getCardColor());
-			
+
 	if (selectedCard == null){
 		
 		// ugyanazt a számot keresssük bármilyen színben

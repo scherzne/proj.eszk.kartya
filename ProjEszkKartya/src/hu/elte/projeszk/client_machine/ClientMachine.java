@@ -43,36 +43,36 @@ public  ClientMachine(String name){
 	        
 	        try {
 				client = new Socket(host, portNumber);
-			} catch (UnknownHostException e) {
-				System.out.println("UnknownHostException, ismeretlen host "+ e);
-				e.printStackTrace();
-			} catch (IOException e) {
-				System.out.println("IOException t "+ e);
-				e.printStackTrace();
-			}
+	//		} catch (UnknownHostException e) {
+	//			System.out.println("UnknownHostException, ismeretlen host "+ e);
+	//			e.printStackTrace();
+	//		} catch (IOException e) {
+	//			System.out.println("IOException t "+ e);
+		//		e.printStackTrace();
+		//	}
 	    	System.out.println("A gépi kliens letrejott, es csatlakozott a szerverhez.");
 		    
 	    
 	    	PrintWriter pw= null;
-			try {
+			//try {
 				
 				pw = new PrintWriter(client.getOutputStream());
 				
-			} catch (IOException e) {
-				System.out.println("A Hiba  a printwriter léterhozásakor.");
-				e.printStackTrace();
+		//	} catch (IOException e) {
+		//		System.out.println("A Hiba  a printwriter léterhozásakor.");
+	//			e.printStackTrace();
 				
-			}
+	//		}
 			
 			BufferedReader  br = null;
-			try {
-			     br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+		//	try {
+		//	     br = new BufferedReader(new InputStreamReader(client.getInputStream()));
 					
-			} catch (IOException e) {
-				System.out.println("A Hiba  a BufferedReader léterhozásakor.");
-				e.printStackTrace();
+		//	} catch (IOException e) {
+		//		System.out.println("A Hiba  a BufferedReader léterhozásakor.");
+		//		e.printStackTrace();
 				
-			}
+		//	}
 	      
 	      
 	        do{
@@ -100,7 +100,7 @@ public  ClientMachine(String name){
 	        }while(gameRunning);
 	        
 	        
-	        try {
+	      //  try {
 				client.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -321,7 +321,7 @@ protected void messageBeginWithCharA(String message, BufferedReader br) throws I
 	for (String s:  splitted){
 		
 		//if ((s.charAt(0))=='A' ){
-		if (((s.charAt(0))+"").equals(Consts.SEND_CARD) ){
+		if (((s.charAt(0))+"").equals(Consts.SEND_CARD+"") ){
 			System.out.println("Nem kártya");
 			
 		}else{
@@ -338,11 +338,11 @@ protected boolean initLastPlayerDrawed(String message){
 
 	//if (message.charAt(5)== 'H'){
 		
-	if ((message.charAt(5)+"").equals(Consts.HUZOTT)){
+	if ((message.charAt(5)+"").equals(Consts.HUZOTT+"")){
 		return true;
 		
 	}else //if  (message.charAt(5)== 'N'){
-		if ((message.charAt(5)+"").equals(Consts.NEM_HUZOTT)){
+		if ((message.charAt(5)+"").equals(Consts.NEM_HUZOTT+"")){
 			
 		
 		return false; 

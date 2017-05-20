@@ -2,6 +2,7 @@ package hu.elte.projeszk.client_machine;
 
 
 import java.io.*;
+
 import java.lang.reflect.Array;
 import java.net.*;
 import java.util.*;
@@ -123,14 +124,14 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 	
 	switch (message.charAt(0)){
 	
-	case ('A'):
+	case (Consts.SEND_CARD): //'A'
 		// lapokat ad a szerver
 		System.out.println("Kártyát kapunk :");
 			messageBeginWithCharA(message, br);
 		
 		break;
 	
-		case ('L'): 
+		case (Consts.REQUEST_CARD): //'L'
 		
 			System.out.println("Lapot kér a szerver:");
 			if (hand.size()!=0)
@@ -141,7 +142,7 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 			
 		break;
 	
-	 case('S'):
+	 case(Consts.SEND_COLOR)://'S'
 			
 		 System.out.println("Színt kér a szerver!");
 		
@@ -153,7 +154,7 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 				 
     			
 		 break;
-	 case 'I': 
+	 case Consts.CARD_INFORMATION: //'I'
 		
 		 otherPlayersCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
 			
@@ -161,7 +162,7 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 		 
 		 
 		 break;
-	 case 'M': 
+	 case Consts.SEND_MESSAGE: //M
 		 
 		 System.out.println(message);
 		
@@ -169,7 +170,7 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 		 
 		 break;
 	 	
-	  case 'B':
+	  case Consts.REQUEST_NAME:// 'B'
 			answer = gamerName;
 		
 		 break;	 
@@ -219,14 +220,14 @@ protected String cardChoosing(String message){
 
 	if (returnCard == null){
 		
-		choosenCardString = "N";
+		choosenCardString = ""+Consts.NO_CARD;//"N"
 	}else{
 
 	// UNO ESET!
 	  String unoMessage = randomizeUno();
 
 	
-	 choosenCardString = "A,"+Card.convertCardColorToCharacter(returnCard.getCardColor())+Card.convertCardValueToCharacter(returnCard.getCardValue())+unoMessage;
+	 choosenCardString = Consts.SEND_CARD+","+Card.convertCardColorToCharacter(returnCard.getCardColor())+Card.convertCardValueToCharacter(returnCard.getCardValue())+unoMessage;
 	 
 	}
 	
@@ -270,7 +271,7 @@ String unoMessage="";
 		   
 			switch (random){
 			
-			case '0': unoMessage=",UNO";  
+			case '0': unoMessage=","+Consts.UNO;  
 			
 			System.out.println("UNO-t mond a gép!");
 			
@@ -319,7 +320,8 @@ protected void messageBeginWithCharA(String message, BufferedReader br) throws I
 	 
 	for (String s:  splitted){
 		
-		if ((s.charAt(0))=='A' ){
+		//if ((s.charAt(0))=='A' ){
+		if (((s.charAt(0))+"").equals(Consts.SEND_CARD) ){
 			System.out.println("Nem kártya");
 			
 		}else{
@@ -334,11 +336,14 @@ protected void messageBeginWithCharA(String message, BufferedReader br) throws I
 
 protected boolean initLastPlayerDrawed(String message){
 
-	if (message.charAt(5)== 'I'){
+	//if (message.charAt(5)== 'H'){
 		
+	if ((message.charAt(5)+"").equals(Consts.HUZOTT)){
 		return true;
 		
-	}else if  (message.charAt(5)== 'N'){
+	}else //if  (message.charAt(5)== 'N'){
+		if ((message.charAt(5)+"").equals(Consts.NEM_HUZOTT)){
+			
 		
 		return false; 
 	

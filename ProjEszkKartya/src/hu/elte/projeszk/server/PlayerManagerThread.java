@@ -778,7 +778,7 @@ public class PlayerManagerThread extends Thread {
 	protected boolean isCardProblematic(Card card){
 		int cardVal=card.getValue();
 		
-		return (!(cardVal>=0 && cardVal<=9))?false:true;
+		return (cardVal>=0 && cardVal<=9)?false:true;
 	}	
 	
 	/**

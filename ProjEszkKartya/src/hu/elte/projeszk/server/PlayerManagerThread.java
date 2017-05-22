@@ -565,6 +565,10 @@ public class PlayerManagerThread extends Thread {
 				isRunning=false;
 			}
 		}
+		try {
+			sleep(2000);
+		} catch (InterruptedException e) {			
+		}
 		//úgyis megfogja a dropAllPlayersben lévő catch ha lett volna már közben egy ledobálás
 		dropAllPlayers("Játék vége! Viszlát");
 	}

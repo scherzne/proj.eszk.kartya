@@ -361,7 +361,7 @@ public class PlayerManagerThread extends Thread {
 		nextPlayer=getNextPlayerId();
 		serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 				Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
-					Consts.HUZOTT,lastColorRequest+""});
+					Consts.HUZOTT,Card.convertCardColorToCharacter(lastColorRequest)+""});
 		lastPlayerDrawed=true;
 	}
 	/**

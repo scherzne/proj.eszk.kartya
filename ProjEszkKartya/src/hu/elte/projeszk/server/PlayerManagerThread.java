@@ -483,6 +483,8 @@ public class PlayerManagerThread extends Thread {
 			serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.CARD_INFORMATION+"", new String[]{pars[1]});
 			//elküldjük neki a két húzott lapot
 			serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.SEND_CARD+"2", cardStrs);
+			//megnöveljük a kártyái számát
+			playerThreads.get(nextPlayer).getPlayer().increaseCardCount(2);
 			//a többieknek pedig szintén infót
 			droppedCardInfoToOthers(playerThreads.get(nextPlayer).getPlayer(),clientCard);
 			//továbblépés a következő játékosra, ő már kell tegyen lapot, így kérünk tőle
@@ -492,7 +494,7 @@ public class PlayerManagerThread extends Thread {
 						Consts.HUZOTT,clientCard.getCardColorAsChar()+""});
 			
 			lastPlayerDrawed=true;
-			playerThreads.get(nextPlayer).getPlayer().increaseCardCount(2);
+			
 			return true;
 		}else{//nem teheti le a húzz kettőt lapot, sem a színe sem a típusa nem jó!
 			serverMessage(player, "Ezt a lapot nem dobhatod be!");

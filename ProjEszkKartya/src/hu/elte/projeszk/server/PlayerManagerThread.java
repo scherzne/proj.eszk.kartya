@@ -472,6 +472,7 @@ public class PlayerManagerThread extends Thread {
 	 * @return lehet-e menteni az utolsó kártyalapot az eldobottak közé
 	 */
 	protected boolean doHuzzKettot(Player player,Card clientCard,String pars[]){
+		int tempId=nextPlayer;
 		if(lastCard.getCardColor()==clientCard.getCardColor() ||
 				lastCard.getCardValue()==CardValue.HUZZKETTOT){//előző lap színe egyezik vagy ez is húzz kettőt volt
 			nextPlayer=getNextPlayerId();//léptetés, ő fog kimaradni
@@ -486,7 +487,7 @@ public class PlayerManagerThread extends Thread {
 			//megnöveljük a kártyái számát
 			playerThreads.get(nextPlayer).getPlayer().increaseCardCount(2);
 			//a többieknek pedig szintén infót
-			droppedCardInfoToOthers(playerThreads.get(nextPlayer).getPlayer(),clientCard);
+			droppedCardInfoToOthers(playerThreads.get(tempId).getPlayer(),clientCard);
 			//továbblépés a következő játékosra, ő már kell tegyen lapot, így kérünk tőle
 			nextPlayer=getNextPlayerId();
 			serverMessage(playerThreads.get(nextPlayer).getPlayer(), 

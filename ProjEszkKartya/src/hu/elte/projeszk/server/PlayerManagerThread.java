@@ -353,6 +353,8 @@ public class PlayerManagerThread extends Thread {
 		serverMessage(playerThreads.get(nextPlayer).getPlayer(), "Sajnos most kapsz 4 lapot :(");
 		//elküldjük neki a két húzott lapot
 		serverMessage(playerThreads.get(nextPlayer).getPlayer(), Consts.SEND_CARD+"4", cardStrs);
+		//megnöveljük a kártyái számát
+		playerThreads.get(nextPlayer).getPlayer().increaseCardCount(4);
 		//a többieknek pedig szintén infót
 		droppedCardInfoToOthers(playerThreads.get(tempId).getPlayer(),card);
 		//továbblépés a következő játékosra, ő már kell tegyen lapot, így kérünk tőle
@@ -361,7 +363,6 @@ public class PlayerManagerThread extends Thread {
 				Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
 					Consts.HUZOTT,lastColorRequest+""});
 		lastPlayerDrawed=true;
-		playerThreads.get(nextPlayer).getPlayer().increaseCardCount(4);
 	}
 	/**
 	 * színkérő kártyalap esetén a szerver üzenetek és játékmenet

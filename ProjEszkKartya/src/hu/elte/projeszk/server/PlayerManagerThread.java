@@ -53,7 +53,7 @@ public class PlayerManagerThread extends Thread {
 	/**
 	 * Üzenetkezeléshez: utolsó játékos által kért/bedobott szín
 	 */
-	private Card.CardColor lastColorRequest =CardColor.FEKETE;
+	private Card.CardColor lastColorRequest =CardColor.FEKETE; //alapértelmezésnek legyen fekete
 	/**
 	 * Előre irány true, visszafelé irány a false
 	 */

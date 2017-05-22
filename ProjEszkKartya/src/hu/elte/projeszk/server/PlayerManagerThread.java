@@ -127,6 +127,8 @@ public class PlayerManagerThread extends Thread {
 				}
 			}else{//nevét már megadta, de lehet, hogy nem lehet még kezdeni
 				if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön
+					//debug kártyaszámok:
+					debugCardNums();
 					//játék
 					if(player.getId()==nextPlayer){//ha ő jön
 						char firstChar=row.charAt(0);//na mit küld-kér.						
@@ -780,6 +782,12 @@ public class PlayerManagerThread extends Thread {
 		
 		return (cardVal>=0 && cardVal<=9)?false:true;
 	}	
+	
+	private void debugCardNums(){
+		for(Player pl:players){
+			logToConsole(pl.getName()+": "+pl.getCardCount());
+		}
+	}
 	
 	/**
 	 * Manager azonosító visszaadása, amit a konstruktornak kell átadni

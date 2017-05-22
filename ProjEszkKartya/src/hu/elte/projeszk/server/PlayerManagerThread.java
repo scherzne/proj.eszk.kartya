@@ -426,10 +426,13 @@ public class PlayerManagerThread extends Thread {
 	 * @return lehet-e menteni az utolsó kártyalapot az eldobottak közé
 	 */
 	protected boolean doKimaradsz(Player player,Card clientCard,String pars[]){
+		System.out.println("last card color"+lastCard.getCardColor()+ "req color: "+lastColorRequest);
+	    
 		if(lastCard.getCardColor()==clientCard.getCardColor() ||
-				lastCard.getCardValue()==CardValue.KIMARADSZ
-			//	||lastColorRequest==clientCard.getCardColor()
-				){
+				lastCard.getCardValue()==CardValue.KIMARADSZ||
+				(lastCard.getCardValue()==CardValue.SZINKEREO & clientCard.getCardColor()==lastColorRequest)|| // az előző színkérő
+				(lastPlayerDrawed==true & lastCard.getCardValue()==CardValue.HUZZNEGYET & clientCard.getCardColor()==lastColorRequest)// előző plussz4 es, de húztak elöttünk és még van színköt
+					){
 					//tudjuk ki marad ki, és közöljük is vele
 					nextPlayer=getNextPlayerId();
 					//gépi játékosnak kellhet
@@ -440,6 +443,8 @@ public class PlayerManagerThread extends Thread {
 					droppedCardInfoToOthers(player,clientCard);
 					//tovább lépés arra játékosra aki tányleg jön
 					nextPlayer=getNextPlayerId();
+					
+					lastColorRequest= CardColor.FEKETE;
 					//a lapot is küldjük
 					serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 							Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
@@ -461,8 +466,10 @@ public class PlayerManagerThread extends Thread {
 	 */
 	protected boolean doFordito(Player player,Card clientCard,String pars[]){
 		if(lastCard.getCardColor()==clientCard.getCardColor() ||
-				lastCard.getCardValue()==CardValue.FORDITTO
-				//||lastColorRequest==clientCard.getCardColor()
+				lastCard.getCardValue()==CardValue.FORDITTO||
+				(lastCard.getCardValue()==CardValue.SZINKEREO & clientCard.getCardColor()==lastColorRequest)|| // az előző színkérő
+				(lastPlayerDrawed==true & lastCard.getCardValue()==CardValue.HUZZNEGYET & clientCard.getCardColor()==lastColorRequest)// előző plussz4 es, de húztak elöttünk és még van színköt
+			
 				){
 				//játékos irány fordítás, illetve új játékos kiválasztása											
 				switchDirection();
@@ -475,6 +482,9 @@ public class PlayerManagerThread extends Thread {
 				//miért fordult meg a játékirány
 				droppedCardInfoToOthers(player,clientCard);
 				//a lapot is küldjük
+				
+				// lastColorRequest nullázuk
+				lastColorRequest=CardColor.FEKETE;
 				serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 						Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
 							Consts.NEM_HUZOTT,clientCard.getCardColorAsChar()+""});
@@ -494,9 +504,13 @@ public class PlayerManagerThread extends Thread {
 	 * @return lehet-e menteni az utolsó kártyalapot az eldobottak közé
 	 */
 	protected boolean doHuzzKettot(Player player,Card clientCard,String pars[]){
+		System.out.println("last card color"+lastCard.getCardColor()+ "req color: "+lastColorRequest);
+	    
 		int tempId=nextPlayer;
 		if(lastCard.getCardColor()==clientCard.getCardColor() ||
-				lastCard.getCardValue()==CardValue.HUZZKETTOT
+				lastCard.getCardValue()==CardValue.HUZZKETTOT||
+				(lastCard.getCardValue()==CardValue.SZINKEREO & clientCard.getCardColor()==lastColorRequest)|| // az előző színkérő
+				(lastPlayerDrawed==true & lastCard.getCardValue()==CardValue.HUZZNEGYET & clientCard.getCardColor()==lastColorRequest)// előző plussz4 es, de húztak elöttünk és még van színköt
 				
 				///||lastColorRequest==clientCard.getCardColor()
 				){//előző lap színe egyezik vagy ez is húzz kettőt volt
@@ -515,6 +529,9 @@ public class PlayerManagerThread extends Thread {
 			droppedCardInfoToOthers(playerThreads.get(tempId).getPlayer(),clientCard);
 			//továbblépés a következő játékosra, ő már kell tegyen lapot, így kérünk tőle
 			nextPlayer=getNextPlayerId();
+			
+			// lastColorRequest defaultra állítjuk
+			lastColorRequest = CardColor.FEKETE;
 			serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 					Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
 						Consts.HUZOTT,clientCard.getCardColorAsChar()+""});

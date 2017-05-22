@@ -126,9 +126,7 @@ public class PlayerManagerThread extends Thread {
 					sendFirstCards();
 				}
 			}else{//nevét már megadta, de lehet, hogy nem lehet még kezdeni
-				if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön
-					//debug kártyaszámok:
-					debugCardNums();
+				if(canPlay){//elméletileg mehet a játék, de még most sem biztos hogy ő jön					
 					//játék
 					if(player.getId()==nextPlayer){//ha ő jön
 						char firstChar=row.charAt(0);//na mit küld-kér.						
@@ -222,7 +220,9 @@ public class PlayerManagerThread extends Thread {
 						lastMessage=row;
 					}else{//nem ő jön
 						serverMessage(player, "Nem te következel, várj egy kicsit!");
-					}					
+					}	
+					//debug kártyaszámok:
+					debugCardNums();
 				}else{//még nem küldhet lapot
 					serverMessage(player, "Nem te jössz, még nem adta meg mindenki a nevét!");
 				}

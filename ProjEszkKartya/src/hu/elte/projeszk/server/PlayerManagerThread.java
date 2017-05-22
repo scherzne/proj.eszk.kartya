@@ -342,6 +342,13 @@ public class PlayerManagerThread extends Thread {
 		serverMessage(player, Consts.SEND_CARD+"1", new String[]{card.getCardAsString()});
 		lastPlayerDrawed=true;
 		player.increaseCardCount(1);
+		//javítás
+		nextPlayer=getNextPlayerId();
+		serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
+				Consts.REQUEST_CARD+"", new String[]{lastCard.getCardAsString(),
+					Consts.HUZOTT,Card.convertCardColorToCharacter(lastColorRequest)+""});
+		lastPlayerDrawed=true;
+		
 	}
 	/**
 	 * Húzz négyet kártyalap esetén a szerver üzenetei és a játékmenet

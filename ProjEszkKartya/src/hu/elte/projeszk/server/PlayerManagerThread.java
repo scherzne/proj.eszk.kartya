@@ -497,7 +497,8 @@ public class PlayerManagerThread extends Thread {
 		int tempId=nextPlayer;
 		if(lastCard.getCardColor()==clientCard.getCardColor() ||
 				lastCard.getCardValue()==CardValue.HUZZKETTOT
-				//||lastColorRequest==clientCard.getCardColor()
+				
+				///||lastColorRequest==clientCard.getCardColor()
 				){//előző lap színe egyezik vagy ez is húzz kettőt volt
 			nextPlayer=getNextPlayerId();//léptetés, ő fog kimaradni
 			//2 lap húzás

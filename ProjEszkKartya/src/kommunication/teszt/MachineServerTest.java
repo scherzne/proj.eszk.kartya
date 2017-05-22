@@ -16,6 +16,7 @@ final	String[] SimulationGamerName = {"GepiJatekos1","GepiJatekos2", "GepiJateko
             @Override
             public void run() {
                 try {
+                	  System.out.println("Indul a szerver!");
                     CardServer.main(null);
                 } catch (java.io.IOException e) {
                     System.err.println("Szerver oldali hiba." +e);

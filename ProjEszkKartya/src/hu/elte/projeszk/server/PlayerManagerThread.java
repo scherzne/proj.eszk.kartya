@@ -143,8 +143,13 @@ public class PlayerManagerThread extends Thread {
 								
 								//első string lesz a kártya, ezt elő kell állítani
 								//ezt el kell tenni, el lett dobva
-								Card clientCard=new Card(pars[1]);
-								
+								Card clientCard;
+								try{
+									clientCard=new Card(pars[1]);
+								}catch(Exception e){
+									serverMessage(player, "Hibás üzenet!");
+									return true;
+								}
 								//be kell mondania az uno-t ha csak két lap van a kezében!
 								if(player.getCardCount()==2){//itt még nem lett csükkentve a lapjai száma, azért ellenőrizzük így
 									if(!row.matches("(.*)"+Consts.UNO+"(.*)")){
@@ -216,6 +221,10 @@ public class PlayerManagerThread extends Thread {
 							case Consts.NO_CARD://nem tud rakni a játékos,
 									doNoCard(player);
 								break;
+							default:{
+								serverMessage(player, "Hibás üzenet!");
+								return true;
+							}
 						}
 						lastMessage=row;
 					}else{//nem ő jön

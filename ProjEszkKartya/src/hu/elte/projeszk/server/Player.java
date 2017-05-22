@@ -122,7 +122,7 @@ public class Player {
 	 * ezért bedobáskor csökkenteni kell
 	 */
 	public synchronized void decreaseCardCount(){
-		if(this.cardCount-1>0)
+		if(this.cardCount-1>=0)
 			this.cardCount--;
 	}
 	

@@ -20,6 +20,8 @@ public class CardServer {
 		server=new ServerSocket(Consts.PORT);
 		server.setSoTimeout(Consts.START_GAME_TIMEOUT*1000);
 		
+		System.out.println("Szerver elindult.");
+		
 		//játékos gyűjtő
 		ArrayList<Player> players=new ArrayList<>();
 		//managereket is begyűjtjük, hogy ne lógjanak a levegőben
@@ -63,6 +65,8 @@ public class CardServer {
 				Player player=new Player(socket, id);				
 				players.add(player);//átmeneti gyűjtőbe tesszük
 				player.write("Várakozás a többi játékosra");
+				
+				System.out.println("Csatlakozott egy játékos.");
 				
 			}catch (SocketTimeoutException e) {
 				System.out.println(e.getMessage());

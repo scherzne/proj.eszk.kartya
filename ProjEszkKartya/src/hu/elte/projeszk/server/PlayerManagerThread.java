@@ -53,7 +53,7 @@ public class PlayerManagerThread extends Thread {
 	/**
 	 * Üzenetkezeléshez: utolsó játékos által kért/bedobott szín
 	 */
-	private Card.CardColor lastColorRequest;
+	private Card.CardColor lastColorRequest =CardColor.FEKETE;
 	/**
 	 * Előre irány true, visszafelé irány a false
 	 */
@@ -101,6 +101,7 @@ public class PlayerManagerThread extends Thread {
 	 * @return
 	 */
 	public synchronized boolean readRow(Player player, String row){
+		
 		if(row!=null){
 			//első lépés: a játékos meg kell adja a nevét, addig nem mehet tovább a játék
 			//(nem kezdődhet el) amíg nincs mindenkinek neve
@@ -426,7 +427,9 @@ public class PlayerManagerThread extends Thread {
 	 */
 	protected boolean doKimaradsz(Player player,Card clientCard,String pars[]){
 		if(lastCard.getCardColor()==clientCard.getCardColor() ||
-				lastCard.getCardValue()==CardValue.KIMARADSZ){
+				lastCard.getCardValue()==CardValue.KIMARADSZ
+			//	||lastColorRequest==clientCard.getCardColor()
+				){
 					//tudjuk ki marad ki, és közöljük is vele
 					nextPlayer=getNextPlayerId();
 					//gépi játékosnak kellhet
@@ -458,7 +461,9 @@ public class PlayerManagerThread extends Thread {
 	 */
 	protected boolean doFordito(Player player,Card clientCard,String pars[]){
 		if(lastCard.getCardColor()==clientCard.getCardColor() ||
-				lastCard.getCardValue()==CardValue.FORDITTO){
+				lastCard.getCardValue()==CardValue.FORDITTO
+				//||lastColorRequest==clientCard.getCardColor()
+				){
 				//játékos irány fordítás, illetve új játékos kiválasztása											
 				switchDirection();
 				nextPlayer=getNextPlayerId();
@@ -491,7 +496,9 @@ public class PlayerManagerThread extends Thread {
 	protected boolean doHuzzKettot(Player player,Card clientCard,String pars[]){
 		int tempId=nextPlayer;
 		if(lastCard.getCardColor()==clientCard.getCardColor() ||
-				lastCard.getCardValue()==CardValue.HUZZKETTOT){//előző lap színe egyezik vagy ez is húzz kettőt volt
+				lastCard.getCardValue()==CardValue.HUZZKETTOT
+				//||lastColorRequest==clientCard.getCardColor()
+				){//előző lap színe egyezik vagy ez is húzz kettőt volt
 			nextPlayer=getNextPlayerId();//léptetés, ő fog kimaradni
 			//2 lap húzás
 			Card cards[]=drawCardsFromPack(2);

@@ -81,11 +81,11 @@ public  ClientMachine(String name){
 	  	          try {
 					answer =  switchAtInputCharacter(br);
 	  	          
-	  	          	} catch (IOException e) {
+	  	          	} catch (NullPointerException e) {
 					// TODO Auto-generated catch block
 	  	          	System.out.println("A szerver bontotta a kapcsolatot.");
 	  	          	gameRunning= false;
-					e.printStackTrace();
+				//	e.printStackTrace();
 				}
 	  	         
 	  	         

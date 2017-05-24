@@ -43,6 +43,7 @@ public  ClientMachine(String name){
 	        
 	        try {
 				client = new Socket(host, portNumber);
+	/// Kikommentelve, ha bent marad nem fut le a teszt
 	//		} catch (UnknownHostException e) {
 	//			System.out.println("UnknownHostException, ismeretlen host "+ e);
 	//			e.printStackTrace();
@@ -312,27 +313,12 @@ protected void messageBeginWithCharA(String message, BufferedReader br) throws I
 	 
 	 System.out.println(message);
 	 System.out.println("Kaptunk " +splitted[0].charAt(1)+"db kártyát:");
-
-	/*for (int i =1; i < splitted[0].charAt(1); i++){
-		
-		System.out.println(splitted[0].charAt(1));
-		System.out.println(i);
-	
-		addCardToHand(new Card(Card.convertCharacterToCardColor(splitted[i].charAt(0)), Card.convertCharacterToCardValue(splitted[i].charAt(1))));
-		System.out.println(hand.get(hand.size()-1).getCardColor()+ " " +hand.get(hand.size()-1).getCardValue());
-		
-		if (i == (int) (splitted[0].charAt(1))){
-			
-			System.out.println("belepett"); 
-			break;}
-	}/*/
-
 	 
 	for (String s:  splitted){
 		
-		//if ((s.charAt(0))=='A' ){
+		
 		if (((s.charAt(0))+"").equals(Consts.SEND_CARD+"") ){
-		//	System.out.println("Nem kártya");
+		
 			
 		}else{
 			

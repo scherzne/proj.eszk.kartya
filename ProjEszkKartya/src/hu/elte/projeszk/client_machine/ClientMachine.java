@@ -278,10 +278,10 @@ String unoMessage="";
 		
 		Random rand = new Random();
 		int   random = rand.nextInt(3);
-		   
+		//int   random = rand.nextInt(1);
 			switch (random){
 			
-			case '0': unoMessage=","+Consts.UNO;  
+			case 0: unoMessage=","+Consts.UNO;  
 			
 			System.out.println("UNO-t mond a gép!");
 			

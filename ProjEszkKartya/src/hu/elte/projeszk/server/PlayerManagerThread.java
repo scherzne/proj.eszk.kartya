@@ -204,6 +204,8 @@ public class PlayerManagerThread extends Thread {
 								}
 								
 								lastPlayerDrawed=false;
+								
+							
 								break;
 							case Consts.SEND_COLOR://ha színt kért, ezt a színt kell a köv-nek rakni
 								//ez csak akkor fordulhat elő, ha az előző kártya színkérő joker
@@ -260,7 +262,6 @@ public class PlayerManagerThread extends Thread {
 		player.decreaseCardCount();
 		droppedCards.add(card);
 		lastCard=card;
-		lastColorRequest=CardColor.FEKETE;
 		
 		//nyertes ellenőrzése: ha nulla lapja maradt bedobás után
 		if(player.getCardCount()<=0){
@@ -325,8 +326,8 @@ public class PlayerManagerThread extends Thread {
 		//a kezdő játékos kapja meg így is, hogy ő tudjon jönni
 		serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 				Consts.REQUEST_CARD+"", new String[]{card.getCardAsString(),
-					Consts.NEM_HUZOTT,card.getCardColorAsChar()+""});
-		
+					Consts.NEM_HUZOTT,
+					Card.convertCardColorToCharacter(CardColor.FEKETE)+""});
 		//kezdő játékos nem infóként kapja
 		for(int i=1;i<players.size();i++){
 			//módosítva, egy újabb üzenet típussal kiegészítve
@@ -412,10 +413,12 @@ public class PlayerManagerThread extends Thread {
 		//és miért
 		droppedCardInfoToOthers(player,clientCard);
 		//a lapot is küldjük
+		lastColorRequest= CardColor.FEKETE;
+		
 		serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 				Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
-					Consts.NEM_HUZOTT,clientCard.getCardColorAsChar()+""});
-		
+					Consts.NEM_HUZOTT,
+					Card.convertCardColorToCharacter(lastColorRequest)+""});
 		return true;
 	}
 	
@@ -449,8 +452,8 @@ public class PlayerManagerThread extends Thread {
 					//a lapot is küldjük
 					serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 							Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
-								Consts.NEM_HUZOTT,clientCard.getCardColorAsChar()+""});
-					
+								Consts.NEM_HUZOTT,
+					Card.convertCardColorToCharacter(lastColorRequest)+""});
 					return true;
 				}else{
 					serverMessage(player, "Ezt a lapot nem dobhatod be!");
@@ -488,8 +491,8 @@ public class PlayerManagerThread extends Thread {
 				lastColorRequest=CardColor.FEKETE;
 				serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 						Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
-							Consts.NEM_HUZOTT,clientCard.getCardColorAsChar()+""});
-				
+							Consts.NEM_HUZOTT,
+								Card.convertCardColorToCharacter(lastColorRequest)+""});
 				return true;
 			}else{
 				serverMessage(player, "Ezt a lapot nem dobhatod be!");
@@ -535,8 +538,8 @@ public class PlayerManagerThread extends Thread {
 			lastColorRequest = CardColor.FEKETE;
 			serverMessage(playerThreads.get(nextPlayer).getPlayer(), 
 					Consts.REQUEST_CARD+"", new String[]{clientCard.getCardAsString(),
-						Consts.HUZOTT,clientCard.getCardColorAsChar()+""});
-			
+						Consts.HUZOTT,
+						Card.convertCardColorToCharacter(lastColorRequest)+""});
 			lastPlayerDrawed=true;
 			
 			return true;

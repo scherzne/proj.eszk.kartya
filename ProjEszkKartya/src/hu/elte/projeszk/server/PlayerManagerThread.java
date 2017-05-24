@@ -260,6 +260,7 @@ public class PlayerManagerThread extends Thread {
 		player.decreaseCardCount();
 		droppedCards.add(card);
 		lastCard=card;
+		lastColorRequest=CardColor.FEKETE;
 		
 		//nyertes ellenőrzése: ha nulla lapja maradt bedobás után
 		if(player.getCardCount()<=0){

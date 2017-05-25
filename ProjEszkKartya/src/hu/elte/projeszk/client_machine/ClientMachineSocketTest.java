@@ -1,13 +1,13 @@
 package hu.elte.projeszk.client_machine;
 
-import static org.junit.Assert.assertEquals;
-
-
 import org.mockito.Mockito;
 
 import hu.elte.projeszk.Card;
 import hu.elte.projeszk.Card.CardColor;
 import hu.elte.projeszk.Card.CardValue;
+import junit.framework.AssertionFailedError;
+
+import static org.junit.Assert.*;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -62,12 +62,19 @@ public class ClientMachineSocketTest {
 	    		  
 	    	  }
 	    	  
+	    	  @Override
+	    	  protected String randomizeUno(){
+	    		  
+	    		  return "";
+	    		  
+	    	  }
+	    	  
 	      };
 	      clientMachineTester.setSocket(socket);
 	      
-	      setSocketInputStreamMocking("S");
+	      setSocketInputStreamMocking("C");
 	
-	      assertEquals("When inputstrewam is 'S', outputstream should be K ","K", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      assertEquals("When inputstrewam is 'C', outputstream should be K ","S,K", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
  
 	      
 	    } catch (IOException e) {
@@ -188,7 +195,16 @@ public class ClientMachineSocketTest {
 	      Mockito.when(socket.getInputStream()).thenReturn(inputStream);
      
 	      
-	      clientMachineTester = new ClientMachine("JatekosNev");
+	      clientMachineTester = new ClientMachine("JatekosNev"){
+	    	  
+	    	  
+	    	  @Override
+	    	  protected String randomizeUno(){
+	    		  
+	    		  return "";
+	    		  
+	    	  }
+	      };
 	      clientMachineTester.setSocket(socket);
 	      
 	  
@@ -242,7 +258,17 @@ public class ClientMachineSocketTest {
 	      Mockito.when(socket.getInputStream()).thenReturn(inputStream);
      
 	      
-	      clientMachineTester = new ClientMachine("JatekosNev");
+	      clientMachineTester = new ClientMachine("JatekosNev"){
+	    	  
+	    	 
+	    	  @Override
+		    	  protected String randomizeUno(){
+    		  
+    		  return "";
+    		  
+    	  }
+	   
+	      };
 	      clientMachineTester.setSocket(socket);
 	      
 	      
@@ -298,7 +324,17 @@ public class ClientMachineSocketTest {
 	      Mockito.when(socket.getInputStream()).thenReturn(inputStream);
      
 	      
-	      clientMachineTester = new ClientMachine("JatekosNev");
+	      clientMachineTester = new ClientMachine("JatekosNev"){
+	    	  
+	    	 
+	    	  @Override
+		    	  protected String randomizeUno(){
+    		  
+    		  return "";
+    		  
+    	  }
+	   
+	      };
 	      clientMachineTester.setSocket(socket);
 	      
 	  
@@ -314,26 +350,26 @@ public class ClientMachineSocketTest {
 	      
 	      setSocketInputStreamMocking("L,PH,I,P");
 	      assertEquals("When inputstream is 'L,S6,I,P', the mmessage should be PIROS HUZZKETTOT ","A,PH", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
-		  
+		 
 	      setSocketInputStreamMocking("L,PK,I,P");
-	      assertEquals("When inputstream is 'L,S6,I,P', (PIROS KIMARADSZ)  the mmessage should be ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      assertEquals("When inputstream is 'L,S6,I,P', (PIROS KIMARADSZ)  the message should be ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 		  
 	   
 	      setSocketInputStreamMocking("A1,FS");
 	      clientMachineTester.switchAtInputCharacter(br);
 	      
 	      setSocketInputStreamMocking("L,Z5,I,P");
-	      assertEquals("When inputstream is 'L,Z5,I,P', (ZOLD OT)  the mmessage should be FEKETE SZINKERO ","A,FS", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      assertEquals("When inputstream is 'L,Z5,I,P', (ZOLD OT)  the message should be FEKETE SZINKERO ","A,FS", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 		
 	      setSocketInputStreamMocking("A2,FS,FN");
 	      clientMachineTester.switchAtInputCharacter(br);
 	      
 	      
 	      setSocketInputStreamMocking("L,Z5,I,P");
-	      assertEquals("When inputstream is 'L,Z5,I,P', (ZOLD OT)  the mmessage should be FEKETE SZINKERO ","A,FS", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      assertEquals("When inputstream is 'L,Z5,I,P', (ZOLD OT)  the message should be FEKETE SZINKERO ","A,FS", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 		
 	      setSocketInputStreamMocking("L,Z5,I,P");
-	      assertEquals("When inputstream is 'L,Z5,I,P', (ZOLD OT)  the mmessage should be FEKETE HUZZNEGYET ","A,FN", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      assertEquals("When inputstream is 'L,Z5,I,P', (ZOLD OT)  the message should be FEKETE HUZZNEGYET ","A,FN", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 		
 	      
 	    } catch (IOException e) {
@@ -358,7 +394,17 @@ public class ClientMachineSocketTest {
 	      Mockito.when(socket.getInputStream()).thenReturn(inputStream);
      
 	      
-	      clientMachineTester = new ClientMachine("JatekosNev");
+	      clientMachineTester = new ClientMachine("JatekosNev"){
+	    	  
+	    	 
+	    	  @Override
+		    	  protected String randomizeUno(){
+    		  
+    		  return "";
+    		  
+    	  }
+	   
+	      };
 	      clientMachineTester.setSocket(socket);
 	      
 	   
@@ -400,10 +446,63 @@ public class ClientMachineSocketTest {
 	     
 	      
 	      setSocketInputStreamMocking("L,FN,N,K");
-	      assertEquals("When inputstream is 'L,FN,N,K',   the mmessage should be FEKETE HUZZNEGYET ","A,FN", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      assertEquals("When inputstream is 'L,FN,N,K',   the message should be FEKETE HUZZNEGYET ","A,FN", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 		
 	      setSocketInputStreamMocking("L,FN,N,P");
-	      assertEquals("When inputstream is 'L,FN,N,P',  the mmessage should be null ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+	      assertEquals("When inputstream is 'L,FN,N,P',  the message should be null ","N", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+		
+	      
+	    } catch (IOException e) {
+	      e.printStackTrace();
+	    }
+		
+		
+	}
+	@Test
+	public void testingClientSayingCardAndUno() {
+	// Szinválasztás tesztelése
+		
+	    encoding = "UTF-8";
+	    
+	    try {
+	      Socket socket = Mockito.mock(Socket.class);
+
+	      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+	      Mockito.when(socket.getOutputStream()).thenReturn(byteArrayOutputStream);
+   
+	      Mockito.when(socket.getInputStream()).thenReturn(inputStream);
+     
+	      
+	      clientMachineTester = new ClientMachine("JatekosNev"){
+	    	  
+	    	 
+	    	  @Override
+	    	  protected String randomizeUno(){
+	    		  
+	    		  return ",UNO";
+	    		  
+	    	  }
+	    	  
+	      };
+	      clientMachineTester.setSocket(socket);
+	      
+	      setSocketInputStreamMocking("A3,K6,KK,P0");
+	      clientMachineTester.switchAtInputCharacter(br);
+	      
+	      setSocketInputStreamMocking("L,K7,N,F");
+	      assertEquals("When inputstream is 'L,K7,N,F',   the message should be KEK HAT ","A,K6", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+		
+	      setSocketInputStreamMocking("L,K7,N,F");
+	      assertEquals("When inputstream is 'L,K7,N,F',   the mmessage should be KEK KIMARADSZ and UNO ","A,KK,UNO", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+		
+
+	      setSocketInputStreamMocking("L,P7,N,F");
+	      assertEquals("When inputstream is 'L,P7,N,F',   the message should be PIROS HET ","A,P0", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
+		
+	      setSocketInputStreamMocking("A2,Z0,Z5");
+	      clientMachineTester.switchAtInputCharacter(br);
+	      setSocketInputStreamMocking("L,Z7,N,F");
+	      assertEquals("When inputstream is 'L,Z7,N,F',   the message should be Z0 HAT and UNO ","A,Z0,UNO", clientMachineTester.switchAtInputCharacter(br)); // message sent and got a response
 		
 	      
 	    } catch (IOException e) {

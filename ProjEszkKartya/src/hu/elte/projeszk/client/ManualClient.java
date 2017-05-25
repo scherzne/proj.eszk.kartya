@@ -182,11 +182,11 @@ public class ManualClient {
 						}
 						else {
 							
-							choosenCardAsString = choosenCardString;
+							choosenCardAsString = choosenCardString;// beolvasott sort eltároljuk
 							choosenCard = getCardFromString(choosenCardString);
 							
 							if (checkIfCardInHand(choosenCard) == -1) {
-								System.out.println("A kivalasztott kartya nincs a kezedben!");
+								System.out.println("A kivalasztott kartya nincs a kezedben!" + choosenCard.getCardAsString());
 							}
 	
 							if (!checkIfCardIsAppropriate(choosenCard, card)) {
@@ -197,15 +197,15 @@ public class ManualClient {
 					} while (checkIfCardInHand(choosenCard) == -1 && checkIfCardIsAppropriate(choosenCard, card)
 							&& isFalseN);
 
-					if (hasChoosenCard) {
+					//if (hasChoosenCard) {
 						
 						//Szerver, hogy kezeli UNO es kartya egyuttes kuldeset?
 						if (cardsInHand.size() == 2) {
 							pw.println("UNO");
 							
 						}
-						pw.println(choosenCardAsString);
-					}
+						pw.println("A,"+choosenCardAsString);
+					//}
 				}
 
 				if (serverMessageString.charAt(0) == 'S') {
@@ -253,11 +253,14 @@ public class ManualClient {
 	 */
 	
 	private int checkIfCardInHand(Card card) {
-		int i = 0;
+		int i;
 		boolean found=false;
-		for (; i < cardsInHand.size() && !found; i++) {
-			if (cardsInHand.get(i).equals(card)) {
+		for (i=0; i < cardsInHand.size() && !found; i++) {
+			//if (cardsInHand.get(i).equals(card))
+			if (cardsInHand.get(i).getCardAsString().equals(card.getCardAsString()))
+			{
 				found = true;
+				//System.out.println("van ilyen a kezedben");
 			}
 		}
 

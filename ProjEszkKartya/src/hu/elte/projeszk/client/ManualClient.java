@@ -231,9 +231,9 @@ public class ManualClient {
 
 					do {
 						choosenColor = stdinReader.readLine().charAt(0);
-					} while (choosenColor != 'P' && choosenColor != 'S' && choosenColor != 'Z' && choosenColor != 'K');
+					} while (choosenColor != 'P' || choosenColor != 'S' || choosenColor != 'Z' || choosenColor != 'K');
 
-					pw.println(choosenColor);
+					pw.println(Consts.SEND_COLOR+","+choosenColor);
 				}
 
 			} while (!hasEnded);

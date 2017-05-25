@@ -46,7 +46,7 @@ public class ManualClient {
 	private ArrayList<Card> cardsInHand;
 	private boolean hasEnded;
 	private boolean lastPlayerDrawed;
-	private CardColor choosenCardColor;
+	private CardColor choosenColor;
 	
 	Socket socket = null;
 
@@ -92,7 +92,7 @@ public class ManualClient {
 			
 			
 			serverMessageString = br.readLine();
-			System.out.print("Emberi jatekos _____ A szerver uzenete: "+ serverMessageString);
+			System.out.println("Emberi jatekos _____ A szerver uzenete: "+ serverMessageString);
 			clientName = stdinReader.readLine();
 			pw.println(clientName);
 		
@@ -105,7 +105,7 @@ public class ManualClient {
 				String stringToWriteToMonitor = clientName + ": ";
 
 				serverMessageString = br.readLine();
-				System.out.print("Emberi jatekos _____ A szerver uzenete: "+ serverMessageString);
+				System.out.println("Emberi jatekos _____ A szerver uzenete: "+ serverMessageString);
 					
 				/**
 				 * A szerver lapokat ad, A karakter utan szamertek, amennyi lapot kapunk
@@ -154,7 +154,7 @@ public class ManualClient {
 					lastPlayerDrawed = true;	
 					}else {lastPlayerDrawed = false;}
 					
-					choosenCardColor = Card.convertCharacterToCardColor(messages.get(3).charAt(0));
+					choosenColor = Card.convertCharacterToCardColor(messages.get(3).charAt(0));
 					
 							
 					Card card = new Card(cColor, cValue);
@@ -219,7 +219,7 @@ public class ManualClient {
 									choosingCardRunning=true;
 								}
 		
-								if (!checkIfCardIsAppropriate(choosenCard, card,lastPlayerDrawed, choosenCardColor )) {
+								if (!checkIfCardIsAppropriate(choosenCard, card,lastPlayerDrawed, choosenColor )) {
 									System.out.println("A kivalasztott kartya nem megfelelo!");
 									choosingCardRunning=true;
 								}
@@ -269,26 +269,56 @@ public class ManualClient {
 	 * @param  card Ellenorzendo kartya
 	 * @return    	A kivalasztott kartya megfelelo-e
 	 */
-	private boolean checkIfCardIsAppropriate(Card choosenCard, Card card, boolean lastPlayerDrawed, CardColor choosenCardColor) {
-		
-		System.out.println("szab vége:___"+lastPlayerDrawed+ " "+choosenCardColor  );
+	private boolean checkIfCardIsAppropriate(Card choosenCard, Card topCard, boolean lastPlayerDrawed, CardColor choosenColor) {
 		
 		
-		if (choosenCard.getCardColor() == card.getCardColor() || choosenCard.getCardValue() == card.getCardValue()) {
 		
+		System.out.println("szab vége:___"+lastPlayerDrawed+ " "+choosenColor  );
+		
+		if (lastPlayerDrawed){// huztak
 			
+					if (choosenColor.equals(CardColor.FEKETE)){// nincs színkényszer
+						if (choosenCard.getCardColor() == topCard.getCardColor() || choosenCard.getCardValue() == topCard.getCardValue() || choosenCard.getCardColor().equals(CardColor.FEKETE)) {
+						
+						return true;
+						
+						}else {return false;}
+				
+					}else{// van színkényszer
+						if (choosenCard.getCardColor() == choosenColor || choosenCard.getCardColor().equals(CardColor.FEKETE)) {
+							
+							return true;
+							
+						}else {return false;}
+						
+					}	
 			
+		 // nem huztak
+		}else{
 			
+			if (topCard.getCardValue().equals(CardValue.HUZZKETTOT)){
+				
+				if  (choosenCard.getCardValue().equals(CardValue.HUZZKETTOT) |  choosenCard.getCardValue().equals(CardValue.HUZZNEGYET)){
+					return true;
+				}else {return false;}
 			
+			}else if (topCard.getCardValue().equals(CardValue.HUZZNEGYET)){
+				
+				if  (choosenCard.getCardValue().equals(CardValue.HUZZNEGYET)){return true;}else{return false;}
 			
+			}else if (topCard.getCardValue().equals(CardValue.SZINKEREO)){
+				
+				if  (choosenCard.getCardColor().equals(choosenColor)){return true;}else{return false;}
+				
 			
-			
-			
-			return true;
+			}else if (choosenCard.getCardColor() == topCard.getCardColor() || choosenCard.getCardValue() == topCard.getCardValue() || choosenCard.getCardColor().equals(CardColor.FEKETE)) {
+			 return true;
+			}else {return false;}
+	
 		}
-		return false;
-	}
 
+	
+}
 
 	/**
 	 * Annak vizsgalata, hogy a valasztott kartya tenylegesen a kezben van-e

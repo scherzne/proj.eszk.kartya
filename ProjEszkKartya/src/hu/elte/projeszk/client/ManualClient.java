@@ -166,7 +166,7 @@ public class ManualClient {
 						choosingCardRunning=true;
 					//	hasChoosenCard = false;
 					//	isFalseN = false;
-						System.out.print("Te lapod: ");
+						System.out.print("Kerek 1 lapot: ");
 						String choosenCardString = kbScanner.nextLine();
 						if (choosenCardString.equals("H")) {	
 							System.out.println("Lapok kiirása:");
@@ -193,27 +193,33 @@ public class ManualClient {
 							choosenCardAsString = choosenCardString;// beolvasott sort eltároljuk
 							choosenCard = getCardFromString(choosenCardAsString);
 							
-							System.out.println("valasztott kartya"+choosenCard.getCardColor() + ""+  choosenCard.getCardValue());
-							
 							choosingCardRunning = false;
+							if (choosenCard==null){
+								System.out.println("Hibas kartyabevitel");
+								choosingCardRunning = true;
+								
+							}else{
+								System.out.println("valasztott kartya"+choosenCard.getCardColor() + ""+  choosenCard.getCardValue());
 							
-							if (checkIfCardInHand(choosenCard) == -1) {
-								System.out.println("A kivalasztott kartya nincs a kezedben!" + choosenCard.getCardAsString());
 								
+								if (checkIfCardInHand(choosenCard) == -1) {
+									System.out.println("A kivalasztott kartya nincs a kezedben!" + choosenCard.getCardAsString());
+									
+									
+									choosingCardRunning=true;
+								}
+		
+								if (!checkIfCardIsAppropriate(choosenCard, card)) {
+									System.out.println("A kivalasztott kartya nem megfelelo!");
+									choosingCardRunning=true;
+								}
 								
-								choosingCardRunning=true;
-							}
-	
-							if (!checkIfCardIsAppropriate(choosenCard, card)) {
-								System.out.println("A kivalasztott kartya nem megfelelo!");
-								choosingCardRunning=true;
-							}
-							
-							if (choosingCardRunning == false){
-								//eltávolitás a kézből
-								cardsInHand.remove(checkIfCardInHand(choosenCard)-1);
-								pw.println("A,"+choosenCardAsString);
-								
+								if (choosingCardRunning == false){
+									//eltávolitás a kézből
+									cardsInHand.remove(checkIfCardInHand(choosenCard)-1);
+									pw.println("A,"+choosenCardAsString);
+									
+								}
 							}
 						}
 
@@ -313,6 +319,8 @@ public class ManualClient {
 	private Card getCardFromString(String card) {
 		CardColor choosenCardColor = Card.convertCharacterToCardColor(card.charAt(0));
 		CardValue choosenCardValue = Card.convertCharacterToCardValue(card.charAt(1));
+		
+		if (choosenCardColor== null | choosenCardValue==null){return null;}
 		
 		Card choosenCard = new Card(choosenCardColor, choosenCardValue);
 		return choosenCard;

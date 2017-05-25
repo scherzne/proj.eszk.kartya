@@ -43,37 +43,15 @@ public  ClientMachine(String name){
 	        
 	        try {
 				client = new Socket(host, portNumber);
-	/// Kikommentelve, ha bent marad nem fut le a teszt
-	//		} catch (UnknownHostException e) {
-	//			System.out.println("UnknownHostException, ismeretlen host "+ e);
-	//			e.printStackTrace();
-	//		} catch (IOException e) {
-	//			System.out.println("IOException t "+ e);
-		//		e.printStackTrace();
-		//	}
+
 	    	System.out.println("A gépi kliens letrejott, es csatlakozott a szerverhez.");
-		    
-	    
 	    	PrintWriter pw= null;
-			//try {
-				
-				pw = new PrintWriter(client.getOutputStream());
-				
-		//	} catch (IOException e) {
-		//		System.out.println("A Hiba  a printwriter léterhozásakor.");
-	//			e.printStackTrace();
-				
-	//		}
+			pw = new PrintWriter(client.getOutputStream());
+	
 			
 			BufferedReader  br = null;
-		//	try {
-			     br = new BufferedReader(new InputStreamReader(client.getInputStream()));
-					
-		//	} catch (IOException e) {
-		//		System.out.println("A Hiba  a BufferedReader léterhozásakor.");
-		//		e.printStackTrace();
-				
-		//	}
+			br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+	
 	      
 	      
 	        do{
@@ -86,7 +64,7 @@ public  ClientMachine(String name){
 					// TODO Auto-generated catch block
 	  	          	System.out.println("A szerver bontotta a kapcsolatot.");
 	  	          	gameRunning= false;
-				//	e.printStackTrace();
+	  	          	//	e.printStackTrace();
 				}
 	  	         
 	  	         
@@ -101,10 +79,10 @@ public  ClientMachine(String name){
 	        }while(gameRunning);
 	        
 	        
-	      //  try {
+	     
 				client.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			
 				e.printStackTrace();
 			}
 	        System.out.println("A kliens leallt.");
@@ -118,7 +96,6 @@ protected String switchAtInputCharacter( BufferedReader br ) throws IOException{
 	CardColor declaredColorByMachine;
 	Card otherPlayersCard;
 	String answer=null;
-	
 	String message= br.readLine();
 	
 

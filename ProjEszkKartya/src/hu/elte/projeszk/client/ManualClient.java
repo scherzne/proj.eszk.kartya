@@ -86,44 +86,52 @@ public class ManualClient {
 		 * nem kapunk a szervertol
 		 */
 
-		while (!serverMessageString.equals("ok")) {
-			System.out.print("Nev: ");
-
+	//	while (!serverMessageString.equals("ok")) {// nev bekerese
+			
+			
+			serverMessageString = br.readLine();
+			System.out.print("Emberi jatekos _____ A szerver uzenete: "+ serverMessageString);
 			clientName = stdinReader.readLine();
 			pw.println(clientName);
-			serverMessageString = br.readLine();
-		}
+		
+	//	}
 
-		System.out.println("Sikeres csatlakozas.");
+		System.out.println("Emberi jatekos _____Sikeres csatlakozas.");
 
 		try {
 			do {
 				String stringToWriteToMonitor = clientName + ": ";
 
 				serverMessageString = br.readLine();
-
+				System.out.print("Emberi jatekos _____ A szerver uzenete: "+ serverMessageString);
+					
 				/**
 				 * A szerver lapokat ad, A karakter utan szamertek, amennyi lapot kapunk
 				 *  Majd lapok "konvertalasa" es kezhez adasa
 				 */
-				if (serverMessageString.charAt(0) == 'A') {
-
-					int numberOfSendedCards = Character.getNumericValue(serverMessageString.charAt(1));
-					for (int i = 0; i < numberOfSendedCards; i++) {
-						serverMessageString = br.readLine();
-						List<String> messages = new ArrayList<String>();
-						messages = Arrays.asList(serverMessageString.split(","));
-
-						CardColor cColor = Card.convertCharacterToCardColor(messages.get(1).charAt(0));
-						CardValue cValue = Card.convertCharacterToCardValue(messages.get(1).charAt(1));
-						
-						cardsInHand.add(new Card(cColor, cValue));
-						System.out.println("Lapot kaptal: " + Card.convertCardColorToCharacter(cColor)
+				if (serverMessageString.charAt(0) == 'A') {			
+					
+					 String[] splitted = serverMessageString.split(",");
+		 
+						for (String s:  splitted){
+							
+							
+							if (((s.charAt(0))+"").equals(Consts.SEND_CARD+"") ){
+							
+								
+							}else{
+								
+								CardColor cColor = Card.convertCharacterToCardColor(s.charAt(0));
+								CardValue cValue = Card.convertCharacterToCardValue(s.charAt(1));
+							
+								cardsInHand.add(new Card(cColor, cValue));
+								System.out.println("Emberi JAtekos_Lapot kaptal: " + Card.convertCardColorToCharacter(cColor)
 								+ Card.convertCardValueToCharacter(cValue));
 
-					}
+				
+							}
 				}
-
+				}			
 				/**
 				 * Szerver lapot ker vesszokkel elvalasztott sztring
 				 *  2. resz: lap mindig az elozoleg eldobott lap

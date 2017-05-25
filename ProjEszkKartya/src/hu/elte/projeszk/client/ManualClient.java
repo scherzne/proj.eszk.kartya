@@ -242,14 +242,23 @@ public class ManualClient {
 					//}
 				}
 
-				if (serverMessageString.charAt(0) == 'S') {
-					char choosenColor = ' ';
-
+				if (serverMessageString.charAt(0) == 'C') {
+					String choosenColor = " ";
+					boolean colorChoose = true;
+					
 					do {
-						choosenColor = stdinReader.readLine().charAt(0);
-					} while (choosenColor != 'P' || choosenColor != 'S' || choosenColor != 'Z' || choosenColor != 'K');
-
-					pw.println(Consts.SEND_COLOR+","+choosenColor);
+						System.out.println("Kerünk egy színt!(P,S,Z,K)");
+						choosenColor = stdinReader.readLine();
+						if(choosenColor.charAt(0) == 'P' | choosenColor.charAt(0) == 'S' | choosenColor.charAt(0) == 'Z' | choosenColor.charAt(0) == 'K'){
+							
+							 colorChoose = false;
+							
+						}
+						
+						
+					} while //(choosenColor.charAt(0) != 'P' | choosenColor.charAt(0) != 'S' | choosenColor.charAt(0) != 'Z' | choosenColor.charAt(0) != 'K');
+							(colorChoose);
+					pw.println(Consts.SEND_COLOR+","+choosenColor.charAt(0));
 				}
 
 			} while (!hasEnded);

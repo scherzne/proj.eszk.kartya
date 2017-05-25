@@ -117,7 +117,8 @@ public class ManualClient {
 							
 							
 							if (((s.charAt(0))+"").equals(Consts.SEND_CARD+"") ){
-							
+								System.out.println("Emberi JAtekos_Lapot kaptal: " + s.charAt(1)+"darabot");
+								
 								
 							}else{
 								

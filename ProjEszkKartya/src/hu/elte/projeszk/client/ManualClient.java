@@ -45,7 +45,9 @@ public class ManualClient {
 	 */
 	private ArrayList<Card> cardsInHand;
 	private boolean hasEnded;
-
+	private boolean lastPlayerDrawed;
+	private CardColor choosenCardColor;
+	
 	Socket socket = null;
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
@@ -147,6 +149,14 @@ public class ManualClient {
 					CardColor cColor = Card.convertCharacterToCardColor(messages.get(1).charAt(0));
 					CardValue cValue = Card.convertCharacterToCardValue(messages.get(1).charAt(1));
 
+					if (messages.get(2).charAt(0)=='H'){
+						
+					lastPlayerDrawed = true;	
+					}else {lastPlayerDrawed = false;}
+					
+					choosenCardColor = Card.convertCharacterToCardColor(messages.get(3).charAt(0));
+					
+							
 					Card card = new Card(cColor, cValue);
 
 					System.out.println("Lap, amire tenni kell: " + Card.convertCardColorToCharacter(cColor)
@@ -209,7 +219,7 @@ public class ManualClient {
 									choosingCardRunning=true;
 								}
 		
-								if (!checkIfCardIsAppropriate(choosenCard, card)) {
+								if (!checkIfCardIsAppropriate(choosenCard, card,lastPlayerDrawed, choosenCardColor )) {
 									System.out.println("A kivalasztott kartya nem megfelelo!");
 									choosingCardRunning=true;
 								}
@@ -259,8 +269,21 @@ public class ManualClient {
 	 * @param  card Ellenorzendo kartya
 	 * @return    	A kivalasztott kartya megfelelo-e
 	 */
-	private boolean checkIfCardIsAppropriate(Card choosenCard, Card card) {
+	private boolean checkIfCardIsAppropriate(Card choosenCard, Card card, boolean lastPlayerDrawed, CardColor choosenCardColor) {
+		
+		System.out.println("szab vége:___"+lastPlayerDrawed+ " "+choosenCardColor  );
+		
+		
 		if (choosenCard.getCardColor() == card.getCardColor() || choosenCard.getCardValue() == card.getCardValue()) {
+		
+			
+			
+			
+			
+			
+			
+			
+			
 			return true;
 		}
 		return false;

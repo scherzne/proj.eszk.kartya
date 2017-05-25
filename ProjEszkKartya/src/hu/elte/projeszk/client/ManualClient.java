@@ -159,18 +159,19 @@ public class ManualClient {
 					 * ha igen, es megfelelo volt,
 					 * elkuldjuk a megfeleo stringet
 					 */
-					boolean hasChoosenCard = false;
-					
-					boolean isFalseN = false;
+				//	boolean hasChoosenCard = false;
+					boolean choosingCard;
+				//	boolean isFalseN = false;
 					do {
-						hasChoosenCard = false;
-						isFalseN = false;
+						choosingCard=true;
+					//	hasChoosenCard = false;
+					//	isFalseN = false;
 						System.out.print("Te lapod: ");
 						String choosenCardString = kbScanner.nextLine();
 
 						// Nincs kartya, nem tud tenni
 						if (choosenCardString.equals("N")) {
-							if (!checkIfAppropriateCardInHand(cColor, cValue)) {
+						/*	if (!checkIfAppropriateCardInHand(cColor, cValue)) {
 								pw.println("N");
 								String newCardString = br.readLine();
 								Card newCard = Card.parseCardFromString(newCardString);
@@ -178,33 +179,41 @@ public class ManualClient {
 							} else {
 								System.out.println("Van kartya nalad, ami megfelelo!");
 								isFalseN = true;
-							}
+							}*/
+							choosingCard = false;
+							pw.println("N");
 						}
 						else {
 							
 							choosenCardAsString = choosenCardString;// beolvasott sort eltároljuk
 							choosenCard = getCardFromString(choosenCardString);
 							
+							choosingCard = false;
+							
 							if (checkIfCardInHand(choosenCard) == -1) {
 								System.out.println("A kivalasztott kartya nincs a kezedben!" + choosenCard.getCardAsString());
+								choosingCard=true;
 							}
 	
 							if (!checkIfCardIsAppropriate(choosenCard, card)) {
 								System.out.println("A kivalasztott kartya nem megfelelo!");
+								choosingCard=true;
+							}
+							
+							if (choosingCard== false){
+								
+								
+								pw.println("A,"+choosenCardAsString);
+								
 							}
 						}
 
-					} while (checkIfCardInHand(choosenCard) == -1 && checkIfCardIsAppropriate(choosenCard, card)
-							&& isFalseN);
-
+					} while ( choosingCard );
+					
 					//if (hasChoosenCard) {
 						
 						//Szerver, hogy kezeli UNO es kartya egyuttes kuldeset?
-						if (cardsInHand.size() == 2) {
-							pw.println("UNO");
-							
-						}
-						pw.println("A,"+choosenCardAsString);
+						
 					//}
 				}
 
@@ -254,7 +263,9 @@ public class ManualClient {
 	
 	private int checkIfCardInHand(Card card) {
 		int i;
+		
 		boolean found=false;
+		
 		for (i=0; i < cardsInHand.size() && !found; i++) {
 			//if (cardsInHand.get(i).equals(card))
 			if (cardsInHand.get(i).getCardAsString().equals(card.getCardAsString()))

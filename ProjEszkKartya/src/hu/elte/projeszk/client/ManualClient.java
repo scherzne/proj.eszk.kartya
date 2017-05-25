@@ -160,16 +160,16 @@ public class ManualClient {
 					 * elkuldjuk a megfeleo stringet
 					 */
 				//	boolean hasChoosenCard = false;
-					boolean choosingCard;
+					boolean choosingCardRunning;
 				//	boolean isFalseN = false;
 					do {
-						choosingCard=true;
+						choosingCardRunning=true;
 					//	hasChoosenCard = false;
 					//	isFalseN = false;
 						System.out.print("Te lapod: ");
 						String choosenCardString = kbScanner.nextLine();
 						if (choosenCardString.equals("H")) {	
-							System.out.print("Lapok kiirása ");
+							System.out.println("Lapok kiirása:");
 							showCardsInHand();
 							
 							
@@ -185,35 +185,39 @@ public class ManualClient {
 								System.out.println("Van kartya nalad, ami megfelelo!");
 								isFalseN = true;
 							}*/
-							choosingCard = false;
+							choosingCardRunning = false;
 							pw.println("N");
 						}
 						else {
 							
 							choosenCardAsString = choosenCardString;// beolvasott sort eltároljuk
-							choosenCard = getCardFromString(choosenCardString);
+							choosenCard = getCardFromString(choosenCardAsString);
 							
-							choosingCard = false;
+							System.out.println("valasztott kartya"+choosenCard.getCardColor() + ""+  choosenCard.getCardValue());
+							
+							choosingCardRunning = false;
 							
 							if (checkIfCardInHand(choosenCard) == -1) {
 								System.out.println("A kivalasztott kartya nincs a kezedben!" + choosenCard.getCardAsString());
-								choosingCard=true;
+								
+								
+								choosingCardRunning=true;
 							}
 	
 							if (!checkIfCardIsAppropriate(choosenCard, card)) {
 								System.out.println("A kivalasztott kartya nem megfelelo!");
-								choosingCard=true;
+								choosingCardRunning=true;
 							}
 							
-							if (choosingCard== false){
-								
-								
+							if (choosingCardRunning == false){
+								//eltávolitás a kézből
+								cardsInHand.remove(checkIfCardInHand(choosenCard)-1);
 								pw.println("A,"+choosenCardAsString);
 								
 							}
 						}
 
-					} while ( choosingCard );
+					} while ( choosingCardRunning );
 					
 					//if (hasChoosenCard) {
 						
@@ -309,7 +313,7 @@ public class ManualClient {
 	private Card getCardFromString(String card) {
 		CardColor choosenCardColor = Card.convertCharacterToCardColor(card.charAt(0));
 		CardValue choosenCardValue = Card.convertCharacterToCardValue(card.charAt(1));
-
+		
 		Card choosenCard = new Card(choosenCardColor, choosenCardValue);
 		return choosenCard;
 

@@ -108,9 +108,7 @@ public  ClientMachine(String name){
 				e.printStackTrace();
 			}
 	        System.out.println("A kliens leallt.");
-		
-		
-	
+
 	
 }
 
@@ -216,11 +214,11 @@ protected String cardChoosing(String message){
 	String choosenCardString;
 	String unoMessage="";
 	Card topCard = new Card(Card.convertCharacterToCardColor(message.charAt(2)), Card.convertCharacterToCardValue(message.charAt(3)));
-	System.out.println(topCard);
+	//System.out.println(topCard);
 	Boolean lastPlayerDrawed = initLastPlayerDrawed(message);
-	System.out.println(lastPlayerDrawed);
+//	System.out.println(lastPlayerDrawed);
 	CardColor declaredColor = Card.convertCharacterToCardColor(message.charAt(7));
-	System.out.println(declaredColor);
+//	System.out.println(declaredColor);
 	
 	Card returnCard = machineCardChooseAlgorithm(topCard, lastPlayerDrawed, declaredColor);
 	removeCardFromHand(returnCard);
@@ -323,7 +321,7 @@ protected void messageBeginWithCharA(String message, BufferedReader br) throws I
 		}else{
 			
 		addCardToHand(new Card(Card.convertCharacterToCardColor(s.charAt(0)), Card.convertCharacterToCardValue(s.charAt(1))));
-		System.out.println(hand.get(hand.size()-1).getCardColor()+ " " +hand.get(hand.size()-1).getCardValue());
+	//	System.out.println(hand.get(hand.size()-1).getCardColor()+ " " +hand.get(hand.size()-1).getCardValue());
 		}
 	}
 	

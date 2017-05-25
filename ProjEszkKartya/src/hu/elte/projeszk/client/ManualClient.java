@@ -178,7 +178,11 @@ public class ManualClient {
 					//	isFalseN = false;
 						System.out.print("Kerek 1 lapot: ");
 						String choosenCardString = kbScanner.nextLine();
-						if (choosenCardString.equals("H")) {	
+						if (choosenCardString.equals("H")) {
+							System.out.println(serverMessageString);
+							System.out.println("Lap, amire tenni kell: " + Card.convertCardColorToCharacter(cColor)
+							+ Card.convertCardValueToCharacter(cValue));
+
 							System.out.println("Lapok kiirása:");
 							showCardsInHand();
 							
@@ -204,10 +208,15 @@ public class ManualClient {
 							choosenCard = getCardFromString(choosenCardAsString);
 							
 							choosingCardRunning = false;
-							if (choosenCard==null){
-								System.out.println("Hibas kartyabevitel");
-								choosingCardRunning = true;
 								
+							if (choosenCard==null){
+										System.out.println("Hibas kartyabevitel");
+										choosingCardRunning = true;
+										
+									
+									
+				
+							
 							}else{
 								System.out.println("valasztott kartya"+choosenCard.getCardColor() + ""+  choosenCard.getCardValue());
 							
@@ -224,10 +233,20 @@ public class ManualClient {
 									choosingCardRunning=true;
 								}
 								
+								if (choosenCardString.length()==6) {
+									
+									if (choosenCardString.charAt(3)== 'U' & choosenCardString.charAt(4)== 'N'&choosenCardString.charAt(5)== 'O'){
+										
+										
+									}else{choosingCardRunning=true;}
+									
+								}
+								
+								
 								if (choosingCardRunning == false){
 									//eltávolitás a kézből
 									cardsInHand.remove(checkIfCardInHand(choosenCard)-1);
-									pw.println("A,"+choosenCardAsString);
+									pw.println("A,"+choosenCardString);
 									
 								}
 							}
@@ -260,7 +279,9 @@ public class ManualClient {
 							(colorChoose);
 					pw.println(Consts.SEND_COLOR+","+choosenColor.charAt(0));
 				}
-
+				
+				
+				if (cardsInHand.size()==0){hasEnded=true;}
 			} while (!hasEnded);
 
 			System.out.println(clientName + " HASENDED!");

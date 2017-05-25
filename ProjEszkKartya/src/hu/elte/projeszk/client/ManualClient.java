@@ -82,7 +82,7 @@ public class ManualClient {
 		// Szerver altal kuldott uzenet tarolasa
 		String serverMessageString = "";
 		BufferedReader stdinReader = new BufferedReader(new InputStreamReader(System.in));
-
+		boolean gameCanEnd= false;
 		/**
 		 * Addig kerjuk be a klienstol a nevet, amig ok valaszt
 		 * nem kapunk a szervertol
@@ -236,7 +236,7 @@ public class ManualClient {
 								if (choosenCardString.length()==6) {
 									
 									if (choosenCardString.charAt(3)== 'U' & choosenCardString.charAt(4)== 'N'&choosenCardString.charAt(5)== 'O'){
-										
+										gameCanEnd= true;
 										
 									}else{choosingCardRunning=true;}
 									
@@ -281,7 +281,7 @@ public class ManualClient {
 				}
 				
 				
-				if (cardsInHand.size()==0){hasEnded=true;}
+				if (cardsInHand.size()==0 & gameCanEnd){hasEnded=true;}
 			} while (!hasEnded);
 
 			System.out.println(clientName + " HASENDED!");

@@ -168,9 +168,14 @@ public class ManualClient {
 					//	isFalseN = false;
 						System.out.print("Te lapod: ");
 						String choosenCardString = kbScanner.nextLine();
-
+						if (choosenCardString.equals("H")) {	
+							System.out.print("Lapok kiirása ");
+							showCardsInHand();
+							
+							
+						}
 						// Nincs kartya, nem tud tenni
-						if (choosenCardString.equals("N")) {
+						else if (choosenCardString.equals("N")) {
 						/*	if (!checkIfAppropriateCardInHand(cColor, cValue)) {
 								pw.println("N");
 								String newCardString = br.readLine();
@@ -260,6 +265,17 @@ public class ManualClient {
 	 * @param  card Ellenorizendo kartya
 	 * @return      A megfelelo kartya valoban a kezben van-e, kartya index, ha igen, -1 egyebkent
 	 */
+	private void showCardsInHand(){
+		
+		
+		int i;
+		for (i=0; i < cardsInHand.size(); i++) {
+		
+				System.out.println(cardsInHand.get(i).getCardColor()+" "+cardsInHand.get(i).getCardValue());
+			}
+}
+		
+	
 	
 	private int checkIfCardInHand(Card card) {
 		int i;
